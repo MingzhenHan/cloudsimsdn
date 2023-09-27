@@ -1,0 +1,28 @@
+Workload_ID,    App_ID,SubmitTime,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,Tr:StartTime,Tr:EndTime,Tr:NetworkTime,   Tr:Size,Tr:Channel,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,ResponseTime,
+ 0, 0, 0, 0, 0.01, 0.01, 5, 0.01, 2.436, 2.426, 10000, 0, 2.436, 2.446, 0.01, 5,     2.446,
+ 1, 0, 0, 0, 0.01, 0.01, 5, 0.01, 2.446, 2.436, 10000, 2, 2.446, 2.456, 0.01, 5,     2.456,
+ 2, 0, 2, 2, 2.01, 0.01, 5, 2.01, 3.436, 1.426, 10000, 0, 3.436, 3.446, 0.01, 5,     1.446,
+ 3, 0, 2, 2, 2.03, 0.03, 5, 2.03, 3.936, 1.906, 10000, 0, 3.936, 3.946, 0.01, 5,     1.946,
+ 4, 0, 2, 2, 2.05, 0.05, 5, 2.05, 4.436, 2.386, 10000, 0, 4.436, 4.446, 0.01, 5,     2.446,
+ 5, 0, 2, 2, 2.07, 0.07, 5, 2.07, 4.936, 2.866, 10000, 0, 4.936, 4.946, 0.01, 5,     2.946,
+#======================================
+#Number of workloads:6
+#Timeout workloads:0
+#Timeout workloads per cent:0
+#Over workloads:0
+#Over workloads per cent:0
+#Number of Cloudlets:12
+#Over Cloudlets:0
+#Over Cloudlets per cent:0
+#Number of transmissions:6
+#Over transmissions:6
+#Over transmissions per cent:1
+#======================================
+#Total serve time:13.685999999999837
+#CPU serve time:0.23999999999999533
+#Network serve time:13.445999999999842
+#Average total serve time:2.2809999999999726
+#Average CPU serve time per workload:0.039999999999999224
+#Average network serve time per workload:2.2409999999999735
+#Average CPU serve time per Cloudlet:0.019999999999999612
+#Average network serve time per transmission:2.2409999999999735

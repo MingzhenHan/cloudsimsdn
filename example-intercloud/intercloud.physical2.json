@@ -1,30 +1,31 @@
 {
   "datacenters" : [
-	{
-	  "name": "dc1"
-	  "type": "cloud",
-	},
-	{
-	  "name": "dc2",
-	  "type": "cloud",
-	},
-	{
-
-      "name": "换机、网关",
-
-	  "name": "net",
-	  "type": "network",
-	},
+    {
+      "name": "dc1",
+      "type": "cloud"
+    },
+    {
+      "name": "dc2",
+      "type": "cloud"
+    },
+    {
+      "name": "dc3",
+      "type": "cloud"
+    },
+    {
+      "name": "net",
+      "type": "wirelessnetwork"
+    }
   ],
   "nodes" : [
-      {
+    {
       "name": "gw1",
       "type" : "gateway",
       "iops" : 1000000000,
       "upports" : 1,
       "downports" : 2,
       "bw" : 12500000,
-	  "datacenter": "net",
+	  "datacenter": "net"
     },
     {
       "name": "gw2",
@@ -33,26 +34,27 @@
       "upports" : 1,
       "downports" : 2,
       "bw" : 12500000,
-	  "datacenter": "net",
+      "datacenter": "net"
     },
     {
-      "name": "inter1",
+      "name": "gw3",
+      "type" : "gateway",
+      "iops" : 1000000000,
+      "upports" : 1,
+      "downports" : 2,
+      "bw" : 12500000,
+      "datacenter": "net"
+    },
+    {
+      "name": "inter",
       "type" : "intercloud",
       "iops" : 1000000000,
       "upports" : 0,
       "downports" : 2,
       "bw" : 12500000,
-	  "datacenter": "net",
+	  "datacenter": "net"
     },
-    {
-      "name": "inter2",
-      "type" : "intercloud",
-      "iops" : 1000000000,
-      "upports" : 0,
-      "downports" : 2,
-      "bw" : 12500000,
-	  "datacenter": "net",
-    },
+
 
 
     {
@@ -62,31 +64,25 @@
       "upports" : 0,
       "downports" : 2,
       "bw" : 12500000,
-	  "datacenter": "dc1",
+	  "datacenter": "dc1"
     },
     {
       "name": "core",
-
-      "type" : "核心交换机",
-
       "type" : "core",
       "iops" : 1000000000,
       "upports" : 0,
       "downports" : 2,
       "bw" : 12500000,
-	  "datacenter": "dc1",
+	  "datacenter": "dc1"
     },
     {
       "name": "edge1",
-
-      "type" : "边缘交换机",
-
       "type" : "edge",
       "iops" : 1000000000,
       "upports" : 1,
       "downports" : 4,
       "bw" : 12500000,
-	  "datacenter": "dc1",
+	  "datacenter": "dc1"
     },
     {
       "name": "edge2",
@@ -95,10 +91,8 @@
       "upports" : 1,
       "downports" : 4,
       "bw" : 12500000,
-	  "datacenter": "dc1",
+	  "datacenter": "dc1"
     },
-
-
     {
       "name": "host01",
       "type" : "host",
@@ -107,7 +101,7 @@
       "ram" : 10240,
       "storage" : 10000000,
       "bw" : 12500000,
-	  "datacenter": "dc1",
+	  "datacenter": "dc1"
     },
      {
       "name": "host02",
@@ -117,7 +111,7 @@
       "ram" : 10240,
       "storage" : 10000000,
       "bw" : 12500000,
-	  "datacenter": "dc1",
+	  "datacenter": "dc1"
     },
     {
       "name": "host03",
@@ -127,7 +121,7 @@
       "ram" : 10240,
       "storage" : 10000000,
       "bw" : 12500000,
-	  "datacenter": "dc1",
+	  "datacenter": "dc1"
     },
     {
       "name": "host04",
@@ -137,8 +131,9 @@
       "ram" : 10240,
       "storage" : 10000000,
       "bw" : 12500000,
-	  "datacenter": "dc1",
+	  "datacenter": "dc1"
     },
+
 
 
     {
@@ -148,7 +143,7 @@
       "upports" : 0,
       "downports" : 2,
       "bw" : 12500000,
-	  "datacenter": "dc2",
+	  "datacenter": "dc2"
     },
 	{
       "name": "2core",
@@ -157,7 +152,7 @@
       "upports" : 0,
       "downports" : 2,
       "bw" : 12500000,
-	  "datacenter": "dc2",
+	  "datacenter": "dc2"
     },
     {
       "name": "2edge1",
@@ -166,16 +161,17 @@
       "upports" : 1,
       "downports" : 4,
       "bw" : 12500000,
-	  "datacenter": "dc2",
+	  "datacenter": "dc2"
     },
     {
       "name": "2edge2",
       "type" : "edge",
+      "sl" : 0.001,
       "iops" : 1000000000,
       "upports" : 1,
       "downports" : 4,
       "bw" : 12500000,
-	  "datacenter": "dc2",
+	  "datacenter": "dc2"
     },
     {
       "name": "2host01",
@@ -185,7 +181,7 @@
       "ram" : 10240,
       "storage" : 10000000,
       "bw" : 12500000,
-	  "datacenter": "dc2",
+	  "datacenter": "dc2"
     },
      {
       "name": "2host02",
@@ -195,7 +191,7 @@
       "ram" : 10240,
       "storage" : 10000000,
       "bw" : 12500000,
-	  "datacenter": "dc2",
+	  "datacenter": "dc2"
     },
     {
       "name": "2host03",
@@ -205,7 +201,7 @@
       "ram" : 10240,
       "storage" : 10000000,
       "bw" : 12500000,
-	  "datacenter": "dc2",
+	  "datacenter": "dc2"
     },
     {
       "name": "2host04",
@@ -215,11 +211,90 @@
       "ram" : 10240,
       "storage" : 10000000,
       "bw" : 12500000,
-	  "datacenter": "dc2",
+	  "datacenter": "dc2"
     },
 
 
+
+    {
+      "name": "gw3",
+      "type" : "gateway",
+      "iops" : 1000000000,
+      "upports" : 0,
+      "downports" : 2,
+      "bw" : 12500000,
+      "datacenter": "dc3"
+    },
+    {
+      "name": "3core",
+      "type" : "core",
+      "iops" : 1000000000,
+      "upports" : 0,
+      "downports" : 2,
+      "bw" : 12500000,
+      "datacenter": "dc3"
+    },
+    {
+      "name": "3edge1",
+      "type" : "edge",
+      "iops" : 1000000000,
+      "upports" : 1,
+      "downports" : 4,
+      "bw" : 12500000,
+      "datacenter": "dc3"
+    },
+    {
+      "name": "3edge2",
+      "type" : "edge",
+      "sl" : 0.001,
+      "iops" : 1000000000,
+      "upports" : 1,
+      "downports" : 4,
+      "bw" : 12500000,
+      "datacenter": "dc3"
+    },
+    {
+      "name": "3host01",
+      "type" : "host",
+      "pes" : 1,
+      "mips" : 30000000,
+      "ram" : 10240,
+      "storage" : 10000000,
+      "bw" : 12500000,
+      "datacenter": "dc3"
+    },
+    {
+      "name": "3host02",
+      "type" : "host",
+      "pes" : 1,
+      "mips" : 30000000,
+      "ram" : 10240,
+      "storage" : 10000000,
+      "bw" : 12500000,
+      "datacenter": "dc3"
+    },
+    {
+      "name": "3host03",
+      "type" : "host",
+      "pes" : 1,
+      "mips" : 30000000,
+      "ram" : 10240,
+      "storage" : 10000000,
+      "bw" : 12500000,
+      "datacenter": "dc3"
+    },
+    {
+      "name": "3host04",
+      "type" : "host",
+      "pes" : 1,
+      "mips" : 30000000,
+      "ram" : 10240,
+      "storage" : 10000000,
+      "bw" : 12500000,
+      "datacenter": "dc3"
+    }
   ],
+
   "links" : [
     { "source" : "gw1" , "destination" : "core" , "latency" : 1.0 },
     { "source" : "core" , "destination" : "edge1" , "latency" : 1.0 },
@@ -237,9 +312,16 @@
     { "source" : "2edge2" , "destination" : "2host03" , "latency" : 1.0 },
     { "source" : "2edge2" , "destination" : "2host04" , "latency" : 1.0 },
 
-	{ "source" : "gw1" , "destination" : "inter1" , "latency" : 1.0 },
-	{ "source" : "inter1" , "destination" : "inter2" , "latency" : 1.0 },
-	{ "source" : "gw2" , "destination" : "inter2" , "latency" : 1.0 },
+    { "source" : "gw3" , "destination" : "3core" , "latency" : 1.0 },
+    { "source" : "3core" , "destination" : "3edge1" , "latency" : 1.0 },
+    { "source" : "3core" , "destination" : "3edge2" , "latency" : 1.0 },
+    { "source" : "3edge1" , "destination" : "3host01" , "latency" : 1.0 },
+    { "source" : "3edge1" , "destination" : "3host02" , "latency" : 1.0 },
+    { "source" : "3edge2" , "destination" : "3host03" , "latency" : 1.0 },
+    { "source" : "3edge2" , "destination" : "3host04" , "latency" : 1.0 },
 
+	{ "source" : "gw1" , "destination" : "inter" , "latency" : 1.0 },
+	{ "source" : "gw2" , "destination" : "inter" , "latency" : 1.0 },
+    { "source" : "gw3" , "destination" : "inter" , "latency" : 1.0 }
   ]
 }
