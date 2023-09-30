@@ -8,15 +8,7 @@
 
 package org.cloudbus.cloudsim.sdn.physicalcomponents;
 
-import java.util.HashMap;
-import java.util.List;
-
-import org.cloudbus.cloudsim.Consts;
-import org.cloudbus.cloudsim.Host;
-import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.Pe;
-import org.cloudbus.cloudsim.Vm;
-import org.cloudbus.cloudsim.VmScheduler;
+import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.provisioners.BwProvisioner;
 import org.cloudbus.cloudsim.provisioners.RamProvisioner;
@@ -28,11 +20,14 @@ import org.cloudbus.cloudsim.sdn.monitor.power.PowerUtilizationMonitor;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.ForwardingRule;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
 
+import java.util.HashMap;
+import java.util.List;
+
 
 /**
  * Extended class of Host to support SDN.
  * Added function includes data transmission after completion of Cloudlet compute processing.
- * 
+ *
  * @author Jungmin Son
  * @author Rodrigo N. Calheiros
  * @since CloudSimSDN 1.0
@@ -41,9 +36,9 @@ public class SDNHost extends Host implements Node {
 	private ForwardingRule forwardingTable;
 	private RoutingTable routingTable;
 	private int rank = -1;
-	
+
 	private String name = null;
-	
+
 	private HashMap<Node, Link> linkToNextHop = new HashMap<Node, Link>();
 
 	public SDNHost(
@@ -54,15 +49,15 @@ public class SDNHost extends Host implements Node {
 			VmScheduler vmScheduler,
 			String name){
 		super(NodeUtil.assignAddress(), ramProvisioner, bwProvisioner, storage,peList,vmScheduler);
-			
+
 		this.forwardingTable = new ForwardingRule();
 		this.routingTable = new RoutingTable();
 		this.name = name;
 	}
-	
+
 	/**
 	 * Requests updating of processing of cloudlets in the VMs running in this host.
-	 * 
+	 *
 	 * @param currentTime the current time
 	 * @return expected time of completion of the next cloudlet in all VMs in this host.
 	 *         Double.MAX_VALUE if there is no future events expected in this host
@@ -71,25 +66,25 @@ public class SDNHost extends Host implements Node {
 	 */
 	public double updateVmsProcessing(double currentTime) {
 		double smallerTime = Double.MAX_VALUE;
-		
+
 		// Update VM's processing for the previous time.
 		for (SDNVm vm : this.<SDNVm>getVmList()) {
 			List<Double> mipsAllocated = getVmScheduler().getAllocatedMipsForVm(vm);
-			
+
 //			System.err.println(CloudSim.clock()+":"+vm + " is allocated: "+ mipsAllocated);
 			vm.updateVmProcessing(currentTime, mipsAllocated);
 		}
 
 		// Change MIPS share proportion depending on the remaining Cloudlets.
 		adjustMipsShare();
-		
-		// Check the next event time based on the updated MIPS share proportion 
+
+		// Check the next event time based on the updated MIPS share proportion
 		for (SDNVm vm : this.<SDNVm>getVmList()) {
 			List<Double> mipsAllocatedAfter = getVmScheduler().getAllocatedMipsForVm(vm);
 
 //			System.err.println(CloudSim.clock()+":"+vm + " is reallocated: "+ mipsAllocatedAfter);
 			double time = vm.updateVmProcessing(currentTime, mipsAllocatedAfter);
-			
+
 			if (time > 0.0 && time < smallerTime) {
 				smallerTime = time;
 			}
@@ -97,7 +92,7 @@ public class SDNHost extends Host implements Node {
 
 		return smallerTime;
 	}
-	
+
 	public void adjustMipsShare() {
 		if(getVmScheduler() instanceof VmSchedulerTimeSharedOverSubscriptionDynamicVM){
 			VmSchedulerTimeSharedOverSubscriptionDynamicVM sch = (VmSchedulerTimeSharedOverSubscriptionDynamicVM) getVmScheduler();
@@ -109,7 +104,7 @@ public class SDNHost extends Host implements Node {
 			}
 		}
 	}
-	
+
 	// Check how long this Host is overloaded (The served capacity is less than the required capacity)
 	private double overloadLoggerPrevTime =0;
 	private double overloadLoggerPrevScaleFactor= 1.0;
@@ -119,15 +114,15 @@ public class SDNHost extends Host implements Node {
 
 	private void logOverloadLogger(double scaleFactor) {
 		// scaleFactor == 1 means enough resource is served
-		// scaleFactor < 1 means less resource is served (only requested * scaleFactor is served) 
+		// scaleFactor < 1 means less resource is served (only requested * scaleFactor is served)
 		double currentTime = CloudSim.clock();
 		double duration = currentTime - overloadLoggerPrevTime;
-		
+
 		if(scaleFactor > 1) {
 			System.err.println("scale factor cannot be >1!");
 			System.exit(1);
 		}
-		
+
 		if(duration > 0) {
 			if(overloadLoggerPrevScaleFactor < 1.0) {
 				// Host was overloaded for the previous time period
@@ -136,11 +131,11 @@ public class SDNHost extends Host implements Node {
 			overloadLoggerTotalDuration += duration;
 			overloadLoggerScaledOverloadedDuration += duration * overloadLoggerPrevScaleFactor;
 			updateOverloadMonitor(currentTime, overloadLoggerPrevScaleFactor);
-		}				
+		}
 		overloadLoggerPrevTime = currentTime;
-		overloadLoggerPrevScaleFactor = scaleFactor;		
+		overloadLoggerPrevScaleFactor = scaleFactor;
 	}
-	
+
 	public double overloadLoggerGetOverloadedDuration() {
 		return overloadLoggerOverloadedDuration;
 	}
@@ -150,7 +145,7 @@ public class SDNHost extends Host implements Node {
 	public double overloadLoggerGetScaledOverloadedDuration() {
 		return overloadLoggerScaledOverloadedDuration;
 	}
-	
+
 	public double overloadLoggerGetOverloadedDurationVM() {
 		double total = 0;
 		for (SDNVm vm : this.<SDNVm>getVmList()) {
@@ -172,7 +167,7 @@ public class SDNHost extends Host implements Node {
 		}
 		return total;
 	}
-	
+
 	// For monitor
 	private MonitoringValues mvOverload = new MonitoringValues(MonitoringValues.ValueType.Utilization_Percentage);
 
@@ -181,7 +176,7 @@ public class SDNHost extends Host implements Node {
 		mvOverload.add(scaleReverse, logTime);
 	}
 
-	public MonitoringValues getMonitoringValuesOverloadMonitor() { 
+	public MonitoringValues getMonitoringValuesOverloadMonitor() {
 		return mvOverload;
 	}
 
@@ -193,7 +188,7 @@ public class SDNHost extends Host implements Node {
 		}
 		return null;
 	}
-	
+
 	public boolean isSuitableForVm(Vm vm) {
 		if (getStorage() < vm.getSize()) {
 			Log.printLine("[VmScheduler.isSuitableForVm] Allocation of VM #" + vm.getId() + " to Host #" + getId()
@@ -212,13 +207,13 @@ public class SDNHost extends Host implements Node {
 					+ " failed by BW");
 			return false;
 		}
-		
+
 		if(getVmScheduler().getPeCapacity() < vm.getCurrentRequestedMaxMips()) {
 			Log.printLine("[VmScheduler.isSuitableForVm] Allocation of VM #" + vm.getId() + " to Host #" + getId()
 			+ " failed by PE Capacity");
 			return false;
 		}
-		
+
 		if(getVmScheduler().getAvailableMips() < vm.getCurrentRequestedTotalMips()) {
 			Log.printLine("[VmScheduler.isSuitableForVm] Allocation of VM #" + vm.getId() + " to Host #" + getId()
 			+ " failed by Available MIPS");
@@ -239,12 +234,12 @@ public class SDNHost extends Host implements Node {
 	public int getAddress() {
 		return super.getId();
 	}
-	
+
 	@Override
 	public long getBandwidth() {
 		return getBw();
 	}
-	
+
 	public long getAvailableBandwidth() {
 		return getBwProvisioner().getAvailableBw();
 	}
@@ -258,7 +253,7 @@ public class SDNHost extends Host implements Node {
 	public void addVMRoute(int src, int dest, int flowId, Node to){
 		forwardingTable.addRule(src, dest, flowId, to);
 	}
-	
+
 	@Override
 	public Node getVMRoute(int src, int dest, int flowId){
 		Node route= this.forwardingTable.getRoute(src, dest, flowId);
@@ -266,10 +261,10 @@ public class SDNHost extends Host implements Node {
 			this.printVMRoute();
 			System.err.println(toString()+" getVMRoute(): ERROR: Cannot find route:" + src + "->"+dest + ", flow ="+flowId);
 		}
-			
+
 		return route;
 	}
-	
+
 	@Override
 	public void removeVMRoute(int src, int dest, int flowId){
 		forwardingTable.removeRule(src, dest, flowId);
@@ -284,12 +279,12 @@ public class SDNHost extends Host implements Node {
 	public int getRank() {
 		return rank;
 	}
-	
+
 	@Override
 	public void printVMRoute() {
 		forwardingTable.printForwardingTable(getName());
 	}
-	
+
 	public String toString() {
 		return this.getName();
 	}
@@ -302,20 +297,20 @@ public class SDNHost extends Host implements Node {
 	@Override
 	public void updateNetworkUtilization() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void addRoute(Node destHost, Link to) {
 		this.routingTable.addRoute(destHost, to);
-		
+
 	}
 
 	@Override
 	public List<Link> getRoute(Node destHost) {
 		return this.routingTable.getRoute(destHost);
 	}
-	
+
 	@Override
 	public RoutingTable getRoutingTable() {
 		return this.routingTable;
@@ -324,26 +319,26 @@ public class SDNHost extends Host implements Node {
 	// For monitor
 	private MonitoringValues mv = new MonitoringValues(MonitoringValues.ValueType.Utilization_Percentage);
 	private long monitoringProcessedMIsPerUnit = 0;
-	
+
 	private PowerUtilizationMonitor powerMonitor = new PowerUtilizationMonitor(new PowerUtilizationEnergyModelHostLinear());
 	public double getConsumedEnergy() {
 		return powerMonitor.getTotalEnergyConsumed();
 	}
-	
+
 	public void updateMonitor(double logTime, double timeUnit) {
 		long capacity = (long) (this.getTotalMips() *timeUnit);
 		double utilization = (double)monitoringProcessedMIsPerUnit / capacity / Consts.MILLION;
 		mv.add(utilization, logTime);
-		
+
 		monitoringProcessedMIsPerUnit = 0;
-		
+
 		LogWriter log = LogWriter.getLogger("host_utilization.csv");
 		log.printLine(this.getName()+","+logTime+","+utilization);
-		
+
 		double energy = powerMonitor.addPowerConsumption(logTime, utilization);
 		LogWriter logEnergy = LogWriter.getLogger("host_energy.csv");
 		logEnergy.printLine(this.getName()+","+logTime+","+energy);
-		
+
 		// Also update hosting VMs in this machine
 		updateVmMonitor(timeUnit);
 	}
@@ -353,9 +348,9 @@ public class SDNHost extends Host implements Node {
 			SDNVm tvm = (SDNVm)vm;
 			tvm.updateMonitor(CloudSim.clock(), timeUnit);
 		}
-	}	
-	
-	public MonitoringValues getMonitoringValuesHostCPUUtilization() { 
+	}
+
+	public MonitoringValues getMonitoringValuesHostCPUUtilization() {
 		return mv;
 	}
 
@@ -363,12 +358,12 @@ public class SDNHost extends Host implements Node {
 //		System.err.println(this.toString() +","+ processedMIs);
 		this.monitoringProcessedMIsPerUnit += processedMIs;
 	}
-	
+
 	public MonitoringValues getMonitoringValuesHostBwUtilization() {
 		if(linkToNextHop.size() != 1) {
 			System.err.println(this+": Multiple links found!!");
 		}
-		
+
 		if(linkToNextHop.size() > 0) {
 			return linkToNextHop.values().iterator().next().getMonitoringValuesLinkUtilizationUp();
 		}
@@ -379,7 +374,7 @@ public class SDNHost extends Host implements Node {
 	public Link getLinkTo(Node nextHop) {
 		return this.linkToNextHop.get(nextHop);
 	}
-	
+
 	public String getName() {
 		return name;
 	}

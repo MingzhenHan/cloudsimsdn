@@ -8,16 +8,8 @@
 
 package org.cloudbus.cloudsim.sdn.parsers;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import org.cloudbus.cloudsim.CloudletScheduler;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.sdn.CloudletSchedulerSpaceSharedMonitor;
@@ -28,8 +20,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * This class parses Virtual Topology (VMs, Network flows between VMs, and SFCs).

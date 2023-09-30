@@ -8,21 +8,17 @@
 
 package org.cloudbus.cloudsim.sdn.virtualcomponents;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.cloudbus.cloudsim.sdn.Configuration;
 import org.cloudbus.cloudsim.sdn.PacketScheduler;
-import org.cloudbus.cloudsim.sdn.PacketSchedulerSpaceShared;
 import org.cloudbus.cloudsim.sdn.PacketSchedulerTimeShared;
 import org.cloudbus.cloudsim.sdn.monitor.MonitoringValues;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.Link;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.Node;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.CoreSwitch;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.GatewaySwitch;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.IntercloudSwitch;
 import org.cloudbus.cloudsim.sdn.workload.Transmission;
+
+import java.util.List;
 
 /**
  * This class represents a channel for transmission of data between switches.

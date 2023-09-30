@@ -8,43 +8,26 @@
 
 package org.cloudbus.cloudsim.sdn.nos;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.cloudbus.cloudsim.Datacenter;
-import org.cloudbus.cloudsim.Host;
-import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.Vm;
-import org.cloudbus.cloudsim.VmAllocationPolicy;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEntity;
 import org.cloudbus.cloudsim.core.SimEvent;
 import org.cloudbus.cloudsim.core.predicates.PredicateType;
 import org.cloudbus.cloudsim.sdn.*;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.Link;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.Node;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.PhysicalTopology;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.PhysicalTopologyInterCloud;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNDatacenter;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNHost;
+import org.cloudbus.cloudsim.sdn.physicalcomponents.*;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.Switch;
 import org.cloudbus.cloudsim.sdn.policies.selectlink.LinkSelectionPolicy;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.overbooking.OverbookingVmAllocationPolicy;
-import org.cloudbus.cloudsim.sdn.virtualcomponents.FlowConfig;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.Channel;
+import org.cloudbus.cloudsim.sdn.virtualcomponents.FlowConfig;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.VirtualNetworkMapper;
 import org.cloudbus.cloudsim.sdn.workload.Transmission;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import java.util.*;
 
 /**
  * NOS calculates and estimates network behaviour. It also mimics SDN Controller functions.

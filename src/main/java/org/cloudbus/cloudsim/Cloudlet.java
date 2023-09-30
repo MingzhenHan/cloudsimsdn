@@ -7,12 +7,12 @@
  */
 package org.cloudbus.cloudsim;
 
+import org.cloudbus.cloudsim.core.CloudSim;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.cloudbus.cloudsim.core.CloudSim;
 
 /**
  * Cloudlet is an extension to the cloudlet. It stores, despite all the
@@ -286,7 +286,7 @@ public class Cloudlet {
                 utilizationModelRam,
                 utilizationModelBw,
                 false);
-        vmId = -1;        
+        vmId = -1;
         accumulatedBwCost = 0;
         costPerBw = 0;
         requiredFiles = new LinkedList<String>();

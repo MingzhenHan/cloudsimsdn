@@ -8,64 +8,60 @@
 
 package org.cloudbus.cloudsim.sdn.policies.vmallocation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.FlowConfig;
+
+import java.util.*;
 
 public class VmGroupPriority extends VmGroup {
 	private long priority;
 	private Set<FlowConfig> flows;
 	private double requiredFlowBw;
-	
+
 	private static double maxFlowBw = 0;
 	public static boolean isPriorityVmGroup(VmGroupPriority vg) {
 		if(vg.getRequiredBw() == maxFlowBw)
 			return true;
 		return false;
 	}
-	
+
 	public VmGroupPriority() {
 		super();
 		priority = 0;
 		requiredFlowBw = 0;
 		flows = new HashSet<FlowConfig>();
 	}
-	
+
 	public void addFlow(FlowConfig flow) {
 		requiredFlowBw += flow.getBw();
-		
+
 		if(requiredFlowBw > maxFlowBw) {
 			maxFlowBw = requiredFlowBw;
 		}
 	}
-	
+
 	public Collection<FlowConfig> getFlows() {
 		return flows;
 	}
-	
+
 	@Override
 	public double getRequiredBw() {
 		return requiredFlowBw;
 	}
-	
+
 	public int compareTo(VmGroup o) {
 		return (int) (o.getRequiredBw() - getRequiredBw());
 	}
-	
+
 	public static List<VmGroup> classifyGroupByArcList(List<FlowConfig> sortedArcPool, List<Vm> vmPool) {
 		List<VmGroup> groups = new ArrayList<VmGroup>();
-		
+
 		// Put VMs connected in large bandwidth requirement into the same group
 		while(!sortedArcPool.isEmpty()) {
 			FlowConfig a = sortedArcPool.remove(0);
 			VmGroupPriority vmGroup1 = null, vmGroup2 = null;
 			Vm vm1=null, vm2 = null;
-			
+
 			int srcIndex = findVm(vmPool, a.getSrcId());
 			if(srcIndex != -1)
 				vm1 = vmPool.remove(srcIndex);
@@ -74,7 +70,7 @@ public class VmGroupPriority extends VmGroup {
 				vm2 = vmPool.remove(dstIndex);
 			vmGroup1 = (VmGroupPriority)VmGroup.findVmGroup(groups, a.getSrcId());
 			vmGroup2 = (VmGroupPriority)VmGroup.findVmGroup(groups, a.getDstId());
-			
+
 			if(vmGroup1 == null && vmGroup2 == null) {
 				// both src and dst VMs are not grouped yet, create a new group and put both vms into new group
 				assert(vm1 != null && vm2 != null);
@@ -110,20 +106,20 @@ public class VmGroupPriority extends VmGroup {
 				}
 			}
 		}
-		
+
 		return groups;
-	}	
-	
+	}
+
 	private static void mergeGroup(VmGroupPriority vmGroup, VmGroupPriority vmGroupToRemove,
 			List<VmGroup> groups) {
-		
+
 		for(Vm vm:vmGroupToRemove.getVms()) {
 			vmGroup.addVm(vm);
 		}
 		for(FlowConfig flow:vmGroupToRemove.getFlows()) {
 			vmGroup.addFlow(flow);
 		}
-		groups.remove(vmGroupToRemove);		
+		groups.remove(vmGroupToRemove);
 	}
 
 	public static void putEachVmIntoEachGroup(List<Vm> vmPool, List<VmGroup> groups) {
@@ -133,10 +129,10 @@ public class VmGroupPriority extends VmGroup {
 			groups.add(group);
 		}
 	}
-		
+
 	public void setPriority(long priority) {
 		System.err.println("Priority is set to "+ priority);
-		this.priority = priority; 
+		this.priority = priority;
 	}
 
 	public long getPriority() {

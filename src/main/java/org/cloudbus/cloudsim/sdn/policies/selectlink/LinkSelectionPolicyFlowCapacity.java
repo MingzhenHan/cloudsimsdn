@@ -8,12 +8,12 @@
 
 package org.cloudbus.cloudsim.sdn.policies.selectlink;
 
-import java.util.List;
-
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.Link;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.Node;
+
+import java.util.List;
 
 public class LinkSelectionPolicyFlowCapacity implements LinkSelectionPolicy {
 	// Compare the total amount of dedicated bandwidth in links, and choose the least full one.
@@ -21,11 +21,11 @@ public class LinkSelectionPolicyFlowCapacity implements LinkSelectionPolicy {
 		if(links.size() == 1) {
 			return links.get(0);
 		}
-		
+
 		int numLinks = links.size();
 		int linkid = dest.getAddress() % numLinks;
 		Link link = links.get(linkid);
-		
+
 		// Choose the least full one.
 		for(Link l:links) {
 			int linkCn = link.getChannelCount(prevNode);
@@ -35,7 +35,7 @@ public class LinkSelectionPolicyFlowCapacity implements LinkSelectionPolicy {
 			if( lCn < linkCn) {
 				//Log.printLine(CloudSim.clock() + ": LinkSelectionPolicyFlowCapacity: Found less crowded link: " + lBw + "<" + linkBw+". old="+l+", new="+link);
 				Log.printLine(CloudSim.clock() + ": LinkSelectionPolicyFlowCapacity: Found less crowded link: " + lCn + "<" + linkCn+". old="+l+", new="+link);
-				link = l; 
+				link = l;
 			}
 		}
 		return link;

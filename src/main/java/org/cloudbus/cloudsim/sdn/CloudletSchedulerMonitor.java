@@ -8,15 +8,15 @@
 
 package org.cloudbus.cloudsim.sdn;
 
-import java.util.List;
-
 import org.cloudbus.cloudsim.Cloudlet;
+
+import java.util.List;
 
 public interface CloudletSchedulerMonitor {
 	public long getTotalProcessingPreviousTime(double currentTime, List<Double> mipsShare);
 	public boolean isVmIdle();
 	public double getTimeSpentPreviousMonitoredTime(double currentTime);
-	
+
 	public int getCloudletTotalPesRequested();
 	public List<Cloudlet> getFailedCloudlet();
 }

@@ -8,13 +8,13 @@
 
 package org.cloudbus.cloudsim.lists;
 
-import java.util.List;
-
 import org.cloudbus.cloudsim.Host;
+
+import java.util.List;
 
 /**
  * HostList is a collection of operations on lists of hosts (PMs).
- * 
+ *
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 2.0
  */
@@ -22,12 +22,12 @@ public class HostList {
 
 	/**
 	 * Gets a {@link Host} with a given id.
-	 * 
+	 *
 	 * @param <T> the generic type
 	 * @param hostList the list of existing hosts
 	 * @param id the host ID
 	 * @return a Host with the given ID or $null if not found
-         * 
+         *
 	 * @pre id >= 0
 	 * @post $none
 	 */
@@ -42,7 +42,7 @@ public class HostList {
 
 	/**
 	 * Gets the total number of PEs for all Hosts.
-	 * 
+	 *
 	 * @param <T> the generic type
 	 * @param hostList the list of existing hosts
 	 * @return total number of PEs for all PMs
@@ -59,7 +59,7 @@ public class HostList {
 
 	/**
 	 * Gets the total number of <tt>FREE</tt> (non-busy) PEs for all Hosts.
-	 * 
+	 *
 	 * @param <T> the generic type
 	 * @param hostList the list of existing hosts
 	 * @return total number of free PEs
@@ -76,7 +76,7 @@ public class HostList {
 
 	/**
 	 * Gets the total number of <tt>BUSY</tt> PEs for all Hosts.
-	 * 
+	 *
 	 * @param <T> the generic type
 	 * @param hostList the list of existing hosts
 	 * @return total number of busy PEs
@@ -93,7 +93,7 @@ public class HostList {
 
 	/**
 	 * Gets the first host with free PEs.
-	 * 
+	 *
 	 * @param <T> the generic type
 	 * @param hostList the list of existing hosts
 	 * @return a Host object or <tt>null</tt> if not found
@@ -106,7 +106,7 @@ public class HostList {
 
 	/**
 	 * Gets the first Host with a specified number of free PEs.
-	 * 
+	 *
 	 * @param <T> the generic type
 	 * @param hostList the list of existing hosts
 	 * @param pesNumber the pes number
@@ -125,7 +125,7 @@ public class HostList {
 
 	/**
 	 * Sets the status of a particular PE on a given Host.
-	 * 
+	 *
 	 * @param <T> the generic type
 	 * @param hostList the list of existing hosts
 	 * @param status the PE status, either <tt>Pe.FREE</tt> or <tt>Pe.BUSY</tt>

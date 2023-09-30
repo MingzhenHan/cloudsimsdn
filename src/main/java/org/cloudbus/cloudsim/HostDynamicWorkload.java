@@ -8,18 +8,18 @@
 
 package org.cloudbus.cloudsim;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.lists.PeList;
 import org.cloudbus.cloudsim.provisioners.BwProvisioner;
 import org.cloudbus.cloudsim.provisioners.RamProvisioner;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * A host supporting dynamic workloads and performance degradation.
- * 
+ *
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 2.0
  */
@@ -36,7 +36,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Instantiates a new host.
-	 * 
+	 *
 	 * @param id the id
 	 * @param ramProvisioner the ram provisioner
 	 * @param bwProvisioner the bw provisioner
@@ -137,7 +137,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Gets the list of completed vms.
-	 * 
+	 *
 	 * @return the completed vms
 	 */
 	public List<Vm> getCompletedVms() {
@@ -155,7 +155,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Gets the max utilization percentage among by all PEs.
-	 * 
+	 *
 	 * @return the maximum utilization percentage
 	 */
 	public double getMaxUtilization() {
@@ -164,7 +164,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Gets the max utilization percentage among by all PEs allocated to a VM.
-	 * 
+	 *
 	 * @param vm the vm
 	 * @return the max utilization percentage of the VM
 	 */
@@ -174,7 +174,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Gets the utilization of memory (in absolute values).
-	 * 
+	 *
 	 * @return the utilization of memory
 	 */
 	public double getUtilizationOfRam() {
@@ -183,7 +183,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Gets the utilization of bw (in absolute values).
-	 * 
+	 *
 	 * @return the utilization of bw
 	 */
 	public double getUtilizationOfBw() {
@@ -192,7 +192,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Get current utilization of CPU in percentage.
-	 * 
+	 *
 	 * @return current utilization of CPU in percents
 	 */
 	public double getUtilizationOfCpu() {
@@ -205,7 +205,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Gets the previous utilization of CPU in percentage.
-	 * 
+	 *
 	 * @return the previous utilization of cpu in percents
 	 */
 	public double getPreviousUtilizationOfCpu() {
@@ -218,7 +218,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Get current utilization of CPU in MIPS.
-	 * 
+	 *
 	 * @return current utilization of CPU in MIPS
          * @todo This method only calls the  {@link #getUtilizationMips()}.
          * getUtilizationMips may be deprecated and its code copied here.
@@ -229,7 +229,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Gets the utilization of CPU in MIPS.
-	 * 
+	 *
 	 * @return current utilization of CPU in MIPS
 	 */
 	public double getUtilizationMips() {
@@ -238,7 +238,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Sets the utilization mips.
-	 * 
+	 *
 	 * @param utilizationMips the new utilization mips
 	 */
 	protected void setUtilizationMips(double utilizationMips) {
@@ -247,7 +247,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Gets the previous utilization of CPU in mips.
-	 * 
+	 *
 	 * @return the previous utilization of CPU in mips
 	 */
 	public double getPreviousUtilizationMips() {
@@ -256,7 +256,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Sets the previous utilization of CPU in mips.
-	 * 
+	 *
 	 * @param previousUtilizationMips the new previous utilization of CPU in mips
 	 */
 	protected void setPreviousUtilizationMips(double previousUtilizationMips) {
@@ -265,7 +265,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Gets the host state history.
-	 * 
+	 *
 	 * @return the state history
 	 */
 	public List<HostStateHistoryEntry> getStateHistory() {
@@ -274,7 +274,7 @@ public class HostDynamicWorkload extends Host {
 
 	/**
 	 * Adds a host state history entry.
-	 * 
+	 *
 	 * @param time the time
 	 * @param allocatedMips the allocated mips
 	 * @param requestedMips the requested mips

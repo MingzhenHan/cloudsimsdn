@@ -8,15 +8,15 @@
 
 package org.cloudbus.cloudsim.lists;
 
+import org.cloudbus.cloudsim.Cloudlet;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.cloudbus.cloudsim.Cloudlet;
-
 /**
  * CloudletList is a collection of operations on lists of Cloudlets.
- * 
+ *
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 2.0
  */
@@ -24,7 +24,7 @@ public class CloudletList {
 
 	/**
 	 * Gets a {@link Cloudlet} with a given id.
-	 * 
+	 *
 	 * @param cloudletList the list of existing Cloudlets
 	 * @param id the Cloudlet id
 	 * @return a Cloudlet with the given ID or $null if not found
@@ -40,7 +40,7 @@ public class CloudletList {
 
 	/**
 	 * Gets the position of a cloudlet with a given id.
-         * 
+         *
 	 * @param cloudletList the list of existing cloudlets
 	 * @param id the cloudlet id
 	 * @return the position of the cloudlet with the given id or -1 if not found
@@ -55,10 +55,10 @@ public class CloudletList {
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Sorts the Cloudlets in a list based on their lengths.
-	 * 
+	 *
 	 * @param cloudletList the cloudlet list
 	 * @pre $none
 	 * @post $none
@@ -68,7 +68,7 @@ public class CloudletList {
 
 			/**
 			 * Compares two Cloudlets.
-			 * 
+			 *
 			 * @param a the first Cloudlet to be compared
 			 * @param b the second Cloudlet to be compared
 			 * @return the value 0 if both Cloudlets are numerically equal; a value less than 0 if the

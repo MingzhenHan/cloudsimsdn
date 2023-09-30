@@ -8,9 +8,7 @@
 
 package org.cloudbus.cloudsim.sdn;
 
-import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.Channel;
-import org.cloudbus.cloudsim.sdn.workload.Transmission;
 
 import java.util.ArrayList;
 import java.util.HashMap;

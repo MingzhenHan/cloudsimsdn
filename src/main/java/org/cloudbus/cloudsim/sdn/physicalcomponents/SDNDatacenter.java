@@ -7,29 +7,16 @@
  */
 package org.cloudbus.cloudsim.sdn.physicalcomponents;
 
-import java.util.*;
-
-import org.cloudbus.cloudsim.Cloudlet;
-import org.cloudbus.cloudsim.CloudletScheduler;
-import org.cloudbus.cloudsim.Datacenter;
-import org.cloudbus.cloudsim.DatacenterCharacteristics;
-import org.cloudbus.cloudsim.Host;
-import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.Storage;
-import org.cloudbus.cloudsim.Vm;
-import org.cloudbus.cloudsim.VmAllocationPolicy;
+import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
-import org.cloudbus.cloudsim.core.predicates.PredicateType;
 import org.cloudbus.cloudsim.sdn.ChanAndTrans;
 import org.cloudbus.cloudsim.sdn.CloudSimTagsSDN;
 import org.cloudbus.cloudsim.sdn.CloudletSchedulerMonitor;
 import org.cloudbus.cloudsim.sdn.Packet;
 import org.cloudbus.cloudsim.sdn.nos.ChannelManager;
 import org.cloudbus.cloudsim.sdn.nos.NetworkOperatingSystem;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.GatewaySwitch;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.IntercloudSwitch;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmAllocationInGroup;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmAllocationPolicyPriorityFirst;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmGroup;
@@ -39,6 +26,10 @@ import org.cloudbus.cloudsim.sdn.workload.Activity;
 import org.cloudbus.cloudsim.sdn.workload.Processing;
 import org.cloudbus.cloudsim.sdn.workload.Request;
 import org.cloudbus.cloudsim.sdn.workload.Transmission;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Extended class of Datacenter that supports processing SDN-specific events.

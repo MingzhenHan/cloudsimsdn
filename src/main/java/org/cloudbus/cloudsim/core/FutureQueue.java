@@ -14,14 +14,14 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * This class implements the future event queue used by {@link CloudSim}. 
+ * This class implements the future event queue used by {@link CloudSim}.
  * The event queue uses a {@link TreeSet} in order to store the events.
- * 
+ *
  * @author Marcos Dias de Assuncao
  * @since CloudSim Toolkit 1.0
  * @see Simulation
- * @see java.util.TreeSet
- * 
+ * @see TreeSet
+ *
  * @todo It would be used a common interface for queues
  * such as this one and {@link DeferredQueue}
  */
@@ -37,7 +37,7 @@ public class FutureQueue {
 	/**
 	 * Adds a new event to the queue. Adding a new event to the queue preserves the temporal order of
 	 * the events in the queue.
-	 * 
+	 *
 	 * @param newEvent The event to be put in the queue.
 	 */
 	public void addEvent(SimEvent newEvent) {
@@ -47,7 +47,7 @@ public class FutureQueue {
 
 	/**
 	 * Adds a new event to the head of the queue.
-	 * 
+	 *
 	 * @param newEvent The event to be put in the queue.
 	 */
 	public void addEventFirst(SimEvent newEvent) {
@@ -57,7 +57,7 @@ public class FutureQueue {
 
 	/**
 	 * Returns an iterator to the queue.
-	 * 
+	 *
 	 * @return the iterator
 	 */
 	public Iterator<SimEvent> iterator() {
@@ -66,7 +66,7 @@ public class FutureQueue {
 
 	/**
 	 * Returns the size of this event queue.
-	 * 
+	 *
 	 * @return the size
 	 */
 	public int size() {
@@ -75,7 +75,7 @@ public class FutureQueue {
 
 	/**
 	 * Removes the event from the queue.
-	 * 
+	 *
 	 * @param event the event
 	 * @return true, if successful
 	 */
@@ -85,7 +85,7 @@ public class FutureQueue {
 
 	/**
 	 * Removes all the events from the queue.
-	 * 
+	 *
 	 * @param events the events
 	 * @return true, if successful
 	 */

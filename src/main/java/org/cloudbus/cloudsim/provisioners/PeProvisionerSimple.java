@@ -8,34 +8,34 @@
 
 package org.cloudbus.cloudsim.provisioners;
 
+import org.cloudbus.cloudsim.Vm;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cloudbus.cloudsim.Vm;
-
 /**
  * PeProvisionerSimple is an extension of {@link PeProvisioner} which uses a best-effort policy to
- * allocate virtual PEs to VMs: 
- * if there is available mips on the physical PE, it allocates to a virtual PE; otherwise, it fails. 
+ * allocate virtual PEs to VMs:
+ * if there is available mips on the physical PE, it allocates to a virtual PE; otherwise, it fails.
  * Each host's PE has to have its own instance of a PeProvisioner.
- * 
+ *
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 2.0
  */
 public class PeProvisionerSimple extends PeProvisioner {
 
 	/** The PE map, where each key is a VM id and each value
-         * is the list of PEs (in terms of their amount of MIPS) 
+         * is the list of PEs (in terms of their amount of MIPS)
          * allocated to that VM. */
 	private Map<String, List<Double>> peTable;
 
 	/**
 	 * Instantiates a new pe provisioner simple.
-	 * 
-	 * @param availableMips The total mips capacity of the PE that the provisioner can allocate to VMs. 
-	 * 
+	 *
+	 * @param availableMips The total mips capacity of the PE that the provisioner can allocate to VMs.
+	 *
 	 * @pre $none
 	 * @post $none
 	 */
@@ -138,7 +138,7 @@ public class PeProvisionerSimple extends PeProvisioner {
 
 	/**
 	 * Gets the pe map.
-	 * 
+	 *
 	 * @return the pe map
 	 */
 	protected Map<String, List<Double>> getPeTable() {
@@ -147,7 +147,7 @@ public class PeProvisionerSimple extends PeProvisioner {
 
 	/**
 	 * Sets the pe map.
-	 * 
+	 *
 	 * @param peTable the peTable to set
 	 */
 	@SuppressWarnings("unchecked")

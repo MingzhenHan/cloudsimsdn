@@ -8,17 +8,17 @@
 
 package org.cloudbus.cloudsim.provisioners;
 
+import org.cloudbus.cloudsim.Vm;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cloudbus.cloudsim.Vm;
-
 /**
  * BwProvisionerSimple is an extension of {@link BwProvisioner} which uses a best-effort policy to
- * allocate bandwidth (bw) to VMs: 
- * if there is available bw on the host, it allocates; otherwise, it fails. 
+ * allocate bandwidth (bw) to VMs:
+ * if there is available bw on the host, it allocates; otherwise, it fails.
  * Each host has to have its own instance of a RamProvisioner.
- * 
+ *
  * @author Rodrigo N. Calheiros
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 1.0
@@ -31,8 +31,8 @@ public class BwProvisionerSimple extends BwProvisioner {
 
 	/**
 	 * Instantiates a new bw provisioner simple.
-	 * 
-	 * @param bw The total bw capacity from the host that the provisioner can allocate to VMs. 
+	 *
+	 * @param bw The total bw capacity from the host that the provisioner can allocate to VMs.
 	 */
 	public BwProvisionerSimple(long bw) {
 		super(bw);
@@ -90,7 +90,7 @@ public class BwProvisionerSimple extends BwProvisioner {
 
 	/**
 	 * Gets the map between VMs and allocated bw.
-	 * 
+	 *
 	 * @return the bw map
 	 */
 	protected Map<String, Long> getBwTable() {
@@ -99,7 +99,7 @@ public class BwProvisionerSimple extends BwProvisioner {
 
 	/**
 	 * Sets the map between VMs and allocated bw.
-	 * 
+	 *
 	 * @param bwTable the bw map
 	 */
 	protected void setBwTable(Map<String, Long> bwTable) {

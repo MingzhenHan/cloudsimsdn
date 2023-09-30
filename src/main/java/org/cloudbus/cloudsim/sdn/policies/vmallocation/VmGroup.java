@@ -8,25 +8,25 @@
 
 package org.cloudbus.cloudsim.sdn.policies.vmallocation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.FlowConfig;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class VmGroup implements Comparable<VmGroup> {
 	private List<Vm> vms;
 	private double requiredBw;
 	private double requiredMips;
-	
+
 	public VmGroup() {
 		vms = new ArrayList<Vm>();
 		requiredBw = 0;
 		requiredMips = 0;
 	}
-	
+
 	public void addVm(Vm vm) {
 		if(findVm(vm.getId()) == -1) {
 			vms.add(vm);
@@ -34,23 +34,23 @@ public class VmGroup implements Comparable<VmGroup> {
 			requiredMips += ((SDNVm) vm).getTotalMips();
 		}
 	}
-	
+
 	public double getRequiredBw() {
 		return requiredBw;
 	}
-	
+
 	public void addVms(Collection<Vm> vms) {
 		for(Vm vm: vms) {
 			this.addVm(vm);
 		}
 	}
-	
+
 	public int findVm(int vmIdToFind) {
 		for(int i=0; i< vms.size(); i++) {
 			if(vms.get(i).getId() == vmIdToFind)
 				return i;
 		}
-		
+
 		return -1;
 	}
 
@@ -58,7 +58,7 @@ public class VmGroup implements Comparable<VmGroup> {
 	public <T extends Vm> List<T>  getVms() {
 		return (List<T>)vms;
 	}
-	
+
 	public int size() {
 		return vms.size();
 	}
@@ -67,7 +67,7 @@ public class VmGroup implements Comparable<VmGroup> {
 	public int compareTo(VmGroup o) {
 		return (int) (this.requiredMips - o.requiredMips);
 	}
-	
+
 	@Override
 	public String toString() {
 		String str = "VMGroup: Req BW="+getRequiredBw() + " / MIP="+this.requiredMips+"\n";
@@ -85,7 +85,7 @@ public class VmGroup implements Comparable<VmGroup> {
 			int srcIndex = findVm(vmPool, a.getSrcId());
 			if(srcIndex != -1)
 				srcVm = vmPool.remove(srcIndex);
-			
+
 			if(srcVm != null) {
 				// src vm is not grouped yet.
 				vmGroup = findVmGroup(groups, a.getDstId());
@@ -94,7 +94,7 @@ public class VmGroup implements Comparable<VmGroup> {
 					vmGroup = new VmGroup();
 					groups.add(vmGroup);
 					vmGroup.addVm(srcVm);
-					
+
 					int dstIndex = findVm(vmPool, a.getDstId());
 					Vm dstVm = vmPool.get(dstIndex);
 					vmGroup.addVm(dstVm);
@@ -110,7 +110,7 @@ public class VmGroup implements Comparable<VmGroup> {
 				int dstIndex = findVm(vmPool, a.getDstId());
 				if(dstIndex != -1)
 					dstVm = vmPool.remove(dstIndex);
-				
+
 				if(dstVm != null) {
 					// dst vm is not grouped yet. put dst into the same group
 					vmGroup = findVmGroup(groups, a.getSrcId());
@@ -118,11 +118,11 @@ public class VmGroup implements Comparable<VmGroup> {
 				}
 				else {
 					// dst vm is also already grouped. both are in group.
-					
+
 				}
-				
+
 				vmGroup = findVmGroup(groups, a.getSrcId());
-				
+
 			}
 		}
 	}
@@ -133,7 +133,7 @@ public class VmGroup implements Comparable<VmGroup> {
 			if(vm.getId() == idToFind)
 				return i;
 		}
-		
+
 		return -1;
 	}
 

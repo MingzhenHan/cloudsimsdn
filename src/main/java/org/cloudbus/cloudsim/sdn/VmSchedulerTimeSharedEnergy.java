@@ -8,9 +8,6 @@
 
 package org.cloudbus.cloudsim.sdn;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.cloudbus.cloudsim.Pe;
 import org.cloudbus.cloudsim.VmSchedulerTimeShared;
 import org.cloudbus.cloudsim.core.CloudSim;
@@ -18,11 +15,14 @@ import org.cloudbus.cloudsim.sdn.monitor.MonitoringValues;
 import org.cloudbus.cloudsim.sdn.monitor.power.PowerUtilizationHistoryEntry;
 import org.cloudbus.cloudsim.sdn.monitor.power.PowerUtilizationInterface;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * VmSchedulerTimeSharedEnergy is a VMM allocation policy that allocates one or more Pe to a VM, and
  * allows sharing of PEs by time. If there is no free PEs to the VM, allocation fails. Free PEs are
  * not allocated to VMs
- * 
+ *
  * @author Rodrigo N. Calheiros
  * @author Anton Beloglazov
  * @author Jungmin Son
@@ -30,7 +30,7 @@ import org.cloudbus.cloudsim.sdn.monitor.power.PowerUtilizationInterface;
  */
 public class VmSchedulerTimeSharedEnergy extends VmSchedulerTimeShared implements PowerUtilizationInterface{
 
-	
+
 	public VmSchedulerTimeSharedEnergy(List<? extends Pe> pelist) {
 		super(pelist);
 	}
@@ -38,46 +38,46 @@ public class VmSchedulerTimeSharedEnergy extends VmSchedulerTimeShared implement
 	@Override
 	protected void setAvailableMips(double availableMips) {
 		super.setAvailableMips(availableMips);
-		addUtilizationEntry();		
+		addUtilizationEntry();
 	}
-	
+
 	private List<PowerUtilizationHistoryEntry> utilizationHistories = null;
 	private static double powerOffDuration = 0; //if host is idle for 1 hours, it's turned off.
-	
+
 	public void addUtilizationEntryTermination(double terminatedTime) {
 		if(this.utilizationHistories != null)
 			this.utilizationHistories.add(new PowerUtilizationHistoryEntry(terminatedTime, 0));
 	}
-	
+
 	public List<PowerUtilizationHistoryEntry> getUtilizationHisotry() {
 		return utilizationHistories;
 	}
 
 	public double getUtilizationEnergyConsumption() {
-		
+
 		double total=0;
 		double lastTime=0;
 		double lastUtilPercentage=0;
 		if(this.utilizationHistories == null)
 			return 0;
-		
+
 		for(PowerUtilizationHistoryEntry h:this.utilizationHistories) {
 			double duration = h.startTime - lastTime;
 			double utilPercentage = lastUtilPercentage;
 			double power = calculatePower(utilPercentage);
 			double energyConsumption = power * duration;
-			
+
 			// Assume that the host is turned off when duration is long enough
 			if(duration > powerOffDuration && lastUtilPercentage == 0)
 				energyConsumption = 0;
-			
+
 			total += energyConsumption;
 			lastTime = h.startTime;
 			lastUtilPercentage = h.utilPercentage;
 		}
 		return total/3600;	// transform to Whatt*hour from What*seconds
 	}
-	
+
 	private double calculatePower(double u) {
 		double power = 120 + 154 * u;
 		return power;
@@ -94,11 +94,11 @@ public class VmSchedulerTimeSharedEnergy extends VmSchedulerTimeShared implement
 			utilizationHistories = new ArrayList<PowerUtilizationHistoryEntry>();
 		this.utilizationHistories.add(new PowerUtilizationHistoryEntry(time, usingMips/getTotalMips()));
 	}
-	
+
 	private double getTotalMips() {
 		return this.getPeList().size() * this.getPeCapacity();
 	}
-	
+
 	public MonitoringValues getMonitoringValuesCPUUtilization() {
 		MonitoringValues mv = new MonitoringValues(MonitoringValues.ValueType.Utilization_Percentage);
 		for(PowerUtilizationHistoryEntry entry:utilizationHistories) {

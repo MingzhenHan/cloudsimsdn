@@ -8,12 +8,6 @@
 
 package org.cloudbus.cloudsim.sdn;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Pe;
 import org.cloudbus.cloudsim.Vm;
@@ -26,29 +20,35 @@ import org.cloudbus.cloudsim.sdn.monitor.power.PowerUtilizationInterface;
 import org.cloudbus.cloudsim.sdn.monitor.power.PowerUtilizationMonitor;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 /**
  * VmSchedulerSpaceShared is a VMM allocation policy that allocates one or more Pe to a VM, and
  * doesn't allow sharing of PEs. If there is no free PEs to the VM, allocation fails. Free PEs are
  * not allocated to VMs
- * 
+ *
  * @author Rodrigo N. Calheiros
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 1.0
  */
 public class VmSchedulerTimeSharedOverSubscriptionDynamicVM extends VmSchedulerTimeSharedOverSubscription implements PowerUtilizationInterface{
 	private HashMap<String, Vm> vmMap = new HashMap<String, Vm>();
-	
+
 	public VmSchedulerTimeSharedOverSubscriptionDynamicVM(List<? extends Pe> pelist) {
 		super(pelist);
 	}
-	
+
 	/**
-	 * Check the number of cloudlets processing in each VM. Steal MIPS from idle VM to give to busy VMs 
+	 * Check the number of cloudlets processing in each VM. Steal MIPS from idle VM to give to busy VMs
 	 */
 	public double redistributeMipsDueToOverSubscriptionDynamic() {
 		if(getAvailableMips() > 0)
 			return 1.0;
-		
+
 		double totalRequiredMipsByAllVms = 0;
 		int idlePeNum=0;
 
@@ -56,7 +56,7 @@ public class VmSchedulerTimeSharedOverSubscriptionDynamicVM extends VmSchedulerT
 		for (Entry<String, List<Double>> entry : getMipsMapRequested().entrySet()) {
 			String vmId = entry.getKey();
 			SDNVm vm = getVm(vmId);
-			
+
 			List<Double> mipsShareRequested = getNecessaryMipsForVm(vm);
 
 			// get capped mips map for each VM
@@ -69,7 +69,7 @@ public class VmSchedulerTimeSharedOverSubscriptionDynamicVM extends VmSchedulerT
 					cappedMips = 0;	// Don't give any MIPS to idle VM
 					idlePeNum++;
 				}
-				
+
 				mipsShareRequestedCapped.add(cappedMips);
 				requiredMipsByThisVm += cappedMips;
 			}
@@ -79,7 +79,7 @@ public class VmSchedulerTimeSharedOverSubscriptionDynamicVM extends VmSchedulerT
 				// the destination host only experience 10% of the migrating VM's MIPS
 				requiredMipsByThisVm *= 0.1;
 			}
-			totalRequiredMipsByAllVms += requiredMipsByThisVm; 
+			totalRequiredMipsByAllVms += requiredMipsByThisVm;
 		}
 
 		double totalAvailableMips = PeList.getTotalMips(getPeList());
@@ -115,7 +115,7 @@ public class VmSchedulerTimeSharedOverSubscriptionDynamicVM extends VmSchedulerT
 				} else {
 					mips *= scalingFactor;
 				}
-				
+
 				if(mips == 0)
 					mips = mipsForIdlePe;
 
@@ -126,23 +126,23 @@ public class VmSchedulerTimeSharedOverSubscriptionDynamicVM extends VmSchedulerT
 			getMipsMap().put(vmUid, updatedMipsAllocation);
 		}
 		verifyMipsAllocation();
-		
+
 		return scalingFactor;
 	}
-	
+
 	protected List<Double> getNecessaryMipsForVm(SDNVm vm) {
 		return getMipsMapRequested().get(vm.getUid());
 	}
 
 	protected void verifyMipsAllocation() {
 		double totalAvailableMips = PeList.getTotalMips(getPeList());
-		
+
 		double allocatedMips = 0;
 		for(List<Double> mpslist:getMipsMap().values()) {
 			for(double mips:mpslist)
 				allocatedMips += mips;
 		}
-		
+
 		if(allocatedMips > totalAvailableMips) {
 			System.err.println("verifyMipsAllocation: cannot allocate");
 			System.exit(1);
@@ -150,19 +150,19 @@ public class VmSchedulerTimeSharedOverSubscriptionDynamicVM extends VmSchedulerT
 	}
 
 	@Override
-	public boolean allocatePesForVm(Vm vm, List<Double> mipsShareRequested) { 
+	public boolean allocatePesForVm(Vm vm, List<Double> mipsShareRequested) {
 		vmMap.put(vm.getUid(), vm);
 		return super.allocatePesForVm(vm, mipsShareRequested);
 	}
-	
+
 	protected SDNVm getVm(String vmId) {
 		return (SDNVm) vmMap.get(vmId);
 	}
-	
+
 	//////////////////////////////////////////////////////////////////////
 	// Energy consumption calculation part
 	//////////////////////////////////////////////////////////////////////
-	
+
 	//*
 	private PowerUtilizationMonitor powerMonitor = new PowerUtilizationMonitor(new PowerUtilizationEnergyModelHostLinear());
 
@@ -180,7 +180,7 @@ public class VmSchedulerTimeSharedOverSubscriptionDynamicVM extends VmSchedulerT
 	public double getUtilizationEnergyConsumption() {
 		return powerMonitor.getTotalEnergyConsumed();
 	}
-	
+
 	@Override
 	protected void setAvailableMips(double availableMips) {
 		if(powerMonitor != null)
@@ -188,14 +188,14 @@ public class VmSchedulerTimeSharedOverSubscriptionDynamicVM extends VmSchedulerT
 
 		super.setAvailableMips(availableMips);
 	}
-	
+
 	private double getCPUUtilization() {
 		double totalMips = getPeList().size() * getPeCapacity();
 		double oldMips = totalMips - getAvailableMips();
 		double utilization = oldMips / totalMips;
 		return utilization;
 	}
-	
+
 	Host host= null;
 	public void debugSetHost(Host host) {
 		this.host = host;
@@ -208,36 +208,36 @@ public class VmSchedulerTimeSharedOverSubscriptionDynamicVM extends VmSchedulerT
 
 	private List<PowerUtilizationHistoryEntry> utilizationHistories = null;
 	private static double powerOffDuration = 0; //if host is idle for 1 hours, it's turned off.
-		
+
 	@Override
 	protected void setAvailableMips(double availableMips) {
 		super.setAvailableMips(availableMips);
-		addUtilizationEntry();		
+		addUtilizationEntry();
 	}
-	
+
 	public void addUtilizationEntryTermination(double terminatedTime) {
 		if(this.utilizationHistories != null)
 			this.utilizationHistories.add(new PowerUtilizationHistoryEntry(terminatedTime, 0));
 	}
-	
+
 	public List<PowerUtilizationHistoryEntry> getUtilizationHisotry() {
 		return utilizationHistories;
 	}
 
 	public double getUtilizationEnergyConsumption() {
-		
+
 		double total=0;
 		double lastTime=0;
 		double lastUtilPercentage=0;
 		if(this.utilizationHistories == null)
 			return 0;
-		
+
 		for(PowerUtilizationHistoryEntry h:this.utilizationHistories) {
 			double duration = h.startTime - lastTime;
 			double utilPercentage = lastUtilPercentage;
 			double power = calculatePower(utilPercentage);
 			double energyConsumption = power * duration;
-			
+
 			// Assume that the host is turned off when duration is long enough
 			if(duration > powerOffDuration && lastUtilPercentage == 0)
 				energyConsumption = 0;
@@ -251,14 +251,14 @@ public class VmSchedulerTimeSharedOverSubscriptionDynamicVM extends VmSchedulerT
 				System.err.println("DEBUG!! from: "+lastTime+", to: "+h.startTime+", utilization: "+utilPercentage+", power: "+energyConsumption/3600);
 			}
 			///////////////////////////////
-			
+
 			total += energyConsumption;
 			lastTime = h.startTime;
 			lastUtilPercentage = h.utilPercentage;
 		}
 		return total/3600;	// transform to Whatt*hour from What*seconds
 	}
-	
+
 	private double calculatePower(double u) {
 		double power = 120 + 154 * u;
 		return power;
@@ -275,7 +275,7 @@ public class VmSchedulerTimeSharedOverSubscriptionDynamicVM extends VmSchedulerT
 			utilizationHistories = new ArrayList<PowerUtilizationHistoryEntry>();
 		this.utilizationHistories.add(new PowerUtilizationHistoryEntry(time, usingMips/ getTotalMips()));
 	}
-	
+
 	private double getTotalMips() {
 		return this.getPeList().size() * this.getPeCapacity();
 	}

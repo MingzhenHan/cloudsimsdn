@@ -16,11 +16,11 @@
 
 package org.cloudbus.cloudsim;
 
-import java.text.DecimalFormat;
-import java.util.Vector;
-
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
+
+import java.text.DecimalFormat;
+import java.util.Vector;
 
 /**
  * InfoPacket class can be used to gather information from the network layer. An InfoPacket
@@ -32,12 +32,12 @@ import org.cloudbus.cloudsim.core.CloudSimTags;
  * want to find out the kind of information that a particular type of NetPacket is experiencing, set
  * the size and network class of an InfoPacket to the same as the NetPacket, and send it to the same
  * destination from the same source.
- * 
+ *
  * @author Gokul Poduval
  * @author Chen-Khong Tham, National University of Singapore
  * @since CloudSim Toolkit 1.0
  */
-public class InfoPacket implements Packet {
+public class InfoPacket {
 
 	/** The packet name. */
 	private final String name;
@@ -57,7 +57,7 @@ public class InfoPacket implements Packet {
 	/** The last hop. */
 	private int last;
 
-	/** Whether the packet is going or returning, according to 
+	/** Whether the packet is going or returning, according to
          * constants {@link  CloudSimTags#INFOPKT_SUBMIT}
          * and {@link  CloudSimTags#INFOPKT_RETURN}. */
 	private int tag;
@@ -68,7 +68,7 @@ public class InfoPacket implements Packet {
 	/** The original ping size. */
 	private long pingSize;
 
-	/** The level of service type. 
+	/** The level of service type.
          @todo Is it the Type of Service (ToS) of IPv4, like in
          the {@link Cloudlet#netToS}? If yes, so the names would
          be standardized. */
@@ -77,7 +77,7 @@ public class InfoPacket implements Packet {
 	/** The bandwidth bottleneck. */
 	private double bandwidth;
 
-	/** The list of entity IDs. The entities are elements 
+	/** The list of entity IDs. The entities are elements
          where the packet traverses, such as Routers or CloudResources. */
 	private Vector<Integer> entities;
 
@@ -95,7 +95,7 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Constructs a new Information packet.
-	 * 
+	 *
 	 * @param name Name of this packet
 	 * @param packetID The ID of this packet
 	 * @param size size of the packet
@@ -118,7 +118,7 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Initialises common attributes.
-	 * 
+	 *
 	 * @pre $none
 	 * @post $none
 	 */
@@ -140,19 +140,19 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Returns the ID of this packet.
-	 * 
+	 *
 	 * @return packet ID
 	 * @pre $none
 	 * @post $none
 	 */
-	@Override
+//	@Override
 	public int getId() {
 		return packetId;
 	}
 
 	/**
 	 * Sets original size of ping request.
-	 * 
+	 *
 	 * @param size ping data size (in bytes)
 	 * @pre size >= 0
 	 * @post $none
@@ -163,7 +163,7 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Gets original size of ping request.
-	 * 
+	 *
 	 * @return original size
 	 * @pre $none
 	 * @post $none
@@ -174,7 +174,7 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Returns a human-readable information of this packet.
-	 * 
+	 *
 	 * @return description of this packet
 	 * @pre $none
 	 * @post $none
@@ -212,7 +212,7 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Gets the data of a given index in a list.
-	 * 
+	 *
 	 * @param v a list
 	 * @param index the location in a list
 	 * @return the data
@@ -234,25 +234,25 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Gets the size of the packet.
-	 * 
+	 *
 	 * @return size of the packet.
 	 * @pre $none
 	 * @post $none
 	 */
-	@Override
+//	@Override
 	public long getSize() {
 		return size;
 	}
 
 	/**
 	 * Sets the size of the packet.
-	 * 
+	 *
 	 * @param size size of the packet
 	 * @return <tt>true</tt> if it is successful, <tt>false</tt> otherwise
 	 * @pre size >= 0
 	 * @post $none
 	 */
-	@Override
+//	@Override
 	public boolean setSize(long size) {
 		if (size < 0) {
 			return false;
@@ -264,24 +264,24 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Gets the id of the entity to which the packet is destined.
-	 * 
+	 *
 	 * @return the desination ID
 	 * @pre $none
 	 * @post $none
 	 */
-	@Override
+//	@Override
 	public int getDestId() {
 		return destId;
 	}
 
 	/**
 	 * Gets the id of the entity that sent out the packet.
-	 * 
+	 *
 	 * @return the source ID
 	 * @pre $none
 	 * @post $none
 	 */
-	@Override
+//	@Override
 	public int getSrcId() {
 		return srcId;
 	}
@@ -289,7 +289,7 @@ public class InfoPacket implements Packet {
 	/**
 	 * Returns the number of hops that the packet has traversed. Since the packet takes a round
 	 * trip, the same router may have been traversed twice.
-	 * 
+	 *
 	 * @return the number of hops this packet has traversed
 	 * @pre $none
 	 * @post $none
@@ -300,12 +300,12 @@ public class InfoPacket implements Packet {
 	}
 
 	/**
-	 * Gets the total time that the packet has spent in the network. 
+	 * Gets the total time that the packet has spent in the network.
          * This is basically the Round-Trip-Time (RTT).
 	 * Dividing this by half should be the approximate latency.
 	 * <p/>
 	 * RTT is taken as the "final entry time" - "first exit time".
-	 * 
+	 *
 	 * @return total round time
 	 * @pre $none
 	 * @post $none
@@ -329,7 +329,7 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Returns the bottleneck bandwidth between the source and the destination.
-	 * 
+	 *
 	 * @return the bottleneck bandwidth
 	 * @pre $none
 	 * @post $none
@@ -340,9 +340,9 @@ public class InfoPacket implements Packet {
 
 	/**
          * Add an entity where the InfoPacket traverses.
-	 * This method should be called by network entities that count as hops, 
+	 * This method should be called by network entities that count as hops,
          * for instance Routers or CloudResources. It should not be called by links etc.
-	 * 
+	 *
 	 * @param id the id of the hop that this InfoPacket is traversing
 	 * @pre id > 0
 	 * @post $none
@@ -360,11 +360,11 @@ public class InfoPacket implements Packet {
          * Register the time the packet arrives at an entity such as a Router or CloudResource.
 	 * This method should be called by routers and other entities when the InfoPacket reaches them
 	 * along with the current simulation time.
-	 * 
+	 *
 	 * @param time current simulation time, use {@link gridsim.CloudSim#clock()} to obtain this
 	 * @pre time >= 0
 	 * @post $none
-         * 
+         *
 	 */
 	public void addEntryTime(double time) {
 		if (entryTimes == null) {
@@ -382,7 +382,7 @@ public class InfoPacket implements Packet {
          * Register the time the packet leaves an entity such as a Router or CloudResource.
 	 * This method should be called by routers and other entities when the InfoPacket is leaving
 	 * them. It should also supply the current simulation time.
-	 * 
+	 *
 	 * @param time current simulation time, use {@link gridsim.CloudSim#clock()} to obtain this
 	 * @pre time >= 0
 	 * @post $none
@@ -404,7 +404,7 @@ public class InfoPacket implements Packet {
          * will send it next.
 	 * Every entity that the InfoPacket traverses should add the baud rate of the link on which this
 	 * packet will be sent out next.
-	 * 
+	 *
 	 * @param baudRate the entity's baud rate in bits/s
 	 * @pre baudRate > 0
 	 * @post $none
@@ -422,7 +422,7 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Returns the list of all the bandwidths that this packet has traversed.
-	 * 
+	 *
 	 * @return a Double Array of links bandwidths
 	 * @pre $none
 	 * @post $none
@@ -437,11 +437,11 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Returns the list of all the hops that this packet has traversed.
-	 * 
+	 *
 	 * @return an Integer Array of hop ids
 	 * @pre $none
 	 * @post $none
-         * @todo Why does not return an array of Integer (that is the type of the 
+         * @todo Why does not return an array of Integer (that is the type of the
          * entities attribute)? In fact, this method does not appear to be used anywhere.
 	 */
 	public Object[] getDetailHops() {
@@ -454,11 +454,11 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Returns the list of all entry times that the packet has traversed.
-	 * 
+	 *
 	 * @return an Integer Array of entry time
 	 * @pre $none
 	 * @post $none
-         * @todo Why does not return an array of Double (that is the type of the 
+         * @todo Why does not return an array of Double (that is the type of the
          * entyTimes attribute)? In fact, this method does not appear to be used anywhere.
 	 */
 	public Object[] getDetailEntryTimes() {
@@ -471,7 +471,7 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Returns the list of all exit times from all entities that the packet has traversed.
-	 * 
+	 *
 	 * @return an Integer Array of exit time
 	 * @pre $none
 	 * @post $none
@@ -486,67 +486,67 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Gets the entity ID of the last hop that this packet has traversed.
-	 * 
+	 *
 	 * @return an entity ID
 	 * @pre $none
 	 * @post $none
 	 */
-	@Override
+//	@Override
 	public int getLast() {
 		return last;
 	}
 
 	/**
 	 * Sets the entity ID of the last hop that this packet has traversed.
-	 * 
+	 *
 	 * @param last an entity ID from the last hop
 	 * @pre last > 0
 	 * @post $none
 	 */
-	@Override
+//	@Override
 	public void setLast(int last) {
 		this.last = last;
 	}
 
 	/**
 	 * Gets the network service type of the packet.
-	 * 
+	 *
 	 * @return the network service type
 	 * @pre $none
 	 * @post $none
 	 */
-	@Override
+//	@Override
 	public int getNetServiceType() {
 		return netServiceType;
 	}
 
 	/**
 	 * Sets the network service type of the packet.
-	 * 
+	 *
 	 * @param netServiceType the packet's network service type
 	 * @pre netServiceType >= 0
 	 * @post $none
 	 */
-	@Override
+//	@Override
 	public void setNetServiceType(int netServiceType) {
 		this.netServiceType = netServiceType;
 	}
 
 	/**
 	 * Gets the packet tag.
-	 * 
+	 *
 	 * @return this packet tag
 	 * @pre $none
 	 * @post $none
 	 */
-	@Override
+//	@Override
 	public int getTag() {
 		return tag;
 	}
 
 	/**
 	 * Sets the tag of the packet.
-	 * 
+	 *
 	 * @param tag the packet's tag
 	 * @return <tt>true</tt> if successful, <tt>false</tt> otherwise
 	 * @pre tag > 0
@@ -571,7 +571,7 @@ public class InfoPacket implements Packet {
 
 	/**
 	 * Sets the destination ID for the packet.
-	 * 
+	 *
 	 * @param id this packet's destination ID
 	 * @pre id > 0
 	 * @post $none

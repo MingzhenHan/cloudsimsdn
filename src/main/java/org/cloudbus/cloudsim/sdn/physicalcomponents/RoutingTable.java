@@ -7,34 +7,30 @@
  */
 package org.cloudbus.cloudsim.sdn.physicalcomponents;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Routing table for hosts and switches in physical level. This class has information about the next hop.
  * When a physical topology is set up, a RoutingTable is created with the information of the next hop for each node.
- * RoutingTable contains physical topology's routing information, whereas ForwardingRule contains 
+ * RoutingTable contains physical topology's routing information, whereas ForwardingRule contains
  * VM-to-VM network (virtual topology) routing information.
- *  
+ *
  * @author Jungmin Son
  * @author Rodrigo N. Calheiros
  * @since CloudSimSDN 1.0
  */
 public class RoutingTable {
-	
+
 	Map<Node, List<Link>> table;
 
 	public RoutingTable(){
 		this.table = new HashMap<Node, List<Link>>();
 	}
-	
+
 	public void clear(){
 		table.clear();
 	}
-	
+
 	public void addRoute(Node destHost, Link to){
 		// Default route with destHost == null
 		List<Link> links = table.get(destHost);
@@ -45,7 +41,7 @@ public class RoutingTable {
 		links.add(to);
 		table.put(destHost, links);
 	}
-	
+
 	public void removeRoute(Node destHost){
 		table.remove(destHost);
 	}
@@ -56,11 +52,11 @@ public class RoutingTable {
 			links = table.get(null); // default route
 		return links;
 	}
-	
+
 	public Set<Node> getKnownDestination() {
 		return table.keySet();
 	}
-	
+
 	public void printRoutingTable() {
 		for(Node key:table.keySet()) {
 			for(Link l: table.get(key)) {
@@ -68,7 +64,7 @@ public class RoutingTable {
 			}
 		}
 	}
-	
+
 	public String toString() {
 		return table.toString();
 	}

@@ -8,22 +8,22 @@
 
 package org.cloudbus.cloudsim.sdn.policies.vmallocation.overbooking;
 
-import java.util.List;
-
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.sdn.policies.selecthost.HostSelectionPolicy;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmMigrationPolicy;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
 
+import java.util.List;
+
 public class OverBookingVmAllocationPolicyDistributeCorrelatedPercentile extends OverBookingVmAllocationPolicyDistributeConnected {
-	
+
 	public OverBookingVmAllocationPolicyDistributeCorrelatedPercentile(
 			List<? extends Host> list,
 			HostSelectionPolicy hostSelectionPolicy,
 			VmMigrationPolicy vmMigrationPolicy) {
 		super(list, hostSelectionPolicy, vmMigrationPolicy);
 	}
-	
+
 	@Override
 	protected double getDynamicOverRatioMips(SDNVm vm, Host host) {
 		double dor = super.getDynamicOverRatioMips(vm, host);

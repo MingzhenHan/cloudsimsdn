@@ -5,43 +5,43 @@
  *
  * Copyright (c) 2017, The University of Melbourne, Australia
  */
- 
-package org.cloudbus.cloudsim.sdn;
 
-import java.util.Iterator;
+package org.cloudbus.cloudsim.sdn;
 
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.SimEvent;
 
+import java.util.Iterator;
+
 public class CloudSimEx extends CloudSim {
 	private static long startTime;
-	
+
 	private static void setStartTimeMillis(long startedTime) {
 		startTime=startedTime;
 	}
 	public static void setStartTime() {
 		setStartTimeMillis(System.currentTimeMillis());
 	}
-	
+
 	public static long getElapsedTimeSec() {
 		long currentTime = System.currentTimeMillis();
 		long elapsedTime = currentTime - startTime;
 		elapsedTime /= 1000;
-		
+
 		return elapsedTime;
 	}
 	public static String getElapsedTimeString() {
 		String ret ="";
 		long elapsedTime = getElapsedTimeSec();
 		ret = ""+elapsedTime/3600+":"+ (elapsedTime/60)%60+ ":"+elapsedTime%60;
-		
+
 		return ret;
 	}
-	
+
 	public static int getNumFutureEvents() {
 		return future.size() + deferred.size();
 	}
-	
+
 	public static boolean hasMoreEvent(int excludeEventTag) {
 		if(future.size() > 0) {
 			Iterator<SimEvent> fit = future.iterator();
@@ -61,7 +61,7 @@ public class CloudSimEx extends CloudSim {
 		}
 		return false;
 	}
-	
+
 	public static double getNextEventTime() {
 		if(future.size() > 0) {
 			Iterator<SimEvent> fit = future.iterator();

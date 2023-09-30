@@ -414,9 +414,9 @@ public abstract class SimEntity implements Cloneable {
         /**
          * The run loop to process events fired during the simulation.
          * The events that will be processed are defined
-         * in the {@link #processEvent(org.cloudbus.cloudsim.core.SimEvent)} method.
+         * in the {@link #processEvent(SimEvent)} method.
          *
-         * @see #processEvent(org.cloudbus.cloudsim.core.SimEvent)
+         * @see #processEvent(SimEvent)
          */
 	public void run() {
 		// getNextEvent(): 从 deferred取出一个 event，满足destID等于自己。条件不限，predicate=SIM_ANY

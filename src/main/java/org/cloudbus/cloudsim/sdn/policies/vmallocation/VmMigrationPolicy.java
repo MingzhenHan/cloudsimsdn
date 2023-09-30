@@ -8,13 +8,6 @@
 
 package org.cloudbus.cloudsim.sdn.policies.vmallocation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
@@ -23,27 +16,29 @@ import org.cloudbus.cloudsim.sdn.Configuration;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNHost;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
 
+import java.util.*;
+
 public abstract class VmMigrationPolicy {
 	protected abstract Map<Vm, Host> buildMigrationMap(List<SDNHost> hosts);
 
 	protected VmAllocationPolicyEx vmAllocationPolicy = null;
-	
+
 	public VmMigrationPolicy() {
 	}
-	
+
 	public void setVmAllocationPolicy(VmAllocationPolicyEx vmAllocationPolicyEx) {
 		vmAllocationPolicy = vmAllocationPolicyEx;
 	}
-	
+
 	public List<Map<String, Object>> getMigrationMap(List<SDNHost> hosts) {
 		Map<Vm, Host> vmToHost = buildMigrationMap(hosts);
-		
+
 		// Make a list from the migration map
 		List<Map<String, Object>> migrationList = new ArrayList<Map<String, Object>>();
-		
+
 		for(Vm vmToMigrate:vmToHost.keySet()) {
 			Host host = vmToHost.get(vmToMigrate);
-			
+
 			Map<String, Object> migrationMap = new HashMap<String, Object>();
 			migrationMap.put("vm", vmToMigrate);
 			migrationMap.put("host", host);
@@ -51,14 +46,14 @@ public abstract class VmMigrationPolicy {
 		}
 		return migrationList;
 	}
-		
-	protected Host moveVmToHost(SDNVm vmToMigrate, List<Host> targetHosts) {		
-		// Remove myself from the target hosts (Do not migrate to the same host) 
+
+	protected Host moveVmToHost(SDNVm vmToMigrate, List<Host> targetHosts) {
+		// Remove myself from the target hosts (Do not migrate to the same host)
 		List<SDNHost> myHost = new ArrayList<SDNHost>();
 		myHost.add((SDNHost) vmToMigrate.getHost());
 		targetHosts.removeAll(myHost);
 
-		// Pre-allocate resource from candidate hosts for the migrating VM 
+		// Pre-allocate resource from candidate hosts for the migrating VM
 		boolean result = false;
 		Host host = null;
 		for(int i=0; i<targetHosts.size(); i++) {
@@ -72,10 +67,10 @@ public abstract class VmMigrationPolicy {
 		}
 		if(!result)
 			host = null;
-	
+
 		return host;
 	}
-		
+
 	protected SDNVm getMostUtilizedVm(SDNHost host) {
 		List<SDNVm> vms = host.getVmList();
 		double endTime = CloudSim.clock();
@@ -92,20 +87,20 @@ public abstract class VmMigrationPolicy {
 				mostUtilized = svm;
 			}
 		}
-		
+
 		return mostUtilized;
 	}
-	
+
 	protected List<SDNHost> getOverutilizedHosts(List<SDNHost> hosts) {
 		List<SDNHost> overHosts = new ArrayList<SDNHost>();
 		double endTime = CloudSim.clock();
 		double startTime = endTime - Configuration.migrationTimeInterval;
 		if(startTime <0) startTime = 0;
-		
+
 		for(SDNHost host:hosts) {
-			// Re-adjust each VM's allocated resource applying historical utilization data 
+			// Re-adjust each VM's allocated resource applying historical utilization data
 			vmAllocationPolicy.updateResourceAllocation(host);
-			
+
 			// Criteria to decided overloaded hosts
 			// 1. Host's utilization level should be higher than threshold
 			// 2. Each VMs in the Host are also overheaded
@@ -115,13 +110,13 @@ public abstract class VmMigrationPolicy {
 		}
 		return overHosts;
 	}
-	
+
 	protected List<SDNVm> getMostUtilizedVms(List<SDNHost> hosts) {
 		List<SDNVm> migrationOverVMList = new ArrayList<SDNVm>();
 
 		// Check over-utilized host
 		List<SDNHost> overHosts = getOverutilizedHosts(hosts);
-		
+
 		// Move the most over-headed VM into migration list
 		if(overHosts != null && overHosts.size() != 0) {
 			for(SDNHost host: overHosts) {
@@ -130,17 +125,17 @@ public abstract class VmMigrationPolicy {
 					migrationOverVMList.add(mostUtilized);
 			}
 		}
-		
+
 		if(migrationOverVMList.size() == 0) {
 			return migrationOverVMList;
 		}
-		
+
 		// Sort the most utilized VMs
 		Collections.sort(migrationOverVMList, new Comparator<SDNVm>() {
 		    public int compare(SDNVm o1, SDNVm o2) {
 				double endTime = CloudSim.clock();
 				double startTime = endTime - Configuration.migrationTimeInterval;
-				
+
 		    	double o1util = o1.getMonitoringValuesVmCPUUtilization().getAverageValue(startTime, endTime);
 		    	double o2util = o2.getMonitoringValuesVmCPUUtilization().getAverageValue(startTime, endTime);
 		        return (int) (o1util - o2util);
@@ -154,7 +149,7 @@ public abstract class VmMigrationPolicy {
 
 		/*
 		double hostCPUUtil = host.getMonitoringValuesHostCPUUtilization().getAverageValue(startTime, endTime);
-		
+
 		if(hostCPUUtil > Configuration.OVERLOAD_THRESHOLD) {
 //			double hostOverRatio = getCurrentHostOverbookingRatio(host);
 //			for(SDNVm vm:host.<SDNVm>getVmList()) {
@@ -171,9 +166,9 @@ public abstract class VmMigrationPolicy {
 			Log.printLine(CloudSim.clock() + ": isHostOverloaded() CPU "+host+":  " + overloadPercentile);
 			return true;
 		}
-		
+
 		//*/
-		
+
 		double hostBwUsage = host.getMonitoringValuesHostBwUtilization().getAverageValue(startTime, endTime);
 		if(hostBwUsage > Configuration.OVERLOAD_THRESHOLD_BW_UTIL) {
 			Log.printLine(CloudSim.clock() + ": isHostOverloaded() "+host+": BW " + hostBwUsage);

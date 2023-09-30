@@ -8,17 +8,8 @@
 
 package org.cloudbus.cloudsim.sdn.parsers;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import org.cloudbus.cloudsim.sdn.HostFactory;
 import org.cloudbus.cloudsim.sdn.HostFactorySimple;
 import org.cloudbus.cloudsim.sdn.nos.NetworkOperatingSystem;
@@ -26,18 +17,15 @@ import org.cloudbus.cloudsim.sdn.nos.NetworkOperatingSystemSimple;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.Link;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.Node;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNHost;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.AggregationSwitch;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.CoreSwitch;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.EdgeSwitch;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.GatewaySwitch;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.IntercloudSwitch;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.Switch;
+import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * This class parses Physical Topology JSON file.

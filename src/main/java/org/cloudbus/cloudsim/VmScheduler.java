@@ -1,26 +1,26 @@
 /*
  * Title: CloudSim Toolkit Description: CloudSim (Cloud Simulation) Toolkit for Modeling and
  * Simulation of Clouds Licence: GPL - http://www.gnu.org/copyleft/gpl.html
- * 
+ *
  * Copyright (c) 2009-2012, The University of Melbourne, Australia
  */
 
 package org.cloudbus.cloudsim;
+
+import org.cloudbus.cloudsim.lists.PeList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cloudbus.cloudsim.lists.PeList;
-
 /**
- * VmScheduler is an abstract class that represents the policy used by a Virtual Machine Monitor (VMM) 
- * to share processing power of a PM among VMs running in a host. 
- * 
+ * VmScheduler is an abstract class that represents the policy used by a Virtual Machine Monitor (VMM)
+ * to share processing power of a PM among VMs running in a host.
+ *
  * Each host has to use is own instance of a VmScheduler
  * that will so schedule the allocation of host's PEs for VMs running on it.
- * 
+ *
  * @author Rodrigo N. Calheiros
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 1.0
@@ -30,16 +30,16 @@ public abstract class VmScheduler {
 	/** The PEs of the host where the scheduler is associated. */
 	private List<? extends Pe> peList;
 
-	/** The map of VMs to PEs, where each key is a VM id and each value is 
+	/** The map of VMs to PEs, where each key is a VM id and each value is
          * a list of PEs allocated to that VM. */
 	private Map<String, List<Pe>> peMap;
 
-	/** The map of VMs to MIPS, were each key is a VM id and each value is 
-         * the currently allocated MIPS from the respective PE to that VM. 
+	/** The map of VMs to MIPS, were each key is a VM id and each value is
+         * the currently allocated MIPS from the respective PE to that VM.
          * The PEs where the MIPS capacity is get are defined
          * in the {@link #peMap}.
-         * 
-         * @todo subclasses such as {@link VmSchedulerTimeShared} have an 
+         *
+         * @todo subclasses such as {@link VmSchedulerTimeShared} have an
          * {@link VmSchedulerTimeShared#mipsMapRequested} attribute that
          * may be confused with this one. So, the name of this one
          * may be changed to something such as allocatedMipsMap
@@ -57,7 +57,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Creates a new VmScheduler.
-	 * 
+	 *
 	 * @param pelist the list of PEs of the host where the VmScheduler is associated to.
 	 * @pre peList != $null
 	 * @post $none
@@ -73,7 +73,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Requests the allocation of PEs for a VM.
-	 * 
+	 *
 	 * @param vm the vm
 	 * @param mipsShare the list of MIPS share to be allocated to a VM
 	 * @return $true if this policy allows a new VM in the host, $false otherwise
@@ -85,7 +85,7 @@ public abstract class VmScheduler {
 	/**
 	 * Releases PEs allocated to a VM. After that, the PEs may be used
          * on demand by other VMs.
-	 * 
+	 *
 	 * @param vm the vm
 	 * @pre $none
 	 * @post $none
@@ -95,7 +95,7 @@ public abstract class VmScheduler {
 	/**
 	 * Releases PEs allocated to all the VMs of the host the VmScheduler is associated to.
          * After that, all PEs will be available to be used on demand for requesting VMs.
-	 * 
+	 *
 	 * @pre $none
 	 * @post $none
 	 */
@@ -109,7 +109,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Gets the pes allocated for a vm.
-	 * 
+	 *
 	 * @param vm the vm
 	 * @return the pes allocated for the given vm
 	 */
@@ -119,7 +119,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Returns the MIPS share of each host's Pe that is allocated to a given VM.
-	 * 
+	 *
 	 * @param vm the vm
 	 * @return an array containing the amount of MIPS of each pe that is available to the VM
 	 * @pre $none
@@ -131,7 +131,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Gets the total allocated MIPS for a VM along all its allocated PEs.
-	 * 
+	 *
 	 * @param vm the vm
 	 * @return the total allocated mips for the vm
 	 */
@@ -148,7 +148,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Returns maximum available MIPS among all the host's PEs.
-	 * 
+	 *
 	 * @return max mips
 	 */
 	public double getMaxAvailableMips() {
@@ -170,7 +170,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Returns PE capacity in MIPS.
-	 * 
+	 *
 	 * @return mips
          * @todo It considers that all PEs have the same capacity,
          * what has been shown doesn't be assured. The peList
@@ -186,11 +186,11 @@ public abstract class VmScheduler {
 
 	/**
 	 * Gets the pe list.
-	 * 
+	 *
 	 * @param <T> the generic type
 	 * @return the pe list
-         * @todo The warning have to be checked 
-         * 
+         * @todo The warning have to be checked
+         *
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Pe> List<T> getPeList() {
@@ -199,7 +199,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Sets the pe list.
-	 * 
+	 *
 	 * @param <T> the generic type
 	 * @param peList the pe list
 	 */
@@ -209,7 +209,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Gets the mips map.
-	 * 
+	 *
 	 * @return the mips map
 	 */
 	protected Map<String, List<Double>> getMipsMap() {
@@ -218,7 +218,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Sets the mips map.
-	 * 
+	 *
 	 * @param mipsMap the mips map
 	 */
 	protected void setMipsMap(Map<String, List<Double>> mipsMap) {
@@ -227,7 +227,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Gets the free mips.
-	 * 
+	 *
 	 * @return the free mips
 	 */
 	public double getAvailableMips() {
@@ -236,7 +236,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Sets the free mips.
-	 * 
+	 *
 	 * @param availableMips the new free mips
 	 */
 	protected void setAvailableMips(double availableMips) {
@@ -245,7 +245,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Gets the vms migrating out.
-	 * 
+	 *
 	 * @return the vms in migration
 	 */
 	public List<String> getVmsMigratingOut() {
@@ -254,7 +254,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Sets the vms migrating out.
-	 * 
+	 *
 	 * @param vmsInMigration the new vms migrating out
 	 */
 	protected void setVmsMigratingOut(List<String> vmsInMigration) {
@@ -263,7 +263,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Gets the vms migrating in.
-	 * 
+	 *
 	 * @return the vms migrating in
 	 */
 	public List<String> getVmsMigratingIn() {
@@ -272,7 +272,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Sets the vms migrating in.
-	 * 
+	 *
 	 * @param vmsMigratingIn the new vms migrating in
 	 */
 	protected void setVmsMigratingIn(List<String> vmsMigratingIn) {
@@ -281,7 +281,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Gets the pe map.
-	 * 
+	 *
 	 * @return the pe map
 	 */
 	public Map<String, List<Pe>> getPeMap() {
@@ -290,7 +290,7 @@ public abstract class VmScheduler {
 
 	/**
 	 * Sets the pe map.
-	 * 
+	 *
 	 * @param peMap the pe map
 	 */
 	protected void setPeMap(Map<String, List<Pe>> peMap) {

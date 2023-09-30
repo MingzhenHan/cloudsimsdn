@@ -8,13 +8,13 @@
 
 package org.cloudbus.cloudsim.lists;
 
-import java.util.List;
-
 import org.cloudbus.cloudsim.ResCloudlet;
+
+import java.util.List;
 
 /**
  * ResCloudletList is a collection of operations on lists of ResCloudlets.
- * 
+ *
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 2.0
  */
@@ -24,7 +24,7 @@ public class ResCloudletList {
 	 * Gets a {@link ResCloudlet} with a given id and owned by a given user.
          * This method needs a combination of Cloudlet Id and User Id because
 	 * each Cloud User might have exactly the same Cloudlet Id.
-	 * 
+	 *
 	 * @param cloudletId a Cloudlet Id
 	 * @param userId an User Id
 	 * @param list the list of ResCloudlet
@@ -32,8 +32,8 @@ public class ResCloudletList {
      * @pre cloudletId >= 0
 	 * @pre userId >= 0
 	 * @post $none
-     * 
-     * @todo The second phrase of the class documentation is not clear. 
+     *
+     * @todo The second phrase of the class documentation is not clear.
 	 */
 	public static <T extends ResCloudlet> ResCloudlet getByIdAndUserId(
 			List<T> list,
@@ -48,10 +48,10 @@ public class ResCloudletList {
 	}
 
 	/**
-	 * Finds the index of a ResCloudlet inside a list. 
+	 * Finds the index of a ResCloudlet inside a list.
      * This method needs a combination of Cloudlet Id
 	 * and User Id because each Cloud User might have exactly the same Cloudlet Id.
-	 * 
+	 *
 	 * @param cloudletId a Cloudlet Id
 	 * @param userId an User Id
 	 * @param list the list of ResCloudlets
@@ -74,7 +74,7 @@ public class ResCloudletList {
 
 	/**
 	 * Moves a ResCloudlet object from a list to another.
-	 * 
+	 *
 	 * @param listFrom the source list
 	 * @param listTo the destination list
 	 * @param cloudlet the cloudlet to be moved from the source to the destination list
@@ -93,7 +93,7 @@ public class ResCloudletList {
 
 	/**
 	 * Gets the position of a ResCloudlet with a given id.
-     * 
+     *
 	 * @param cloudletList the list of cloudlets.
 	 * @param id the cloudlet id
 	 * @return the position of the cloudlet with that id, or -1 if not found.

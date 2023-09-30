@@ -8,10 +8,10 @@
 
 package org.cloudbus.cloudsim.sdn.policies.selectlink;
 
-import java.util.List;
-
 import org.cloudbus.cloudsim.sdn.physicalcomponents.Link;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.Node;
+
+import java.util.List;
 
 public class LinkSelectionPolicyDestinationAddress implements LinkSelectionPolicy {
 	public LinkSelectionPolicyDestinationAddress() {

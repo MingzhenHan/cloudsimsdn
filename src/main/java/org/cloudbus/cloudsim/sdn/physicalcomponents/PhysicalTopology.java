@@ -8,28 +8,22 @@
 
 package org.cloudbus.cloudsim.sdn.physicalcomponents;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Table;
+import org.cloudbus.cloudsim.sdn.nos.NetworkOperatingSystem;
+import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.*;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
 
-import org.cloudbus.cloudsim.sdn.nos.NetworkOperatingSystem;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.AggregationSwitch;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.CoreSwitch;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.EdgeSwitch;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.GatewaySwitch;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.IntercloudSwitch;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.Switch;
-
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Table;
-
 
 /**
  * Network connection maps including switches, hosts, and links between them in physical layer.
- *  
+ *
  * @author Jungmin Son
  * @author Rodrigo N. Calheiros
  * @since CloudSimSDN 1.0
@@ -49,7 +43,7 @@ public abstract class PhysicalTopology {
 	protected final int RANK_AGGR = 200;
 	protected final int RANK_EDGE = 300;
 	protected final int RANK_HOST = 1000;
-	
+
 	protected Hashtable<Integer,Node> nodesTable;	// Address -> Node
 	protected Table<Integer, Integer, Link> linkTable; 	// From : To -> Link
 	protected Multimap<Node,Link> nodeLinks;	// Node -> all Links
@@ -58,14 +52,14 @@ public abstract class PhysicalTopology {
 		nodesTable = new Hashtable<Integer,Node>();
 		nodeLinks = HashMultimap.create();
 		linkTable = HashBasedTable.create();
-	}	
+	}
 
 	public abstract void buildDefaultRouting();
-	
+
 	public Node getNode(int id) {
 		return nodesTable.get(id);
 	}
-	
+
 	public void addNode(Node node){
 		nodesTable.put(node.getAddress(), node);
 		if (node instanceof CoreSwitch){//coreSwitch is rank 0 (root)
@@ -83,10 +77,10 @@ public abstract class PhysicalTopology {
 		} else {
 			throw new IllegalArgumentException();
 		}
-		
+
 		addLoopbackLink(node);
 	}
-	
+
 	public Collection<Node> getNodesType(NodeType tier) {
 		Collection<Node> allNodes = getAllNodes();
 		Collection<Node> nodes = new LinkedList<Node>();
@@ -112,7 +106,7 @@ public abstract class PhysicalTopology {
 		}
 		return nodes;
 	}
-	
+
 	public Collection<Node> getConnectedNodesLow(Node node) {
 		// Get the list of lower order
 		Collection<Node> nodes = new LinkedList<Node>();
@@ -138,10 +132,10 @@ public abstract class PhysicalTopology {
 	public void addLink(Link link){
 		Node highNode = link.getHighOrder();
 		Node lowNode = link.getLowOrder();
-		
+
 		if(getNode(highNode.getAddress()) != null &&
 				getNode(lowNode.getAddress()) != null ) {
-			
+
 			// Only if both nodes are included in this NOS, the link is added.
 			if(highNode.getRank() > lowNode.getRank()) {
 				Node temp = highNode;
@@ -152,58 +146,58 @@ public abstract class PhysicalTopology {
 			addLink(highNode, lowNode, latency);
 		}
 	}
-	
+
 	public void addLink(Node fromNode, Node toNode, double latency){
 		int from = fromNode.getAddress();
 		int to = toNode.getAddress();
-		
+
 		long bw = (fromNode.getBandwidth()<toNode.getBandwidth())? fromNode.getBandwidth():toNode.getBandwidth();
-		
+
 		if(!nodesTable.containsKey(from)||!nodesTable.containsKey(to)){
 			throw new IllegalArgumentException("Unknown node on link:"+nodesTable.get(from).getAddress()+"->"+nodesTable.get(to).getAddress());
 		}
-		
+
 		if (linkTable.contains(fromNode.getAddress(), toNode.getAddress())){
 			throw new IllegalArgumentException("Link added twice:"+fromNode.getAddress()+"->"+toNode.getAddress());
 		}
-		
+
 		if(fromNode.getRank()==-1&&toNode.getRank()==-1){
 			throw new IllegalArgumentException("Unable to establish orders for nodes on link:"+nodesTable.get(from).getAddress()+"->"+nodesTable.get(to).getAddress());
 		}
-		
+
 		Link l = new Link(fromNode, toNode, latency, bw);
-		
+
 		// Two way links (From -> to, To -> from)
 		linkTable.put(from, to, l);
 		linkTable.put(to, from, l);
-		
+
 		nodeLinks.put(fromNode, l);
 		nodeLinks.put(toNode, l);
-		
+
 		fromNode.addLink(l);
 		toNode.addLink(l);
 	}
-	
+
 	private void addLoopbackLink(Node node) {
 		int nodeId = node.getAddress();
 		long bw = NetworkOperatingSystem.bandwidthWithinSameHost;
 		double latency = NetworkOperatingSystem.latencyWithinSameHost;
-		
+
 		Link l = new Link(node, node, latency, bw);
-		
+
 		// Two way links (From -> to, To -> from)
 		linkTable.put(nodeId, nodeId, l);
 		node.addLink(l);
 	}
-	
+
 	public Collection<Link> getAdjacentLinks(Node node) {
 		return nodeLinks.get(node);
 	}
-	
+
 	public Collection<Node> getAllNodes() {
 		return nodesTable.values();
 	}
-	
+
 	public Collection<Switch> getAllSwitches() {
 		Collection<Switch> allSwitches = new LinkedList<>();
 		for(Node n:nodesTable.values()) {
@@ -212,7 +206,7 @@ public abstract class PhysicalTopology {
 		}
 		return allSwitches;
 	}
-	
+
 	public Collection<SDNHost> getAllHosts() {
 		Collection<SDNHost> allHosts = new LinkedList<>();
 		for(Node n:nodesTable.values()) {
@@ -221,13 +215,13 @@ public abstract class PhysicalTopology {
 		}
 		return allHosts;
 	}
-	
+
 	public Collection<Link> getAllLinks() {
 		HashSet<Link> allLinks = new HashSet<Link>();
 		allLinks.addAll(nodeLinks.values());
 		return allLinks;
 	}
-	
+
 	public void printTopology() {
 		for(Node n:getAllNodes()) {
 			System.out.println("============================================");

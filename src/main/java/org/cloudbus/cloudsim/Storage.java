@@ -91,7 +91,7 @@ public interface Storage {
 	/**
 	 * Adds a file for which the space has already been reserved. The time taken (in seconds) for
 	 * adding the specified file can also be found using
-	 * {@link org.cloudbus.cloudsim.File#getTransactionTime()}.
+	 * {@link File#getTransactionTime()}.
 	 *
 	 * @param file the file to be added
 	 * @return the time (in seconds) required to add the file
@@ -108,7 +108,7 @@ public interface Storage {
 
 	/**
 	 * Gets the file with the specified name. The time taken (in seconds) for getting the specified
-	 * file can also be found using {@link org.cloudbus.cloudsim.File#getTransactionTime()}.
+	 * file can also be found using {@link File#getTransactionTime()}.
 	 *
 	 * @param fileName the name of the needed file
 	 * @return the file with the specified filename
@@ -124,7 +124,7 @@ public interface Storage {
 
 	/**
 	 * Adds a file to the storage. The time taken (in seconds) for adding the specified file can
-	 * also be found using {@link org.cloudbus.cloudsim.File#getTransactionTime()}.
+	 * also be found using {@link File#getTransactionTime()}.
 	 *
 	 * @param file the file to be added
 	 * @return the time taken (in seconds) for adding the specified file
@@ -186,7 +186,7 @@ public interface Storage {
 
 	/**
 	 * Renames a file on the storage. The time taken (in seconds) for renaming the specified file
-	 * can also be found using {@link org.cloudbus.cloudsim.File#getTransactionTime()}.
+	 * can also be found using {@link File#getTransactionTime()}.
 	 *
 	 * @param file the file we would like to rename
 	 * @param newName the new name of the file

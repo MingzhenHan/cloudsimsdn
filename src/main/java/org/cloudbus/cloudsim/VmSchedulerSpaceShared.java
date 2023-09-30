@@ -8,20 +8,16 @@
 
 package org.cloudbus.cloudsim;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
- * VmSchedulerSpaceShared is a VMM allocation policy that allocates one or more PEs from a host to a 
- * Virtual Machine Monitor (VMM), and doesn't allow sharing of PEs. 
- * The allocated PEs will be used until the VM finishes running. 
+ * VmSchedulerSpaceShared is a VMM allocation policy that allocates one or more PEs from a host to a
+ * Virtual Machine Monitor (VMM), and doesn't allow sharing of PEs.
+ * The allocated PEs will be used until the VM finishes running.
  * If there is no enough free PEs as required by a VM,
- * or whether the available PEs doesn't have enough capacity, the allocation fails. 
+ * or whether the available PEs doesn't have enough capacity, the allocation fails.
  * In the case of fail, no PE is allocated to the requesting VM.
- * 
+ *
  * @author Rodrigo N. Calheiros
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 1.0
@@ -37,7 +33,7 @@ public class VmSchedulerSpaceShared extends VmScheduler {
 
 	/**
 	 * Instantiates a new vm space-shared scheduler.
-	 * 
+	 *
 	 * @param pelist the pelist
 	 */
 	public VmSchedulerSpaceShared(List<? extends Pe> pelist) {
@@ -96,7 +92,7 @@ public class VmSchedulerSpaceShared extends VmScheduler {
 
 	/**
 	 * Sets the pe allocation map.
-	 * 
+	 *
 	 * @param peAllocationMap the pe allocation map
 	 */
 	protected void setPeAllocationMap(Map<String, List<Pe>> peAllocationMap) {
@@ -105,7 +101,7 @@ public class VmSchedulerSpaceShared extends VmScheduler {
 
 	/**
 	 * Gets the pe allocation map.
-	 * 
+	 *
 	 * @return the pe allocation map
 	 */
 	protected Map<String, List<Pe>> getPeAllocationMap() {
@@ -114,7 +110,7 @@ public class VmSchedulerSpaceShared extends VmScheduler {
 
 	/**
 	 * Sets the free pes list.
-	 * 
+	 *
 	 * @param freePes the new free pes list
 	 */
 	protected void setFreePes(List<Pe> freePes) {
@@ -123,7 +119,7 @@ public class VmSchedulerSpaceShared extends VmScheduler {
 
 	/**
 	 * Gets the free pes list.
-	 * 
+	 *
 	 * @return the free pes list
 	 */
 	protected List<Pe> getFreePes() {

@@ -8,10 +8,10 @@
 
 package org.cloudbus.cloudsim.sdn.policies.selectlink;
 
-import java.util.List;
-
 import org.cloudbus.cloudsim.sdn.physicalcomponents.Link;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.Node;
+
+import java.util.List;
 
 public class LinkSelectionPolicyFlowNumbers implements LinkSelectionPolicy {
 	public LinkSelectionPolicyFlowNumbers() {
@@ -23,7 +23,7 @@ public class LinkSelectionPolicyFlowNumbers implements LinkSelectionPolicy {
 		for(Link l:links) {
 			if(l.getChannelCount(src) < lighter.getChannelCount(src)) {
 				// Less traffic flows using this link
-				lighter = l; 
+				lighter = l;
 			}
 		}
 		return lighter;

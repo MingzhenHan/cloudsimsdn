@@ -8,13 +8,13 @@
 
 package org.cloudbus.cloudsim.sdn.policies.vmallocation.overbooking;
 
-import java.util.List;
-
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.sdn.Configuration;
 import org.cloudbus.cloudsim.sdn.policies.selecthost.HostSelectionPolicy;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmMigrationPolicy;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
+
+import java.util.List;
 
 public class OverbookingVmAllocationPolicyPowerNet extends OverbookingVmAllocationPolicyConsolidateConnected {
 	public OverbookingVmAllocationPolicyPowerNet(List<? extends Host> list,
@@ -34,7 +34,7 @@ public class OverbookingVmAllocationPolicyPowerNet extends OverbookingVmAllocati
 			return Configuration.OVERBOOKING_RATIO_INIT;
 		}
 	}
-	
+
 	protected double getOverRatioBw(SDNVm vm, Host host) {
 		Long usedBw = getUsedBw().get(vm.getUid());
 		if(usedBw == null) {

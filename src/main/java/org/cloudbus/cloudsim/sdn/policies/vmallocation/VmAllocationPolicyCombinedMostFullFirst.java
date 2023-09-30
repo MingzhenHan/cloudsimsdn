@@ -7,11 +7,6 @@
  */
 package org.cloudbus.cloudsim.sdn.policies.vmallocation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
@@ -19,11 +14,16 @@ import org.cloudbus.cloudsim.VmAllocationPolicy;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.sdn.monitor.power.PowerUtilizationMaxHostInterface;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * VM Allocation Policy - BW and Compute combined, MFF.
- * When select a host to create a new VM, this policy chooses 
- * the most full host in terms of both compute power and network bandwidth.   
- *  
+ * When select a host to create a new VM, this policy chooses
+ * the most full host in terms of both compute power and network bandwidth.
+ *
  * @author Jungmin Son
  * @since CloudSimSDN 1.0
  */
@@ -32,7 +32,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 	protected final double hostTotalMips;
 	protected final double hostTotalBw;
 	protected final int hostTotalPes;
-	
+
 	/** The vm table. */
 	private Map<String, Host> vmTable;
 
@@ -41,7 +41,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 
 	/** The free pes. */
 	private List<Integer> freePes;
-	
+
 	private Map<String, Long> usedMips;
 	private List<Long> freeMips;
 	private Map<String, Long> usedBw;
@@ -49,7 +49,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 
 	/**
 	 * Creates the new VmAllocationPolicySimple object.
-	 * 
+	 *
 	 * @param list the list
 	 * @pre $none
 	 * @post $none
@@ -60,7 +60,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 		setFreePes(new ArrayList<Integer>());
 		setFreeMips(new ArrayList<Long>());
 		setFreeBw(new ArrayList<Long>());
-		
+
 		for (Host host : getHostList()) {
 			getFreePes().add(host.getNumberOfPes());
 			getFreeMips().add((long) host.getTotalMips());
@@ -89,7 +89,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 	}
 	/**
 	 * Allocates a host for a given VM.
-	 * 
+	 *
 	 * @param vm VM specification
 	 * @return $true if the host could be allocated; $false otherwise
 	 * @pre $none
@@ -100,7 +100,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 		if (getVmTable().containsKey(vm.getUid())) { // if this vm was not created
 			return false;
 		}
-		
+
 		int numHosts = getHostList().size();
 
 		// 1. Find/Order the best host for this VM by comparing a metric
@@ -109,12 +109,12 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 		long requiredBw = vm.getCurrentRequestedBw();
 
 		boolean result = false;
-		
+
 		double[] freeResources = new double[numHosts];
 		for (int i = 0; i < numHosts; i++) {
-			double mipsFreePercent = (double)getFreeMips().get(i) / this.hostTotalMips; 
+			double mipsFreePercent = (double)getFreeMips().get(i) / this.hostTotalMips;
 			double bwFreePercent = (double)getFreeBw().get(i) / this.hostTotalBw;
-			
+
 			freeResources[i] = this.convertWeightedMetric(mipsFreePercent, bwFreePercent);
 		}
 
@@ -131,7 +131,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 			}
 			freeResources[idx] = Double.POSITIVE_INFINITY;
 			Host host = getHostList().get(idx);
-			
+
 
 			// Check whether the host can hold this VM or not.
 			if( getFreeMips().get(idx) < requiredMips) {
@@ -144,14 +144,14 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 				//Cannot host the VM
 				//continue;
 			}
-			
+
 			result = host.vmCreate(vm);
 
 			if (result) { // if vm were succesfully created in the host
 				getVmTable().put(vm.getUid(), host);
 				getUsedPes().put(vm.getUid(), requiredPes);
 				getFreePes().set(idx, getFreePes().get(idx) - requiredPes);
-				
+
 				getUsedMips().put(vm.getUid(), (long) requiredMips);
 				getFreeMips().set(idx,  (long) (getFreeMips().get(idx) - requiredMips));
 
@@ -161,14 +161,14 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 				break;
 			}
 		}
-		
+
 		if(!result) {
 			System.err.println("VmAllocationPolicy: WARNING:: Cannot create VM!!!!");
 		}
 		logMaxNumHostsUsed();
 		return result;
 	}
-	
+
 	protected int maxNumHostsUsed=0;
 	public void logMaxNumHostsUsed() {
 		// Get how many are used
@@ -186,7 +186,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 
 	/**
 	 * Releases the host used by a VM.
-	 * 
+	 *
 	 * @param vm the vm
 	 * @pre $none
 	 * @post none
@@ -197,13 +197,13 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 		if (host != null) {
 			int idx = getHostList().indexOf(host);
 			host.vmDestroy(vm);
-			
+
 			Integer pes = getUsedPes().remove(vm.getUid());
 			getFreePes().set(idx, getFreePes().get(idx) + pes);
-			
+
 			Long mips = getUsedMips().remove(vm.getUid());
 			getFreeMips().set(idx, getFreeMips().get(idx) + mips);
-			
+
 			Long bw = getUsedBw().remove(vm.getUid());
 			getFreeBw().set(idx, getFreeBw().get(idx) + bw);
 		}
@@ -211,7 +211,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 
 	/**
 	 * Gets the host that is executing the given VM belonging to the given user.
-	 * 
+	 *
 	 * @param vm the vm
 	 * @return the Host with the given vmID and userID; $null if not found
 	 * @pre $none
@@ -224,7 +224,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 
 	/**
 	 * Gets the host that is executing the given VM belonging to the given user.
-	 * 
+	 *
 	 * @param vmId the vm id
 	 * @param userId the user id
 	 * @return the Host with the given vmID and userID; $null if not found
@@ -238,7 +238,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 
 	/**
 	 * Gets the vm table.
-	 * 
+	 *
 	 * @return the vm table
 	 */
 	public Map<String, Host> getVmTable() {
@@ -247,7 +247,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 
 	/**
 	 * Sets the vm table.
-	 * 
+	 *
 	 * @param vmTable the vm table
 	 */
 	protected void setVmTable(Map<String, Host> vmTable) {
@@ -256,7 +256,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 
 	/**
 	 * Gets the used pes.
-	 * 
+	 *
 	 * @return the used pes
 	 */
 	protected Map<String, Integer> getUsedPes() {
@@ -265,7 +265,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 
 	/**
 	 * Sets the used pes.
-	 * 
+	 *
 	 * @param usedPes the used pes
 	 */
 	protected void setUsedPes(Map<String, Integer> usedPes) {
@@ -274,7 +274,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 
 	/**
 	 * Gets the free pes.
-	 * 
+	 *
 	 * @return the free pes
 	 */
 	protected List<Integer> getFreePes() {
@@ -283,7 +283,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 
 	/**
 	 * Sets the free pes.
-	 * 
+	 *
 	 * @param freePes the new free pes
 	 */
 	protected void setFreePes(List<Integer> freePes) {
@@ -308,7 +308,7 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 	protected void setFreeMips(List<Long> freeMips) {
 		this.freeMips = freeMips;
 	}
-	
+
 	protected List<Long> getFreeBw() {
 		return this.freeBw;
 	}
@@ -339,12 +339,12 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 			int pe = vm.getNumberOfPes();
 			double requiredMips = vm.getCurrentRequestedTotalMips();
 			long requiredBw = vm.getCurrentRequestedBw();
-			
+
 			int idx = getHostList().indexOf(host);
-			
+
 			getUsedPes().put(vm.getUid(), pe);
 			getFreePes().set(idx, getFreePes().get(idx) - pe);
-			
+
 			getUsedMips().put(vm.getUid(), (long) requiredMips);
 			getFreeMips().set(idx,  (long) (getFreeMips().get(idx) - requiredMips));
 
@@ -358,6 +358,6 @@ public class VmAllocationPolicyCombinedMostFullFirst extends VmAllocationPolicy 
 		}
 
 		return false;
-	}	
+	}
 }
 

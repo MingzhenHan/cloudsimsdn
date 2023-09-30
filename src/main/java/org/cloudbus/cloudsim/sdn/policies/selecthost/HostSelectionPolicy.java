@@ -8,16 +8,16 @@
 
 package org.cloudbus.cloudsim.sdn.policies.selecthost;
 
-import java.util.List;
-
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNHost;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmAllocationPolicyEx;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
 
+import java.util.List;
+
 public abstract class HostSelectionPolicy {
 	protected VmAllocationPolicyEx vmAllocPolicy=null;
-	
+
 	public void setVmAllocationPolicy(VmAllocationPolicyEx vmAllocationPolicyEx) {
 		vmAllocPolicy=vmAllocationPolicyEx;
 	}

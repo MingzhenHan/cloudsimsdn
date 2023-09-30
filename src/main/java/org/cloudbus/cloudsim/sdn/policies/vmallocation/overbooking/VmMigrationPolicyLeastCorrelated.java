@@ -8,13 +8,6 @@
 
 package org.cloudbus.cloudsim.sdn.policies.vmallocation.overbooking;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
@@ -25,48 +18,50 @@ import org.cloudbus.cloudsim.sdn.policies.selecthost.HostSelectionPolicyMostFull
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmMigrationPolicy;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
 
+import java.util.*;
+
 public class VmMigrationPolicyLeastCorrelated extends VmMigrationPolicy{
 
 	@Override
 	protected Map<Vm, Host> buildMigrationMap(List<SDNHost> hosts) {
 		Map<Vm, Host> vmToHost = new HashMap<Vm, Host>();
-		
+
 		// Check peak VMs and reallocate them into different host
-		List<SDNVm> migrationOverVMList = getMostUtilizedVms(hosts);		
+		List<SDNVm> migrationOverVMList = getMostUtilizedVms(hosts);
 		if(migrationOverVMList.size() == 0) {
 			return vmToHost;
 		}
-		
+
 		for(SDNVm vmToMigrate:migrationOverVMList) {
 			// 1. get least correlated hosts among active ones
 			List<SDNHost> activeHosts = getActiveHost(hosts);
 			List<SDNHost> sortedHosts = VmMigrationPolicyLeastCorrelated.<SDNHost>sortLeastCorrelatedHosts(vmToMigrate, activeHosts);
 			List<Host> targetHosts = HostSelectionPolicyFirstFit.getFirstFitHostsForVm(vmToMigrate, sortedHosts, vmAllocationPolicy);
-			
+
 			Host migratedHost = null;
 
 			if(targetHosts.size() > 0) {
 				migratedHost = moveVmToHost(vmToMigrate, targetHosts);
 			}
-			
+
 			if(migratedHost == null) {
 				targetHosts = HostSelectionPolicyMostFull.getMostFullHostsForVm(vmToMigrate, hosts, vmAllocationPolicy);
 				migratedHost = moveVmToHost(vmToMigrate, targetHosts);
-			}				
-				
+			}
+
 			// 3. No host can serve this VM, do not migrate.
 			if(migratedHost == null) {
 				System.err.println(vmToMigrate + ": Cannot find target host to migrate");
 				//System.exit(-1);
 				continue;
 			}
-			
+
 			vmToHost.put(vmToMigrate, migratedHost);
 		}
 		return vmToHost;
 
 	}
-	
+
 	protected static List<SDNHost> getActiveHost(List<SDNHost> hostList) {
 		List<SDNHost> activeHosts = new ArrayList<SDNHost>();
 		for(SDNHost host:hostList) {
@@ -76,12 +71,12 @@ public class VmMigrationPolicyLeastCorrelated extends VmMigrationPolicy{
 		}
 		return activeHosts;
 	}
-	
+
 	protected static double getAverageUtilizationMips(SDNHost host) {
 		double endTime = CloudSim.clock();
 		double startTime = endTime - Configuration.migrationTimeInterval;
 		double util = host.getMonitoringValuesHostCPUUtilization().getAverageValue(startTime, endTime);
-		
+
 		return util;
 	}
 
@@ -96,7 +91,7 @@ public class VmMigrationPolicyLeastCorrelated extends VmMigrationPolicy{
 			double avgCC = OverbookingVmAllocationPolicy.getAverageCorrelationCoefficientMips(vm, (SDNHost)h);
 			corr.put(h, avgCC);
 		}
-		
+
 		// Sort the most utilized VMs
 		Collections.sort(hosts, new Comparator<Host>() {
 		    public int compare(Host o1, Host o2) {
@@ -107,8 +102,8 @@ public class VmMigrationPolicyLeastCorrelated extends VmMigrationPolicy{
 		});
 		return (List<T>) hosts;
 	}
-	
-	
+
+
 	protected static double getAverageCorrelationCoefficientMipsHost(SDNVm newVm, SDNHost host) {
 		if(host.getVmList().size() == 0) {
 			//System.err.println("getAverageCorrelationCoefficient: No VM in the host");
@@ -118,12 +113,12 @@ public class VmMigrationPolicyLeastCorrelated extends VmMigrationPolicy{
 		double timeWindow = Configuration.overbookingTimeWindowNumPoints * interval;
 		double endTime = CloudSim.clock();
 		double startTime = endTime - timeWindow > 0 ? endTime - timeWindow : 0;
-		
+
 		double [] newVmHistory = newVm.getMonitoringValuesVmCPUUtilization().getValuePoints(startTime, endTime, interval);
 		// calculate correlation coefficient between the target VM and existing VMs in the host.
 		double [] vHistory = host.getMonitoringValuesHostCPUUtilization().getValuePoints(startTime, endTime, interval);
 		double cc = OverbookingVmAllocationPolicy.calculateCorrelationCoefficient(newVmHistory, vHistory);
-		
+
 		return cc;
 	}
 }

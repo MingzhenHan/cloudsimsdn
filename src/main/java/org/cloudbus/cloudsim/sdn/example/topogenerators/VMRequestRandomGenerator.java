@@ -8,11 +8,11 @@
 
 package org.cloudbus.cloudsim.sdn.example.topogenerators;
 
-import java.util.Random;
-
 import org.apache.commons.math3.distribution.ExponentialDistribution;
 import org.apache.commons.math3.distribution.ParetoDistribution;
 import org.apache.commons.math3.random.Well19937c;
+
+import java.util.Random;
 
 /**
  * Generate VM requests, for example:
@@ -31,21 +31,21 @@ import org.apache.commons.math3.random.Well19937c;
     },
    ],
   "links" : [
-    { 
-    	"name": "l32", 
-    	"source" : "vm03" , 
-    	"destination" : "vm02" , 
+    {
+    	"name": "l32",
+    	"source" : "vm03" ,
+    	"destination" : "vm02" ,
     	"bandwidth" : 66000000
     },
    ],
 }
- * 
+ *
  * @author Jungmin Son
  * @since CloudSimSDN 1.0
  */
 
 public class VMRequestRandomGenerator {
-	
+
 	public static void main(String [] argv) {
 		int numVms = 5;
 		String jsonFileName = "very_simple_virtual.json";
@@ -54,45 +54,45 @@ public class VMRequestRandomGenerator {
 		VMRequestRandomGenerator reqg = new VMRequestRandomGenerator(vmGenerator, numVms, jsonFileName);
 		reqg.start();
 	}
-	
+
 	private static long seed = 10;
 	int numVms = 0;
 	String jsonFileName = null;
 	VirtualTopologyGeneratorVmTypes vmGenerator = null;
-	
+
 	public VMRequestRandomGenerator(VirtualTopologyGeneratorVmTypes vmGenerator, int numVms, String jsonFileName) {
 		this.vmGenerator = vmGenerator;
 		this.numVms = numVms;
 		this.jsonFileName = jsonFileName;
-		
+
 	}
 	public void start() {
 		generateVMsRandom(numVms);
 		vmGenerator.wrtieJSON(jsonFileName);
 	}
-	
+
 	public void generateVMsRandom(int totalVmNum) {
 		int vmCount = 0;
 		double lastStartTime = 0;
-		
+
 		double startMean = 1800; // sec = 30min
 		double durScale=14400; // sec = 4 hours
 		double durShape=1.2;
-		
+
 		Random rVmNum = new Random(seed);
-		ExponentialDistribution rStartTime = new ExponentialDistribution(new Well19937c(seed), startMean, ExponentialDistribution.DEFAULT_INVERSE_ABSOLUTE_ACCURACY);	
+		ExponentialDistribution rStartTime = new ExponentialDistribution(new Well19937c(seed), startMean, ExponentialDistribution.DEFAULT_INVERSE_ABSOLUTE_ACCURACY);
 		ParetoDistribution rDuration = new ParetoDistribution(new Well19937c(seed), durScale, durShape);
-		
+
 		int vmGroup=0;
 		while(vmCount < totalVmNum) {
 			int vmsInGroup = rVmNum.nextInt(4)+2;
 			double duration = Math.floor(rDuration.sample());
-			
+
 			vmGenerator.generateVMGroup(vmsInGroup, lastStartTime, lastStartTime+duration, null, vmGroup, -1);
 			lastStartTime += Math.floor(rStartTime.sample());
-			
+
 			vmCount += vmsInGroup;
-			vmGroup++;			
+			vmGroup++;
 		}
 	}
 }

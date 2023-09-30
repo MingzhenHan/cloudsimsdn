@@ -8,9 +8,6 @@
 
 package org.cloudbus.cloudsim.sdn.policies.vmallocation.overbooking;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNHost;
@@ -19,15 +16,18 @@ import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmGroup;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmMigrationPolicy;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OverBookingVmAllocationPolicyDistributeConnected extends OverbookingVmAllocationPolicyConsolidateConnected {
-	
+
 	public OverBookingVmAllocationPolicyDistributeConnected(
 			List<? extends Host> list,
 			HostSelectionPolicy hostSelectionPolicy,
 			VmMigrationPolicy vmMigrationPolicy) {
 		super(list, hostSelectionPolicy, vmMigrationPolicy);
 	}
-	
+
 	@Override
 	public boolean allocateHostForVmInGroup(Vm vm, VmGroup vmGroup) {
 		if(vmMigrationPolicy instanceof VmMigrationPolicyGroupInterface) {
@@ -45,7 +45,7 @@ public class OverBookingVmAllocationPolicyDistributeConnected extends Overbookin
 			// Avoid the correlated hosts.
 			List<SDNHost> allHosts = new ArrayList<SDNHost>(this.<SDNHost>getHostList());
 			allHosts.removeAll(connectedHosts);
-			
+
 			if(allocateHostForVm(vm, hostSelectionPolicy.selectHostForVm((SDNVm)vm, allHosts)) == true) {
 				return true;
 			}

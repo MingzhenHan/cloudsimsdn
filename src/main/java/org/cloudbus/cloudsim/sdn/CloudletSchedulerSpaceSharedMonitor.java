@@ -8,31 +8,31 @@
 
 package org.cloudbus.cloudsim.sdn;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.CloudletSchedulerSpaceShared;
 import org.cloudbus.cloudsim.Consts;
 import org.cloudbus.cloudsim.ResCloudlet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CloudletSchedulerSpaceSharedMonitor extends CloudletSchedulerSpaceShared implements CloudletSchedulerMonitor {
 	// For monitoring
 	private double prevMonitoredTime = 0;
 	private double timeoutLimit = Double.POSITIVE_INFINITY;
-	
+
 	public CloudletSchedulerSpaceSharedMonitor(double timeOut) {
 		super();
 		this.timeoutLimit = timeOut;
 	}
-	
+
 	@Override
 	public double updateVmProcessing(double currentTime, List<Double> mipsShare) {
 		double ret = super.updateVmProcessing(currentTime, mipsShare);
 		processTimeout(currentTime);
 		return ret;
 	}
-	
+
 	@Override
 	public List<Cloudlet> getFailedCloudlet() {
 		List<Cloudlet> failed = new ArrayList<Cloudlet>();
@@ -54,13 +54,13 @@ public class CloudletSchedulerSpaceSharedMonitor extends CloudletSchedulerSpaceS
 						rcl.setCloudletStatus(Cloudlet.FAILED);
 						rcl.finalizeCloudlet();
 						timeoutCloudlet.add(rcl);
-						usedPes -= rcl.getNumberOfPes();					
+						usedPes -= rcl.getNumberOfPes();
 					}
 				}
 				getCloudletExecList().removeAll(timeoutCloudlet);
 				getCloudletFailedList().addAll(timeoutCloudlet);
 			}
-			{			
+			{
 				List<ResCloudlet> timeoutCloudlet = new ArrayList<ResCloudlet>();
 				for (ResCloudlet rcl : getCloudletWaitingList()) {
 					if(rcl.getCloudletArrivalTime() < timeout) {
@@ -72,7 +72,7 @@ public class CloudletSchedulerSpaceSharedMonitor extends CloudletSchedulerSpaceS
 				getCloudletWaitingList().removeAll(timeoutCloudlet);
 				getCloudletFailedList().addAll(timeoutCloudlet);
 			}
-			
+
 		}
 	}
 
@@ -81,11 +81,11 @@ public class CloudletSchedulerSpaceSharedMonitor extends CloudletSchedulerSpaceS
 		long totalProcessedMIs = 0;
 		double timeSpent = currentTime - prevMonitoredTime;
 		double capacity = getCapacity(mipsShare);
-		
+
 		for (ResCloudlet rcl : getCloudletExecList()) {
 			totalProcessedMIs += (long) (capacity * timeSpent * rcl.getNumberOfPes() * Consts.MILLION);
 		}
-		
+
 		prevMonitoredTime = currentTime;
 		return totalProcessedMIs;
 	}
@@ -122,8 +122,8 @@ public class CloudletSchedulerSpaceSharedMonitor extends CloudletSchedulerSpaceS
 	public int getCloudletTotalPesRequested() {
 		return getCurrentMipsShare().size();
 	}
-	
-	
+
+
 	public int getNumAllCloudlets() {
 		return super.cloudletExecList.size() + super.cloudletFailedList.size() + super.getCloudletFinishedList().size() +
 				super.cloudletPausedList.size() + super.cloudletWaitingList.size();

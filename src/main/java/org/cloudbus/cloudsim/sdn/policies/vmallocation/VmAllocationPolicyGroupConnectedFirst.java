@@ -8,15 +8,15 @@
 
 package org.cloudbus.cloudsim.sdn.policies.vmallocation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNHost;
 import org.cloudbus.cloudsim.sdn.policies.selecthost.HostSelectionPolicy;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.overbooking.VmMigrationPolicyGroupInterface;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class VmAllocationPolicyGroupConnectedFirst extends VmAllocationPolicyEx implements VmAllocationInGroup {
 	public VmAllocationPolicyGroupConnectedFirst(
@@ -28,7 +28,7 @@ public class VmAllocationPolicyGroupConnectedFirst extends VmAllocationPolicyEx 
 
 	/**
 	 * Allocates a host for a given VM Group.
-	 * 
+	 *
 	 * @param vm VM specification
 	 * @return $true if the host could be allocated; $false otherwise
 	 * @pre $none
@@ -48,7 +48,7 @@ public class VmAllocationPolicyGroupConnectedFirst extends VmAllocationPolicyEx 
 		}
 		else {
 			// Other VMs in the group has been already allocated
-			// Try to put this VM into one of the correlated hosts			
+			// Try to put this VM into one of the correlated hosts
 			if(allocateHostForVm(vm, hostSelectionPolicy.selectHostForVm((SDNVm)vm, connectedHosts)) == true) {
 				return true;
 			}
@@ -61,13 +61,13 @@ public class VmAllocationPolicyGroupConnectedFirst extends VmAllocationPolicyEx 
 
 	private List<SDNHost> getHostListVmGroup(VmGroup vmGroup) {
 		List<SDNHost> hosts = new ArrayList<SDNHost>();
-		
+
 		for(SDNVm vm:vmGroup.<SDNVm>getVms()) {
 			SDNHost h = (SDNHost)this.getHost(vm);
 			if(h != null)
 				hosts.add(h);
 		}
-		
-		return hosts;		
-	}	
+
+		return hosts;
+	}
 }

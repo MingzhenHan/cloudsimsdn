@@ -8,10 +8,10 @@
 
 package org.cloudbus.cloudsim.sdn.monitor;
 
+import org.cloudbus.cloudsim.sdn.Configuration;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.cloudbus.cloudsim.sdn.Configuration;
 
 public class MonitoringValues {
 	public enum ValueType {
@@ -20,7 +20,7 @@ public class MonitoringValues {
 		General_Float,
 		Time_Second,
 	}
-	
+
 	private ValueType valueType;
 
 	/**
@@ -31,12 +31,12 @@ public class MonitoringValues {
 	 * The timestamps of the monitoring metric
 	 */
 	private ArrayList<Double> timestamps;
-	
+
 	private double maxDurationToKeep;
 
 	/**
 	 * The constuctor of the class.
-	 * 
+	 *
 	 * @param value
 	 *            the monitoring value
 	 * @param timestamp
@@ -48,14 +48,14 @@ public class MonitoringValues {
 		this.valueType = type;
 		this.maxDurationToKeep = maxDurationToKeep;
 	}
-	
+
 	public MonitoringValues(ValueType type) {
 		this(type, Configuration.migrationTimeInterval*2);
 	}
-	
+
 	private void removeOutdatedPoints(double currentTime) {
 		double timeToRemove = currentTime - this.maxDurationToKeep;
-		
+
 		while(timestamps.size() > 1) {
 			double nextTime = timestamps.get(1);
 			if(nextTime < timeToRemove) {
@@ -67,14 +67,14 @@ public class MonitoringValues {
 			}
 		}
 	}
-	
+
 	public int getNumberOfPoints() {
 		return values.size();
 	}
 
 	/**
 	 * Add new value and timestamp to the variables.
-	 * 
+	 *
 	 * @param value
 	 *            the monitoring value
 	 * @param timestamp
@@ -82,25 +82,25 @@ public class MonitoringValues {
 	 */
 	public void add(double value, double timestamp) {
 		removeOutdatedPoints(timestamp);
-		
+
 		if(values.size() >= 1 && values.get(values.size()-1) == value)
 		{
 			// Remove the last one (= duplicate)
 			values.remove(values.size()-1);
 			timestamps.remove(timestamps.size()-1);
 		}
-		
+
 //		if(value > 1.5) {
 //			System.err.println("Too high value!");
 //		}
 		values.add(value);
 		timestamps.add(timestamp);
 	}
-	
+
 
 	/**
 	 * Get the values.
-	 * 
+	 *
 	 * @return the value arrayList.
 	 */
 	public List<Double> getValues() {
@@ -109,10 +109,10 @@ public class MonitoringValues {
 
 	public double [] getValuePoints(double startTime, double endTime, double interval) {
 		startTime = startTime > 0 ? startTime : 0;
-		
+
 		int numPoints = (int) Math.ceil((endTime-startTime)/interval);
 		if(numPoints == 0) return null;
-		
+
 		double [] points = new double[numPoints];
 		double startInterval = startTime;
 		double endInterval = startTime + interval;
@@ -124,8 +124,8 @@ public class MonitoringValues {
 			double sum = 0;
 			double totalDuration = 0;
 			double t_prev = startInterval;
-			double average = 0; 
-			
+			double average = 0;
+
 			while(i < timestamps.size()) {
 				double t = timestamps.get(i);
 				if(t > startInterval) {
@@ -145,20 +145,20 @@ public class MonitoringValues {
 			if(totalDuration != 0) {
 				average = sum / totalDuration;
 			}
-			
+
 			points[j++] = average;
 			startInterval = endInterval;
 			endInterval += interval;
 		}
 		while(endInterval <= endTime);
-		
+
 		return points;
 	}
-	
+
 
 	/**
 	 * Get the timestamps
-	 * 
+	 *
 	 * @return the timestamps arrayList.
 	 */
 	public List<Double> getTimestamps() {
@@ -167,7 +167,7 @@ public class MonitoringValues {
 
 	/**
 	 * Set the values.
-	 * 
+	 *
 	 * @param values
 	 *            the value arrayList.
 	 */
@@ -177,7 +177,7 @@ public class MonitoringValues {
 
 	/**
 	 * Set the timestamps
-	 * 
+	 *
 	 * @param timestamps
 	 *            the timestamps arrayList.
 	 */
@@ -196,11 +196,11 @@ public class MonitoringValues {
 			else {
 				sb.append(String.format("%.0f:%.2f\n", timestamps.get(i), values.get(i)));
 			}
-			
+
 		}
 		return sb.toString();
 	}
-	
+
 	public double getAverageValue(double startTime, double endTime) {
 		// Calculate the average values between start and end time
 		double sum = 0;
@@ -229,18 +229,18 @@ public class MonitoringValues {
 				}
 			}
 		}
-		
-		double average = 0; 
+
+		double average = 0;
 		if(totalDuration != 0) {
 			average = sum / totalDuration;
 		}
-		
+
 		return average;
 	}
-	
+
 	/**
 	 * Calculate the percentile of the overutilized time (Percentile of the time that utilization level was above the threshold)
-	 * 
+	 *
 	 * @param value
 	 *            the monitoring value
 	 * @param timestamp
@@ -264,18 +264,18 @@ public class MonitoringValues {
 					overutilizedDuration += (t-t_prev);
 				}
 				totalDuration += (t-t_prev);
-				
+
 				if(t >= endTime) {
 					break;
 				}
 			}
 		}
-		
-		double percentile = 0; 
+
+		double percentile = 0;
 		if(totalDuration != 0) {
 			percentile = overutilizedDuration / totalDuration;
 		}
-		
+
 		return percentile;
 	}
 }

@@ -8,16 +8,16 @@
 
 package org.cloudbus.cloudsim.provisioners;
 
+import org.cloudbus.cloudsim.Vm;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cloudbus.cloudsim.Vm;
-
 /**
  * RamProvisionerSimple is an extension of {@link RamProvisioner} which uses a best-effort policy to
- * allocate memory to VMs: if there is available ram on the host, it allocates; otherwise, it fails. 
+ * allocate memory to VMs: if there is available ram on the host, it allocates; otherwise, it fails.
  * Each host has to have its own instance of a RamProvisioner.
- * 
+ *
  * @author Rodrigo N. Calheiros
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 1.0
@@ -30,8 +30,8 @@ public class RamProvisionerSimple extends RamProvisioner {
 
 	/**
 	 * Instantiates a new ram provisioner simple.
-	 * 
-	 * @param availableRam The total ram capacity from the host that the provisioner can allocate to VMs. 
+	 *
+	 * @param availableRam The total ram capacity from the host that the provisioner can allocate to VMs.
 	 */
 	public RamProvisionerSimple(int availableRam) {
 		super(availableRam);
@@ -98,7 +98,7 @@ public class RamProvisionerSimple extends RamProvisioner {
 
 	/**
 	 * Gets the map between VMs and allocated ram.
-	 * 
+	 *
 	 * @return the ram map
 	 */
 	protected Map<String, Integer> getRamTable() {
@@ -107,7 +107,7 @@ public class RamProvisionerSimple extends RamProvisioner {
 
 	/**
 	 * Sets the map between VMs and allocated ram.
-	 * 
+	 *
 	 * @param ramTable the ram map
 	 */
 	protected void setRamTable(Map<String, Integer> ramTable) {

@@ -1,16 +1,11 @@
 package org.cloudbus.cloudsim.sdn;
 
-import java.util.LinkedList;
-
 import org.cloudbus.cloudsim.Pe;
 import org.cloudbus.cloudsim.VmScheduler;
-import org.cloudbus.cloudsim.provisioners.BwProvisioner;
-import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
-import org.cloudbus.cloudsim.provisioners.PeProvisioner;
-import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
-import org.cloudbus.cloudsim.provisioners.RamProvisioner;
-import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
+import org.cloudbus.cloudsim.provisioners.*;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNHost;
+
+import java.util.LinkedList;
 
 public class HostFactorySimple implements HostFactory {
 
@@ -22,12 +17,12 @@ public class HostFactorySimple implements HostFactory {
 			PeProvisioner pp =  new PeProvisionerSimple(mips);
 			peList.add(new Pe(peId++, pp));
 		}
-		
+
 		RamProvisioner ramPro = new RamProvisionerSimple(ram);
 		BwProvisioner bwPro = new BwProvisionerSimple(bw);
-		VmScheduler vmScheduler = new VmSchedulerTimeSharedEnergy(peList);		
+		VmScheduler vmScheduler = new VmSchedulerTimeSharedEnergy(peList);
 		SDNHost newHost = new SDNHost(ramPro, bwPro, storage, peList, vmScheduler, name);
-		
-		return newHost;		
+
+		return newHost;
 	}
 }

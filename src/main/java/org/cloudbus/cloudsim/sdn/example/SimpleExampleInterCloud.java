@@ -7,33 +7,15 @@
  */
 package org.cloudbus.cloudsim.sdn.example;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.cloudbus.cloudsim.DatacenterCharacteristics;
-import org.cloudbus.cloudsim.Host;
-import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.Storage;
-import org.cloudbus.cloudsim.VmAllocationPolicy;
+import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.sdn.CloudSimEx;
 import org.cloudbus.cloudsim.sdn.Configuration;
 import org.cloudbus.cloudsim.sdn.SDNBroker;
-import org.cloudbus.cloudsim.sdn.physicalcomponents.Node;
-import org.cloudbus.cloudsim.sdn.workload.Workload;
 import org.cloudbus.cloudsim.sdn.monitor.power.PowerUtilizationMaxHostInterface;
 import org.cloudbus.cloudsim.sdn.nos.NetworkOperatingSystem;
 import org.cloudbus.cloudsim.sdn.parsers.PhysicalTopologyParser;
+import org.cloudbus.cloudsim.sdn.physicalcomponents.Node;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNDatacenter;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.Switch;
 import org.cloudbus.cloudsim.sdn.policies.selectlink.LinkSelectionPolicy;
@@ -42,8 +24,15 @@ import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmAllocationPolicyCombine
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmAllocationPolicyCombinedMostFullFirst;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmAllocationPolicyMipsLeastFullFirst;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmAllocationPolicyMipsMostFullFirst;
+import org.cloudbus.cloudsim.sdn.workload.Workload;
 import org.json.JSONObject;
 import org.json.XML;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 
 /**
  * CloudSimSDN example main program for InterCloud scenario.
@@ -79,7 +68,7 @@ public class SimpleExampleInterCloud {
 	 * @param args the args
 	 */
 	@SuppressWarnings("unused")
-	public static void main(String[] args) throws IOException {
+	public void main(String[] args) throws IOException {
 		CloudSimEx.setStartTime();
 
 		workloads = new ArrayList<String>();

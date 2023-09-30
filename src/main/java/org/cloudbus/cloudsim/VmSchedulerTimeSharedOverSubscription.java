@@ -1,11 +1,13 @@
 /*
  * Title: CloudSim Toolkit Description: CloudSim (Cloud Simulation) Toolkit for Modeling and
  * Simulation of Clouds Licence: GPL - http://www.gnu.org/copyleft/gpl.html
- * 
+ *
  * Copyright (c) 2009-2012, The University of Melbourne, Australia
  */
 
 package org.cloudbus.cloudsim;
+
+import org.cloudbus.cloudsim.lists.PeList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,13 +15,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.cloudbus.cloudsim.lists.PeList;
-
 /**
  * This is a Time-Shared VM Scheduler, which allows over-subscription. In other words, the scheduler
  * still allows the allocation of VMs that require more CPU capacity than is available.
  * Oversubscription results in performance degradation.
- * 
+ *
  * @author Anton Beloglazov
  * @author Rodrigo N. Calheiros
  * @since CloudSim Toolkit 3.0
@@ -28,7 +28,7 @@ public class VmSchedulerTimeSharedOverSubscription extends VmSchedulerTimeShared
 
 	/**
 	 * Instantiates a new vm scheduler time shared over subscription.
-	 * 
+	 *
 	 * @param pelist the list of PEs of the host where the VmScheduler is associated to.
 	 */
 	public VmSchedulerTimeSharedOverSubscription(List<? extends Pe> pelist) {
@@ -39,9 +39,9 @@ public class VmSchedulerTimeSharedOverSubscription extends VmSchedulerTimeShared
 	 * Allocates PEs for vm. The policy allows over-subscription. In other words, the policy still
 	 * allows the allocation of VMs that require more CPU capacity than is available.
 	 * Oversubscription results in performance degradation.
-         * It cannot be allocated more CPU capacity for each virtual PE than the MIPS 
+         * It cannot be allocated more CPU capacity for each virtual PE than the MIPS
          * capacity of a single physical PE.
-	 * 
+	 *
 	 * @param vmUid the vm uid
 	 * @param mipsShareRequested the list of mips share requested
 	 * @return true, if successful

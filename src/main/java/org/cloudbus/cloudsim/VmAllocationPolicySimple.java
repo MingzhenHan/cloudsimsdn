@@ -8,18 +8,18 @@
 
 package org.cloudbus.cloudsim;
 
+import org.cloudbus.cloudsim.core.CloudSim;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cloudbus.cloudsim.core.CloudSim;
-
 /**
  * VmAllocationPolicySimple is an VmAllocationPolicy that chooses, as the host for a VM, the host
- * with less PEs in use. It is therefore a Worst Fit policy, allocating VMs into the 
+ * with less PEs in use. It is therefore a Worst Fit policy, allocating VMs into the
  * host with most available PE.
- * 
+ *
  * @author Rodrigo N. Calheiros
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 1.0
@@ -30,7 +30,7 @@ public class VmAllocationPolicySimple extends VmAllocationPolicy {
          * The map key is a VM UID and the value is the allocated host for that VM. */
 	private Map<String, Host> vmTable;
 
-	/** The map between each VM and the number of Pes used. 
+	/** The map between each VM and the number of Pes used.
          * The map key is a VM UID and the value is the number of used Pes for that VM. */
 	private Map<String, Integer> usedPes;
 
@@ -39,7 +39,7 @@ public class VmAllocationPolicySimple extends VmAllocationPolicy {
 
 	/**
 	 * Creates a new VmAllocationPolicySimple object.
-	 * 
+	 *
 	 * @param list the list of hosts
 	 * @pre $none
 	 * @post $none
@@ -59,7 +59,7 @@ public class VmAllocationPolicySimple extends VmAllocationPolicy {
 
 	/**
 	 * Allocates the host with less PEs in use for a given VM.
-	 * 
+	 *
 	 * @param vm {@inheritDoc}
 	 * @return {@inheritDoc}
 	 * @pre $none
@@ -131,7 +131,7 @@ public class VmAllocationPolicySimple extends VmAllocationPolicy {
 
 	/**
 	 * Gets the vm table.
-	 * 
+	 *
 	 * @return the vm table
 	 */
 	public Map<String, Host> getVmTable() {
@@ -140,7 +140,7 @@ public class VmAllocationPolicySimple extends VmAllocationPolicy {
 
 	/**
 	 * Sets the vm table.
-	 * 
+	 *
 	 * @param vmTable the vm table
 	 */
 	protected void setVmTable(Map<String, Host> vmTable) {
@@ -149,7 +149,7 @@ public class VmAllocationPolicySimple extends VmAllocationPolicy {
 
 	/**
 	 * Gets the used pes.
-	 * 
+	 *
 	 * @return the used pes
 	 */
 	protected Map<String, Integer> getUsedPes() {
@@ -158,7 +158,7 @@ public class VmAllocationPolicySimple extends VmAllocationPolicy {
 
 	/**
 	 * Sets the used pes.
-	 * 
+	 *
 	 * @param usedPes the used pes
 	 */
 	protected void setUsedPes(Map<String, Integer> usedPes) {
@@ -167,7 +167,7 @@ public class VmAllocationPolicySimple extends VmAllocationPolicy {
 
 	/**
 	 * Gets the free pes.
-	 * 
+	 *
 	 * @return the free pes
 	 */
 	protected List<Integer> getFreePes() {
@@ -176,7 +176,7 @@ public class VmAllocationPolicySimple extends VmAllocationPolicy {
 
 	/**
 	 * Sets the free pes.
-	 * 
+	 *
 	 * @param freePes the new free pes
 	 */
 	protected void setFreePes(List<Integer> freePes) {

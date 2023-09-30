@@ -8,13 +8,13 @@
 
 package org.cloudbus.cloudsim.sdn.policies.selecthost;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNHost;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmAllocationPolicyEx;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HostSelectionPolicyMostFull extends HostSelectionPolicy {
 	@Override
@@ -28,11 +28,11 @@ public class HostSelectionPolicyMostFull extends HostSelectionPolicy {
 
 		// 1. Find/Order the best host for this VM by comparing a metric
 		boolean result = false;
-		
-		// freeReousrces : Weighted-calculated free resource percentage in each host 
+
+		// freeReousrces : Weighted-calculated free resource percentage in each host
 		double[] freeResources = vmAllocPolicy.buildFreeResourceMetric(hosts);
 
-		// Find the most full host, with available resource. 
+		// Find the most full host, with available resource.
 		for(int tries = 0; result == false && tries < numHosts; tries++) {
 			// we still trying until we find a host or until we try all of them
 			double lessFree = Double.POSITIVE_INFINITY;
@@ -46,13 +46,13 @@ public class HostSelectionPolicyMostFull extends HostSelectionPolicy {
 				}
 			}
 			freeResources[idx] = Double.POSITIVE_INFINITY;	// Mark visited
-			
+
 			SDNHost host = hosts.get(idx);
 			if(vmAllocPolicy.isResourceAllocatable(host, vm)) {
 				hostCandidates.add(host);
 			}
 		}
-		
+
 		return hostCandidates;
 	}
 }

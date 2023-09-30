@@ -10,7 +10,7 @@ package org.cloudbus.cloudsim.core;
 
 /**
  * This class represents a simulation event which is passed between the entities in the simulation.
- * 
+ *
  * @author Costas Simatos
  * @see Simulation
  * @see SimEntity
@@ -35,8 +35,8 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
 	/** The user defined type of the event. **/
 	private final int tag;
 
-	/** 
-         * Any data the event is carrying. 
+	/**
+         * Any data the event is carrying.
          * @todo I would be used generics to define the type of the event data.
          * But this modification would incur several changes in the simulator core
          * that has to be assessed first.
@@ -48,7 +48,7 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
          * when multiple events are generated at the same time.
          * If two events have the same {@link #time}, to know
          * what event is greater than other (i.e. that happens after other),
-         * the {@link #compareTo(org.cloudbus.cloudsim.core.SimEvent)}
+         * the {@link #compareTo(SimEvent)}
          * makes use of this field.
          */
 	private long serial = -1;
@@ -100,15 +100,15 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
 	}
 
 	/**
-	 * Sets the time that the event was removed from the queue to start service. 
-	 * 
+	 * Sets the time that the event was removed from the queue to start service.
+	 *
 	 * @param end_waiting_time
 	 */
 	protected void setEndWaitingTime(double end_waiting_time) {
 		endWaitingTime = end_waiting_time;
 	}
-        
-	// ------------------- PUBLIC METHODS --------------------------        
+
+	// ------------------- PUBLIC METHODS --------------------------
 
 	@Override
 	public String toString() {
@@ -118,7 +118,7 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
 
 	/**
 	 * Gets the internal type
-	 * 
+	 *
 	 * @return
 	 */
 	public int getType() {
@@ -145,7 +145,7 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
 
 	/**
 	 * Get the unique id number of the entity which received this event.
-	 * 
+	 *
 	 * @return the id number
 	 */
 	public int getDestination() {
@@ -154,7 +154,7 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
 
 	/**
 	 * Get the unique id number of the entity which scheduled this event.
-	 * 
+	 *
 	 * @return the id number
 	 */
 	public int getSource() {
@@ -163,7 +163,7 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
 
 	/**
 	 * Get the simulation time that this event was scheduled.
-	 * 
+	 *
 	 * @return The simulation time
 	 */
 	public double eventTime() {
@@ -172,7 +172,7 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
 
 	/**
 	 * Get the simulation time that this event was removed from the queue for service.
-	 * 
+	 *
 	 * @return The simulation time
 	 */
 	public double endWaitingTime() {
@@ -181,7 +181,7 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
 
 	/**
 	 * Get the user-defined tag of this event
-	 * 
+	 *
 	 * @return The tag
 	 */
 	public int type() {
@@ -190,7 +190,7 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
 
 	/**
 	 * Get the unique id number of the entity which scheduled this event.
-	 * 
+	 *
 	 * @return the id number
 	 */
 	public int scheduledBy() {
@@ -199,7 +199,7 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
 
 	/**
 	 * Get the user-defined tag of this event.
-	 * 
+	 *
 	 * @return The tag
 	 */
 	public int getTag() {
@@ -208,7 +208,7 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
 
 	/**
 	 * Get the data passed in this event.
-	 * 
+	 *
 	 * @return A reference to the data
 	 */
 	public Object getData() {
@@ -222,7 +222,7 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
 
 	/**
 	 * Set the source entity of this event.
-	 * 
+	 *
 	 * @param s The unique id number of the entity
 	 */
 	public void setSource(int s) {
@@ -231,7 +231,7 @@ public class SimEvent implements Cloneable, Comparable<SimEvent> {
 
 	/**
 	 * Set the destination entity of this event.
-	 * 
+	 *
 	 * @param d The unique id number of the entity
 	 */
 	public void setDestination(int d) {

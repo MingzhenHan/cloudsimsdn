@@ -8,12 +8,12 @@
 
 package org.cloudbus.cloudsim.core;
 
+import org.cloudbus.cloudsim.Log;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.cloudbus.cloudsim.Log;
 
 /**
  * A Cloud Information Service (CIS) is an entity that provides cloud resource registration,
@@ -34,7 +34,7 @@ public class CloudInformationService extends SimEntity {
          * Cloud Information Service (CIS).
          * @todo It is not clear if this list is a list of host id's or datacenter id's.
          * The previous attribute documentation just said "For all types of hostList".
-         * It can be seen at the method {@link #processEvent(org.cloudbus.cloudsim.core.SimEvent)}
+         * It can be seen at the method {@link #processEvent(SimEvent)}
          * that the list is updated when a CloudSimTags.REGISTER_RESOURCE event
          * is received. However, only the Datacenter class sends and event
          * of this type, including its id as parameter.
@@ -239,7 +239,7 @@ public class CloudInformationService extends SimEntity {
 
 	/**
 	 * Process non-default received events that aren't processed by
-         * the {@link #processEvent(org.cloudbus.cloudsim.core.SimEvent)} method.
+         * the {@link #processEvent(SimEvent)} method.
          * This method should be overridden by subclasses in other to process
          * new defined events.
 	 *

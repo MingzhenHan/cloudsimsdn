@@ -1,23 +1,23 @@
 /*
  * Title: CloudSim Toolkit Description: CloudSim (Cloud Simulation) Toolkit for Modeling and
  * Simulation of Clouds Licence: GPL - http://www.gnu.org/copyleft/gpl.html
- * 
+ *
  * Copyright (c) 2009-2012, The University of Melbourne, Australia
  */
 
 package org.cloudbus.cloudsim;
 
+import org.cloudbus.cloudsim.core.CloudSim;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.cloudbus.cloudsim.core.CloudSim;
 
 /**
  * CloudletSchedulerTimeShared implements a policy of scheduling performed by a virtual machine
  * to run its {@link Cloudlet Cloudlets}.
  * Cloudlets execute in time-shared manner in VM.
  * Each VM has to have its own instance of a CloudletScheduler.
- * 
+ *
  * @author Rodrigo N. Calheiros
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 1.0
@@ -25,13 +25,13 @@ import org.cloudbus.cloudsim.core.CloudSim;
 public class CloudletSchedulerTimeShared extends CloudletScheduler {
 	/** The number of PEs currently available for the VM using the scheduler,
          * according to the mips share provided to it by
-         * {@link #updateVmProcessing(double, java.util.List)} method. */
+         * {@link #updateVmProcessing(double, List)} method. */
 	protected int currentCPUs;
 
 	/**
 	 * Creates a new CloudletSchedulerTimeShared object. This method must be invoked before starting
 	 * the actual simulation.
-	 * 
+	 *
 	 * @pre $none
 	 * @post $none
 	 */
@@ -87,7 +87,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 	/**
 	 * Gets the individual MIPS capacity available for each PE available for the scheduler,
          * considering that all PEs have the same capacity.
-	 * 
+	 *
 	 * @param mipsShare list with MIPS share of each PE available to the scheduler
 	 * @return the capacity of each PE
 	 */
@@ -281,7 +281,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 	@Override
 	public double getTotalUtilizationOfCpu(double time) {
                 /*
-                 * @todo 
+                 * @todo
                  */
 		double totalUtilization = 0;
 		for (ResCloudlet gl : getCloudletExecList()) {

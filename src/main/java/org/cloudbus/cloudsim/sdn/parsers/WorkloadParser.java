@@ -7,25 +7,16 @@
  */
 package org.cloudbus.cloudsim.sdn.parsers;
 
+import org.cloudbus.cloudsim.Cloudlet;
+import org.cloudbus.cloudsim.UtilizationModel;
+import org.cloudbus.cloudsim.sdn.Configuration;
+import org.cloudbus.cloudsim.sdn.workload.*;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-
-import org.cloudbus.cloudsim.Cloudlet;
-import org.cloudbus.cloudsim.UtilizationModel;
-import org.cloudbus.cloudsim.sdn.Configuration;
-import org.cloudbus.cloudsim.sdn.workload.Processing;
-import org.cloudbus.cloudsim.sdn.workload.Request;
-import org.cloudbus.cloudsim.sdn.workload.Transmission;
-import org.cloudbus.cloudsim.sdn.workload.Workload;
-import org.cloudbus.cloudsim.sdn.workload.WorkloadResultWriter;
+import java.util.*;
 
 /**
  * Parse [request].csv file.

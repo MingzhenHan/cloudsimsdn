@@ -8,16 +8,16 @@
 
 package org.cloudbus.cloudsim.util;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * A class containing multiple convenient math functions.
- * 
+ *
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 3.0
  * @todo Using Java 8 Stream, some methods here can be improved or removed.
@@ -26,7 +26,7 @@ public class MathUtil {
 
 	/**
 	 * Sums a list of numbers.
-	 * 
+	 *
 	 * @param list the list of numbers
 	 * @return the double
 	 */
@@ -40,7 +40,7 @@ public class MathUtil {
 
 	/**
 	 * Converts a List to array.
-	 * 
+	 *
 	 * @param list the list of numbers
 	 * @return the double[]
          * @todo The method {@link List#toArray()} could be used directly
@@ -56,7 +56,7 @@ public class MathUtil {
 
 	/**
 	 * Gets the median from a list of numbers.
-	 * 
+	 *
 	 * @param list the list of numbers
 	 * @return the median
 	 */
@@ -66,9 +66,9 @@ public class MathUtil {
 
 	/**
 	 * Gets the median from an array of numbers.
-	 * 
+	 *
 	 * @param list the array of numbers
-	 * 
+	 *
 	 * @return the median
 	 */
 	public static double median(final double[] list) {
@@ -77,7 +77,7 @@ public class MathUtil {
 
 	/**
 	 * Returns an object to compute descriptive statistics for an list of numbers.
-	 * 
+	 *
 	 * @param list the list of numbers. Must not be null.
 	 * @return descriptive statistics for the list of numbers.
 	 */
@@ -94,7 +94,7 @@ public class MathUtil {
 
 	/**
 	 * Returns an object to compute descriptive statistics for an array of numbers.
-	 * 
+	 *
 	 * @param list the array of numbers. Must not be null.
 	 * @return descriptive statistics for the array of numbers.
 	 */
@@ -111,9 +111,9 @@ public class MathUtil {
 
 	/**
 	 * Gets the average from a list of numbers.
-	 * 
+	 *
 	 * @param list the list of numbers
-	 * 
+	 *
 	 * @return the average
 	 */
 	public static double mean(final List<Double> list) {
@@ -126,7 +126,7 @@ public class MathUtil {
 
 	/**
 	 * Gets the Variance from a list of numbers.
-	 * 
+	 *
 	 * @param list the list of numbers
 	 * @return the variance
 	 */
@@ -148,7 +148,7 @@ public class MathUtil {
 
 	/**
 	 * Gets the standard deviation from a list of numbers.
-	 * 
+	 *
 	 * @param list the list of numbers
 	 * @return the standard deviation
 	 */
@@ -158,7 +158,7 @@ public class MathUtil {
 
 	/**
 	 * Gets the Median absolute deviation (MAD) from a array of numbers.
-	 * 
+	 *
 	 * @param data the array of numbers
 	 * @return the mad
 	 */
@@ -177,7 +177,7 @@ public class MathUtil {
 
 	/**
 	 * Gets the Interquartile Range (IQR) from an array of numbers.
-	 * 
+	 *
 	 * @param data the array of numbers
 	 * @return the IQR
 	 */
@@ -189,9 +189,9 @@ public class MathUtil {
 	}
 
 	/**
-	 * Counts the number of values different of zero at the beginning of 
+	 * Counts the number of values different of zero at the beginning of
          * an array.
-	 * 
+	 *
 	 * @param data the array of numbers
 	 * @return the number of values different of zero at the beginning of the array
 	 */
@@ -207,7 +207,7 @@ public class MathUtil {
 
 	/**
 	 * Gets the length of the shortest row in a given matrix
-	 * 
+	 *
 	 * @param data the data matrix
 	 * @return the length of the shortest row int he matrix
 	 */
@@ -223,7 +223,7 @@ public class MathUtil {
 
 	/**
 	 * Trims zeros at the end of an array.
-	 * 
+	 *
 	 * @param data the data array
 	 * @return the trimmed array
 	 */
@@ -233,7 +233,7 @@ public class MathUtil {
 
 	/**
 	 * Gets the Local Regression (Loess) parameter estimates.
-	 * 
+	 *
 	 * @param y the y array
 	 * @return the Loess parameter estimates
 	 */
@@ -291,7 +291,7 @@ public class MathUtil {
 
 	/**
 	 * Gets the robust loess parameter estimates.
-	 * 
+	 *
 	 * @param y the y array
 	 * @return the robust loess parameter estimates
 	 */
@@ -320,7 +320,7 @@ public class MathUtil {
 
 	/**
 	 * Gets the tricube weigths.
-	 * 
+	 *
 	 * @param n the number of weights
 	 * @return an array of tricube weigths with n elements
          * @todo The word "weight" is misspelled in the method name.
@@ -343,7 +343,7 @@ public class MathUtil {
 
 	/**
 	 * Gets the tricube bisquare weigths.
-	 * 
+	 *
 	 * @param residuals the residuals array
 	 * @return the tricube bisquare weigths
          * @todo The word "weight" is misspelled in the method name.
@@ -367,7 +367,7 @@ public class MathUtil {
 
 	/**
 	 * Gets the absolute values of an array of values
-	 * 
+	 *
 	 * @param data the array of values
 	 * @return a new array with the absolute value of each element in the given array.
 	 */
