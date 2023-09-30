@@ -210,9 +210,9 @@ public class SDNDatacenter extends Datacenter {
 			case CloudSimTagsSDN.SDN_VM_CREATE_IN_GROUP_ACK:
 				processVmCreateInGroup(ev, true);
 				break;
-			case CloudSimTagsSDN.SDN_VM_CREATE_DYNAMIC:
-				processVmCreateDynamic(ev);
-				break;
+//			case CloudSimTagsSDN.SDN_VM_CREATE_DYNAMIC:
+//				processVmCreateDynamic(ev);
+//				break;
 			case CloudSimTagsSDN.SDN_ARRIVED_GATEWAY:
 				PacketArrivedGateway((ChanAndTrans)ev.getData());
 				break;
@@ -578,15 +578,7 @@ public class SDNDatacenter extends Datacenter {
 
 		Host host = getVmAllocationPolicy().getHost(vmId, userId);
 		if(host == null) {
-			Vm orgVm = nos.getSFForwarderOriginalVm(vmId);
-			if(orgVm != null) {
-				vmId = orgVm.getId();
-				cl.setVmId(vmId);
-				host = getVmAllocationPolicy().getHost(vmId, userId);
-			}
-			else {
-				throw new NullPointerException("Error! cannot find a host for Workload:"+ proc+". VM="+vmId);
-			}
+			throw new NullPointerException("Error! cannot find a host for Workload:"+ proc+". VM="+vmId);
 		}
 		Vm vm = host.getVm(vmId, userId);
 		double mips = vm.getMips();
@@ -597,50 +589,50 @@ public class SDNDatacenter extends Datacenter {
 		System.err.println(CloudSim.clock()+": # of currently processing Cloudlets: "+this.requestsTable.size());
 	}
 
-	public void startMigrate() {
-		if (isMigrateEnabled) {
-			Log.printLine(CloudSim.clock()+": Migration started..");
-
-			List<Map<String, Object>> migrationMap = getVmAllocationPolicy().optimizeAllocation(
-					getVmList());
-
-			if (migrationMap != null && migrationMap.size() > 0) {
-				migrationAttempted += migrationMap.size();
-
-				// Process cloudlets before migration because cloudlets are processed during migration process..
-				updateCloudletProcessing();
-				checkCloudletCompletion();
-
-				for (Map<String, Object> migrate : migrationMap) {
-					Vm vm = (Vm) migrate.get("vm");
-					Host targetHost = (Host) migrate.get("host");
-//					Host oldHost = vm.getHost();
-
-					Log.formatLine(
-							"%.2f: Migration of %s to %s is started",
-							CloudSim.clock(),
-							vm,
-							targetHost);
-
-					targetHost.addMigratingInVm(vm);
-
-
-					/** VM migration delay = RAM / bandwidth **/
-					// we use BW / 2 to model BW available for migration purposes, the other
-					// half of BW is for VM communication
-					// around 16 seconds for 1024 MB using 1 Gbit/s network
-					send(
-							getId(),
-							vm.getRam() / ((double) targetHost.getBw() / (2 * 8000)),
-							CloudSimTags.VM_MIGRATE,
-							migrate);
-				}
-			}
-			else {
-				//Log.printLine(CloudSim.clock()+": No VM to migrate");
-			}
-		}
-	}
+//	public void startMigrate() {
+//		if (isMigrateEnabled) {
+//			Log.printLine(CloudSim.clock()+": Migration started..");
+//
+//			List<Map<String, Object>> migrationMap = getVmAllocationPolicy().optimizeAllocation(
+//					getVmList());
+//
+//			if (migrationMap != null && migrationMap.size() > 0) {
+//				migrationAttempted += migrationMap.size();
+//
+//				// Process cloudlets before migration because cloudlets are processed during migration process..
+//				updateCloudletProcessing();
+//				checkCloudletCompletion();
+//
+//				for (Map<String, Object> migrate : migrationMap) {
+//					Vm vm = (Vm) migrate.get("vm");
+//					Host targetHost = (Host) migrate.get("host");
+////					Host oldHost = vm.getHost();
+//
+//					Log.formatLine(
+//							"%.2f: Migration of %s to %s is started",
+//							CloudSim.clock(),
+//							vm,
+//							targetHost);
+//
+//					targetHost.addMigratingInVm(vm);
+//
+//
+//					/** VM migration delay = RAM / bandwidth **/
+//					// we use BW / 2 to model BW available for migration purposes, the other
+//					// half of BW is for VM communication
+//					// around 16 seconds for 1024 MB using 1 Gbit/s network
+//					send(
+//							getId(),
+//							vm.getRam() / ((double) targetHost.getBw() / (2 * 8000)),
+//							CloudSimTags.VM_MIGRATE,
+//							migrate);
+//				}
+//			}
+//			else {
+//				//Log.printLine(CloudSim.clock()+": No VM to migrate");
+//			}
+//		}
+//	}
 
 	public NetworkOperatingSystem getNOS() {
 		return this.nos;

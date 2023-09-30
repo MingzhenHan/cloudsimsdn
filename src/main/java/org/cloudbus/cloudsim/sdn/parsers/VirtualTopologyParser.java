@@ -22,8 +22,6 @@ import org.cloudbus.cloudsim.CloudletScheduler;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.sdn.CloudletSchedulerSpaceSharedMonitor;
 import org.cloudbus.cloudsim.sdn.Configuration;
-import org.cloudbus.cloudsim.sdn.sfc.ServiceFunction;
-import org.cloudbus.cloudsim.sdn.sfc.ServiceFunctionChainPolicy;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.FlowConfig;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
 import org.json.simple.JSONArray;
@@ -45,9 +43,9 @@ public class VirtualTopologyParser {
 	private static int flowNumbers=0;
 
 	private Multimap<String, SDNVm> vmList;
-	private List<ServiceFunction> sfList = new LinkedList<ServiceFunction>(); // SFs are added in both VM list and SF list
+//	private List<ServiceFunction> sfList = new LinkedList<ServiceFunction>(); // SFs are added in both VM list and SF list
 	private List<FlowConfig> arcList = new LinkedList<FlowConfig>();
-	private List<ServiceFunctionChainPolicy> policyList = new LinkedList<ServiceFunctionChainPolicy>();
+//	private List<ServiceFunctionChainPolicy> policyList = new LinkedList<ServiceFunctionChainPolicy>();
 
 	private String vmsFileName;
 	private int userId;
@@ -249,11 +247,11 @@ public class VirtualTopologyParser {
 		return arcList;
 	}
 
-	public List<ServiceFunction> getSFList() {
-		return sfList;
-	}
-
-	public List<ServiceFunctionChainPolicy> getSFCPolicyList() {
-		return policyList;
-	}
+//	public List<ServiceFunction> getSFList() {
+//		return sfList;
+//	}
+//
+//	public List<ServiceFunctionChainPolicy> getSFCPolicyList() {
+//		return policyList;
+//	}
 }

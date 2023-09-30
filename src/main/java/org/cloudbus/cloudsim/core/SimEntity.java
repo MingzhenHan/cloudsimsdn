@@ -9,7 +9,6 @@
 package org.cloudbus.cloudsim.core;
 
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.NetworkTopology;
 import org.cloudbus.cloudsim.core.predicates.Predicate;
 
 /**
@@ -558,11 +557,6 @@ public abstract class SimEntity implements Cloneable {
 			return;
 		}
 
-		int srcId = getId();
-		if (entityId != srcId) {// only delay messages between different entities
-			delay += getNetworkDelay(srcId, entityId);
-		}
-
 		schedule(entityId, delay, cloudSimTag, data);
 	}
 
@@ -670,23 +664,6 @@ public abstract class SimEntity implements Cloneable {
 	 */
 	protected void sendNow(String entityName, int cloudSimTag) {
 		send(entityName, 0, cloudSimTag, null);
-	}
-
-	/**
-	 * Gets the network delay associated to the sent of a message from a given source to a given
-	 * destination.
-	 *
-	 * @param src source of the message
-	 * @param dst destination of the message
-	 * @return delay to send a message from src to dst
-	 * @pre src >= 0
-	 * @pre dst >= 0
-	 */
-	private double getNetworkDelay(int src, int dst) {
-		if (NetworkTopology.isNetworkEnabled()) {
-			return NetworkTopology.getDelay(src, dst);
-		}
-		return 0.0;
 	}
 
 }

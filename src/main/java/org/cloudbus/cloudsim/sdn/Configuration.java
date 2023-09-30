@@ -119,9 +119,9 @@ public class Configuration {
 
 	public static final double TIME_OUT = 10; //Double.POSITIVE_INFINITY; //
 
-	public static boolean ENABLE_SFC = false;
+//	public static boolean ENABLE_SFC = false;
 
-	public static boolean SFC_LATENCY_AWARE_ENABLE;
+//	public static boolean SFC_LATENCY_AWARE_ENABLE;
 
 	public static boolean SFC_AUTOSCALE_ENABLE = true;
 	public static boolean SFC_AUTOSCALE_ENABLE_BW = true;

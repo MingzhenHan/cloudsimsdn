@@ -37,11 +37,6 @@ import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNHost;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.Switch;
 import org.cloudbus.cloudsim.sdn.policies.selectlink.LinkSelectionPolicy;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.overbooking.OverbookingVmAllocationPolicy;
-import org.cloudbus.cloudsim.sdn.sfc.ServiceFunction;
-import org.cloudbus.cloudsim.sdn.sfc.ServiceFunctionAutoScaler;
-import org.cloudbus.cloudsim.sdn.sfc.ServiceFunctionChainPolicy;
-import org.cloudbus.cloudsim.sdn.sfc.ServiceFunctionForwarder;
-import org.cloudbus.cloudsim.sdn.sfc.ServiceFunctionForwarderLatencyAware;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.FlowConfig;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.Channel;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
@@ -83,9 +78,6 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 	// Global map (static): Flow ID -> VM
 	protected static Map<Integer, FlowConfig> gFlowMapFlowId2Flow = new HashMap<Integer, FlowConfig>();
 
-	protected ServiceFunctionForwarder sfcForwarder;
-	protected ServiceFunctionAutoScaler sfcScaler;
-
 	// Resolution of the result.
 	public static final long bandwidthWithinSameHost = 1500000000; // bandwidth between VMs within a same host: 12Gbps = 1.5GBytes/sec
 	public static final double latencyWithinSameHost = 0.1; //0.1 msec latency
@@ -101,22 +93,14 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 	 * 1. map VMs and middleboxes to hosts, add the new vm/mb to the vmHostTable, advise host, advise dc
 	 * 2. set channels and bws
 	 * 3. set routing tables to restrict hops to meet latency
-	 * @param sfcPolicy
 	 */
-	protected abstract boolean deployApplication(List<Vm> vms, Collection<FlowConfig> links, List<ServiceFunctionChainPolicy> sfcPolicy);
+	protected abstract boolean deployApplication(List<Vm> vms, Collection<FlowConfig> links);
 
 	public NetworkOperatingSystem(String name) {
 		super(name);
 
-		if(Configuration.SFC_LATENCY_AWARE_ENABLE)
-			this.sfcForwarder = new ServiceFunctionForwarderLatencyAware(this);
-		else
-			this.sfcForwarder = new ServiceFunctionForwarder(this);
-
 		this.vnMapper = new VirtualNetworkMapper(this);
-		this.channelManager = new ChannelManager(this, vnMapper, sfcForwarder);
-
-		this.sfcScaler = new ServiceFunctionAutoScaler(this, sfcForwarder);
+		this.channelManager = new ChannelManager(this, vnMapper);
 
 		this.topology = new PhysicalTopologyInterCloud();
 	}
@@ -173,9 +157,6 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 			case CloudSimTags.VM_DESTROY:
 				processVmDestroyAck(ev);
 				break;
-			case CloudSimTagsSDN.SDN_VM_CREATE_DYNAMIC_ACK:
-				processVmCreateDynamicAck(ev);
-				break;
 			case CloudSimTagsSDN.MONITOR_UPDATE_UTILIZATION:
 				if(this.datacenter != null)
 					this.datacenter.processUpdateProcessing();
@@ -185,13 +166,6 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 				this.updateHostMonitor(Configuration.monitoringTimeInterval);
 				this.updateSwitchMonitor(Configuration.monitoringTimeInterval);
 
-				if(CloudSim.clock() >= lastMigration + Configuration.migrationTimeInterval && this.datacenter != null) {
-					sfcScaler.scaleSFC();	// Start SFC Auto Scaling
-
-					this.datacenter.startMigrate(); // Start Migration
-
-					lastMigration = CloudSim.clock();
-				}
 				this.updateVmMonitor(CloudSim.clock());
 
 				if(CloudSimEx.hasMoreEvent(CloudSimTagsSDN.MONITOR_UPDATE_UTILIZATION)) {
@@ -215,28 +189,7 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 	}
 
 	protected void processVmCreateAck(SimEvent ev) {
-//		SDNVm vm = (SDNVm) ev.getData();
-//		Host host = findHost(vm.getId());
-//		vm.setSDNHost(host);
-	}
-
-	protected void processVmCreateDynamicAck(SimEvent ev) {
-
-		Object [] data = (Object []) ev.getData();
-		SDNVm newVm = (SDNVm) data[0];
-		boolean result = (boolean) data[1];
-
-		if(result) {
-			Log.printLine(CloudSim.clock() + ": " + getName() + ".processVmCreateDynamic: Dynamic VM("+newVm+") creation succesful!");
-			if(newVm instanceof ServiceFunction)
-				sfcForwarder.processVmCreateDyanmicAck((ServiceFunction)newVm);
-		}
-		else {
-			// VM cannot be created here..
-			Log.printLine(CloudSim.clock() + ": " + getName() + ".processVmCreateDynamic: Dynamic VM cannot be created!! :"+newVm);
-			System.err.println(CloudSim.clock() + ": " + getName() + ".processVmCreateDynamic: Dynamic VM cannot be created!! :"+newVm);
-			sfcForwarder.processVmCreateDyanmicFailed((ServiceFunction)newVm);
-		}
+		// override,见 NetworkOperatingSystemSimple
 	}
 
 	// Migrate network flow from previous routing
@@ -282,40 +235,17 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 
 	public boolean startDeployApplicatoin() {
 		List<Vm> vms = new ArrayList<Vm>(vmMapId2Vm.values());
-//		List<ServiceFunctionChainPolicy> sfcPolicies = new ArrayList<ServiceFunctionChainPolicy>(sfcForwarder.getAllPolicies());
-		boolean result = deployApplication(vms, this.flowMapVmId2Flow.values(), null);
+		boolean result = deployApplication(vms, this.flowMapVmId2Flow.values());
 		isApplicationDeployed = result;
 		return result;
 	}
 
 	public Packet addPacketToChannel(Packet orgPkt) {
 		Packet pkt = orgPkt;
-		/*
-		if(sender.equals(sender.getVMRoute(src, dst, flowId))) {
-			// For loopback packet (when src and dst is on the same host)
-			//Log.printLine(CloudSim.clock() + ": " + getName() + ".addPacketToChannel: Loopback package: "+pkt +". Send to destination:"+dst);
-			sendNow(sender.getAddress(),Constants.SDN_PACKAGE,pkt);
-			return;
-		}
-		*/
-		if(Configuration.ENABLE_SFC)
-			pkt = sfcForwarder.enforceSFC(pkt);
-
 		channelManager.updatePacketProcessing();
-
 		int src = pkt.getOrigin();
 		int dst = pkt.getDestination();
 		int flowId = pkt.getFlowId();
-
-		// Check if VM is removed by auto-scaling
-		if(findVmGlobal(src) == null) {
-			src = getSFForwarderOriginalVm(src).getId();
-			pkt.changeOrigin(src);
-		}
-		if(findVmGlobal(dst) == null) {
-			dst = getSFForwarderOriginalVm(dst).getId();
-			pkt.changeDestination(dst);
-		}
 
 //		boolean isWireless = channelManager.needWireless(src, dst, flowId);
 
@@ -477,20 +407,6 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 			// update with the new nodes and links
 			ch.updateRoute(nodes, links);
 		}
-	}
-
-	public void addExtraVm(SDNVm vm, NetworkOperatingSystem callback) {
-		vmMapId2Vm.put(vm.getId(), vm);
-		gvmMapId2Vm.put(vm.getId(), vm);
-
-		Log.printLine(CloudSim.clock() + ": " + getName() + ": Add extra VM #" + vm.getId()
-			+ " in " + datacenter.getName() + ", (" + vm.getStartTime() + "~" +vm.getFinishTime() + ")");
-
-		Object[] data = new Object[2];
-		data[0] = vm;
-		data[1] = callback;
-
-		send(datacenter.getId(), vm.getStartTime(), CloudSimTagsSDN.SDN_VM_CREATE_DYNAMIC, data);
 	}
 
 	public void removeExtraVm(SDNVm vm) {
@@ -748,9 +664,9 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 		}
 	}
 
-	public Vm getSFForwarderOriginalVm(int vmId) {
-		return this.sfcForwarder.getOriginalSF(vmId);
-	}
+//	public Vm getSFForwarderOriginalVm(int vmId) {
+//		return this.sfcForwarder.getOriginalSF(vmId);
+//	}
 
 	public double calculateLatency(int srcVmId, int dstVmId, int flowId) {
 		List<Node> nodes = new ArrayList<Node>();

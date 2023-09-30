@@ -11,7 +11,6 @@ import org.cloudbus.cloudsim.sdn.physicalcomponents.Node;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNHost;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.GatewaySwitch;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.IntercloudSwitch;
-import org.cloudbus.cloudsim.sdn.sfc.ServiceFunctionForwarder;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.Channel;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.VirtualNetworkMapper;
@@ -19,17 +18,14 @@ import org.cloudbus.cloudsim.sdn.virtualcomponents.VirtualNetworkMapper;
 public class ChannelManager {
 	protected NetworkOperatingSystem nos = null;
 	protected VirtualNetworkMapper vnMapper = null;
-	protected ServiceFunctionForwarder sfcForwarder = null;
 
 	// Processing requests
 	protected HashMap<String, Channel> channelTable = new HashMap<String, Channel>();	// getKey(fromVM, toVM, flowID) -> Channel
 	protected List<Channel> tempRemovedChannels = new LinkedList<Channel>();
 
-	public ChannelManager(NetworkOperatingSystem nos, VirtualNetworkMapper vnMapper,
-			ServiceFunctionForwarder sfcForwarder) {
+	public ChannelManager(NetworkOperatingSystem nos, VirtualNetworkMapper vnMapper) {
 		this.nos = nos;
 		this.vnMapper = vnMapper;
-		this.sfcForwarder = sfcForwarder;
 	}
 
 	/**
@@ -94,9 +90,7 @@ public class ChannelManager {
 
 		// If currently free bandwidth is less than required one.
 		if(flowId != -1 && lowestBw < reqBw) {
-			// Cannot make channel.
 			//Log.printLine(CloudSim.clock() + ": " + getName() + ": Free bandwidth is less than required.("+getKey(src,dst,flowId)+"): ReqBW="+ reqBw + "/ Free="+lowestBw);
-			//return null;
 		}
 
 		Channel channel=new Channel(flowId, src, dst, nodes, links, reqBw,
@@ -297,23 +291,13 @@ public class ChannelManager {
 		// Update bandwidth consumption of all channels
 		for(Channel ch:channelTable.values()) {
 			long processedBytes = ch.updateMonitor(CloudSim.clock(), monitoringTimeUnit);
-			sfcForwarder.updateSFCMonitor(ch.getSrcId(), ch.getDstId(), ch.getChId(), processedBytes);
 		}
 
 		for(Channel ch:tempRemovedChannels) {
 			long processedBytes = ch.updateMonitor(CloudSim.clock(), monitoringTimeUnit);
-			sfcForwarder.updateSFCMonitor(ch.getSrcId(), ch.getDstId(), ch.getChId(), processedBytes);
 		}
 		this.resetTempRemovedChannel();
 
 	}
 
-
-//	public boolean needWireless(int from, int to, int channelId) {
-//		Channel channel=channelTable.get(getChannelKey(from, to, channelId));
-//		if (channel == null) {
-//			channel=channelTable.get(getChannelKey(from,to));
-//		}
-//		return channel.isWireless;
-//	}
 }

@@ -29,7 +29,6 @@ import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNHost;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.AggregationSwitch;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.CoreSwitch;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.EdgeSwitch;
-//import org.cloudbus.cloudsim.network.datacenter.EdgeSwitch;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.GatewaySwitch;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.IntercloudSwitch;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.Switch;

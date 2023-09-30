@@ -10,7 +10,7 @@ package org.cloudbus.cloudsim;
 
 /**
  * A class for representing a physical file in a DataCloud environment
- * 
+ *
  * @author Uros Cibej
  * @author Anthony Sulistio
  * @since CloudSim Toolkit 1.0
@@ -20,15 +20,15 @@ public class File {
         /**
          * Logical file name.
          */
-	private String name;           
+	private String name;
 
         /**
          * A file attribute.
          */
-	private FileAttribute attribute;    
+	private FileAttribute attribute;
 
-	/** A transaction time for adding, deleting or getting the file. 
-         * @see #setTransactionTime(double) 
+	/** A transaction time for adding, deleting or getting the file.
+         * @see #setTransactionTime(double)
          */
 	private double transactionTime;
 
@@ -50,7 +50,7 @@ public class File {
 	/**
 	 * Creates a new DataCloud file with a given size (in MBytes). <br>
 	 * NOTE: By default, a newly-created file is set to a <b>master</b> copy.
-	 * 
+	 *
 	 * @param fileName file name
 	 * @param fileSize file size in MBytes
 	 * @throws ParameterException This happens when one of the following scenarios occur:
@@ -76,7 +76,7 @@ public class File {
 	/**
 	 * Copy constructor that creates a clone from a source file and set the given file
          * as a <b>replica</b>.
-	 * 
+	 *
 	 * @param file the source file to create a copy and that will be set as a replica
 	 * @throws ParameterException This happens when the source file is <tt>null</tt>
 	 */
@@ -93,7 +93,7 @@ public class File {
 
 	/**
 	 * Clone the current file and set the cloned one as a <b>replica</b>.
-	 * 
+	 *
 	 * @return a clone of the current file (as a replica) or <tt>null</tt> if an error occurs
 	 */
 	public File makeReplica() {
@@ -102,7 +102,7 @@ public class File {
 
 	/**
 	 * Clone the current file and make the new file as a <b>master</b> copy as well.
-	 * 
+	 *
 	 * @return a clone of the current file (as a master copy) or <tt>null</tt> if an error occurs
 	 */
 	public File makeMasterCopy() {
@@ -116,7 +116,7 @@ public class File {
 
 	/**
 	 * Makes a copy of this file.
-	 * 
+	 *
 	 * @return a clone of the current file (as a replica) or <tt>null</tt> if an error occurs
 	 */
 	private File makeCopy() {
@@ -135,7 +135,7 @@ public class File {
 
 	/**
 	 * Gets an attribute of this file.
-	 * 
+	 *
 	 * @return a file attribute
 	 */
 	public FileAttribute getFileAttribute() {
@@ -146,7 +146,7 @@ public class File {
 	 * Gets the size of this object (in byte). <br/>
 	 * NOTE: This object size is NOT the actual file size. Moreover, this size is used for
 	 * transferring this object over a network.
-	 * 
+	 *
 	 * @return the object size (in byte)
 	 */
 	public int getAttributeSize() {
@@ -155,7 +155,7 @@ public class File {
 
 	/**
 	 * Sets the resource ID that stores this file.
-	 * 
+	 *
 	 * @param resourceID a resource ID
 	 * @return <tt>true</tt> if successful, <tt>false</tt> otherwise
 	 */
@@ -165,7 +165,7 @@ public class File {
 
 	/**
 	 * Gets the resource ID that stores this file.
-	 * 
+	 *
 	 * @return the resource ID
 	 */
 	public int getResourceID() {
@@ -174,7 +174,7 @@ public class File {
 
 	/**
 	 * Gets the file name.
-	 * 
+	 *
 	 * @return the file name
 	 */
 	public String getName() {
@@ -183,7 +183,7 @@ public class File {
 
 	/**
 	 * Sets the file name.
-	 * 
+	 *
 	 * @param name the file name
 	 */
 	public void setName(String name) {
@@ -192,7 +192,7 @@ public class File {
 
 	/**
 	 * Sets the owner name of this file.
-	 * 
+	 *
 	 * @param name the owner name
 	 * @return <tt>true</tt> if successful, <tt>false</tt> otherwise
 	 */
@@ -202,7 +202,7 @@ public class File {
 
 	/**
 	 * Gets the owner name of this file.
-	 * 
+	 *
 	 * @return the owner name or <tt>null</tt> if empty
 	 */
 	public String getOwnerName() {
@@ -211,7 +211,7 @@ public class File {
 
 	/**
 	 * Gets the file size (in MBytes).
-	 * 
+	 *
 	 * @return the file size (in MBytes)
 	 */
 	public int getSize() {
@@ -220,7 +220,7 @@ public class File {
 
 	/**
 	 * Gets the file size (in bytes).
-	 * 
+	 *
 	 * @return the file size (in bytes)
 	 */
 	public int getSizeInByte() {
@@ -229,7 +229,7 @@ public class File {
 
 	/**
 	 * Sets the file size (in MBytes).
-	 * 
+	 *
 	 * @param fileSize the file size (in MBytes)
 	 * @return <tt>true</tt> if successful, <tt>false</tt> otherwise
 	 */
@@ -241,7 +241,7 @@ public class File {
 	 * Sets the last update time of this file (in seconds). <br/>
 	 * NOTE: This time is relative to the start time. Preferably use
 	 * {@link gridsim.CloudSim#clock()} method.
-	 * 
+	 *
 	 * @param time the last update time (in seconds)
 	 * @return <tt>true</tt> if successful, <tt>false</tt> otherwise
 	 */
@@ -251,7 +251,7 @@ public class File {
 
 	/**
 	 * Gets the last update time (in seconds).
-	 * 
+	 *
 	 * @return the last update time (in seconds)
 	 */
 	public double getLastUpdateTime() {
@@ -260,7 +260,7 @@ public class File {
 
 	/**
 	 * Sets the file registration ID (published by a Replica Catalogue entity).
-	 * 
+	 *
 	 * @param id registration ID
 	 * @return <tt>true</tt> if successful, <tt>false</tt> otherwise
 	 */
@@ -270,7 +270,7 @@ public class File {
 
 	/**
 	 * Gets the file registration ID.
-	 * 
+	 *
 	 * @return registration ID
 	 */
 	public int getRegistrationID() {
@@ -279,7 +279,7 @@ public class File {
 
 	/**
 	 * Sets the file type (for instance, raw, tag, etc).
-	 * 
+	 *
 	 * @param type a file type
 	 * @return <tt>true</tt> if successful, <tt>false</tt> otherwise
 	 */
@@ -289,7 +289,7 @@ public class File {
 
 	/**
 	 * Gets the file type.
-	 * 
+	 *
 	 * @return file type
 	 */
 	public int getType() {
@@ -298,7 +298,7 @@ public class File {
 
 	/**
 	 * Sets the checksum of the file.
-	 * 
+	 *
 	 * @param checksum the checksum of this file
 	 * @return <tt>true</tt> if successful, <tt>false</tt> otherwise
 	 */
@@ -308,7 +308,7 @@ public class File {
 
 	/**
 	 * Gets the file checksum.
-	 * 
+	 *
 	 * @return file checksum
 	 */
 	public int getChecksum() {
@@ -317,7 +317,7 @@ public class File {
 
 	/**
 	 * Sets the cost associated with the file.
-	 * 
+	 *
 	 * @param cost cost of this file
 	 * @return <tt>true</tt> if successful, <tt>false</tt> otherwise
 	 */
@@ -327,7 +327,7 @@ public class File {
 
 	/**
 	 * Gets the cost associated with the file.
-	 * 
+	 *
 	 * @return the cost of this file
 	 */
 	public double getCost() {
@@ -336,7 +336,7 @@ public class File {
 
 	/**
 	 * Gets the file creation time (in millisecond).
-	 * 
+	 *
 	 * @return the file creation time (in millisecond)
 	 */
 	public long getCreationTime() {
@@ -345,7 +345,7 @@ public class File {
 
 	/**
 	 * Checks if the file is already registered to a Replica Catalogue.
-	 * 
+	 *
 	 * @return <tt>true</tt> if it is registered, <tt>false</tt> otherwise
 	 */
 	public boolean isRegistered() {
@@ -354,7 +354,7 @@ public class File {
 
 	/**
 	 * Marks the file as a master copy or replica.
-	 * 
+	 *
 	 * @param masterCopy a flag denotes <tt>true</tt> for master copy or <tt>false</tt> for a
 	 *            replica
 	 */
@@ -364,7 +364,7 @@ public class File {
 
 	/**
 	 * Checks whether the file is a master copy or replica.
-	 * 
+	 *
 	 * @return <tt>true</tt> if it is a master copy or <tt>false</tt> otherwise
 	 */
 	public boolean isMasterCopy() {
@@ -373,7 +373,7 @@ public class File {
 
 	/**
 	 * Marks the file as read-only or not.
-	 * 
+	 *
 	 * @param readOnly a flag denotes <tt>true</tt> for read only or <tt>false</tt> for re-writeable
 	 */
 	public void setReadOnly(boolean readOnly) {
@@ -382,7 +382,7 @@ public class File {
 
 	/**
 	 * Checks whether the file is read-only or not.
-	 * 
+	 *
 	 * @return <tt>true</tt> if it is a read only or <tt>false</tt> otherwise
 	 */
 	public boolean isReadOnly() {
@@ -392,7 +392,7 @@ public class File {
 	/**
 	 * Sets the current transaction time (in second) of this file. This transaction time can be
 	 * related to the operation of adding, deleting or getting the file on a resource's storage.
-	 * 
+	 *
 	 * @param time the transaction time (in second)
 	 * @return <tt>true</tt> if successful, <tt>false</tt> otherwise
 	 * @see gridsim.datagrid.storage.Storage#addFile(File)
@@ -415,7 +415,7 @@ public class File {
 
 	/**
 	 * Gets the last transaction time of the file (in second).
-	 * 
+	 *
 	 * @return the transaction time (in second)
 	 */
 	public double getTransactionTime() {

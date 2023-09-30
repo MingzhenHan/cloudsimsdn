@@ -24,8 +24,6 @@ import org.cloudbus.cloudsim.sdn.nos.NetworkOperatingSystem;
 import org.cloudbus.cloudsim.sdn.parsers.VirtualTopologyParser;
 import org.cloudbus.cloudsim.sdn.parsers.WorkloadParser;
 import org.cloudbus.cloudsim.sdn.physicalcomponents.SDNDatacenter;
-import org.cloudbus.cloudsim.sdn.sfc.ServiceFunction;
-import org.cloudbus.cloudsim.sdn.sfc.ServiceFunctionChainPolicy;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.FlowConfig;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.SDNVm;
 import org.cloudbus.cloudsim.sdn.workload.Request;
@@ -230,10 +228,6 @@ public class SDNBroker extends SimEntity {
 
 			for(SDNVm vm:parser.getVmList(dcName)) {
 				nos.addVm(vm);
-//				if(vm instanceof ServiceFunction) {
-//					ServiceFunction sf = (ServiceFunction)vm;
-//					sf.setNetworkOperatingSystem(nos);
-//				}
 				SDNBroker.vmIdToDc.put(vm.getId(), dc);
 			}
 		}
@@ -252,21 +246,6 @@ public class SDNBroker extends SimEntity {
 				dstDc.getNOS().addFlow(arc);
 			}
 		}
-
-//		// Add parsed ServiceFunctionChainPolicy
-//		for(ServiceFunctionChainPolicy policy:parser.getSFCPolicyList()) {
-//			SDNDatacenter srcDc = SDNBroker.vmIdToDc.get(policy.getSrcId());
-//			SDNDatacenter dstDc = SDNBroker.vmIdToDc.get(policy.getDstId());
-//			if(srcDc.equals(dstDc)) {
-//				// Intra-DC traffic: create a virtual flow inside the DC
-//				srcDc.getNOS().addSFCPolicy(policy);
-//			}
-//			else {
-//				// Inter-DC traffic: Create it in inter-DC N.O.S.
-//				srcDc.getNOS().addSFCPolicy(policy);
-//				dstDc.getNOS().addSFCPolicy(policy);
-//			}
-//		}
 
 		for(String dcName: SDNBroker.datacenters.keySet()) {
 			SDNDatacenter dc = SDNBroker.datacenters.get(dcName);
