@@ -85,11 +85,13 @@ public class WorkloadResultWriter {
 			flushWorkloadBuffer();
 	}
 
-	private void flushWorkloadBuffer() {
+	private List<Workload> flushWorkloadBuffer() {
+		List<Workload> oldbuffer = workloadBuffer;
 		for(Workload wl:workloadBuffer) {
 			printWorkload(wl);
 		}
 		workloadBuffer = new ArrayList<Workload>(workloadBufferSize);
+		return oldbuffer;
 	}
 
 
@@ -246,9 +248,9 @@ public class WorkloadResultWriter {
 		}
 	}
 
-	public void printStatistics() {
+	public List<Workload> printStatistics() {
 		//threadExit();
-		flushWorkloadBuffer();
+		List<Workload> wls = flushWorkloadBuffer(); //打印表格
 
 		printLine("#======================================");
 		printLine("#Number of workloads:" + printedWorkloadNum);
@@ -281,6 +283,7 @@ public class WorkloadResultWriter {
 			printLine("#Average CPU serve time per Cloudlet:" + cpuServeTime/cloudletNum);
 		if(transmissionNum != 0)
 			printLine("#Average network serve time per transmission:" + networkServeTime/transmissionNum);
+		return wls;
 	}
 
 	public int getWorklaodNum() {

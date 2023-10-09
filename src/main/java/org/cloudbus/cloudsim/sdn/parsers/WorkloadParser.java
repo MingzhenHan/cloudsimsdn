@@ -201,7 +201,7 @@ public class WorkloadParser {
 
 				String vmName = lineitems.poll();
 				tr.submitVmId = getVmId(vmName);
-
+				tr.submitVmName = vmName;
 				tr.submitPktSize = Integer.parseInt(lineitems.poll());
 
 				tr.request = parseRequest(tr.submitVmId, lineitems);

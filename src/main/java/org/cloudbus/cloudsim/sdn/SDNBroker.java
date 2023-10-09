@@ -68,7 +68,7 @@ public class SDNBroker extends SimEntity {
 			}
 		}
 	}
-	public void printResult() {
+	public List<Workload> printResult() {
 		int numWorkloads=0, numWorkloadsCPU=0, numWorkloadsNetwork =0,
 				numWorkloadsOver=0, numWorkloadsNetworkOver=0, numWorkloadsCPUOver=0, numTimeout=0;
 		double totalServetime=0, totalServetimeCPU=0, totalServetimeNetwork=0;
@@ -78,11 +78,10 @@ public class SDNBroker extends SimEntity {
 		double[] groupTotalServetime = new double[SDNBroker.lastAppId];
 		double[] groupTotalServetimeCPU = new double[SDNBroker.lastAppId];
 		double[] groupTotalServetimeNetwork = new double[SDNBroker.lastAppId];
-
+		List<Workload> wlsList = new ArrayList<>();
 		for(WorkloadParser wp:workloadId.keySet()) {
 			WorkloadResultWriter wrw = wp.getResultWriter();
-			wrw.printStatistics(); // todo：解除注释
-
+			wlsList.addAll(wrw.printStatistics()); //打印workloads
 			numWorkloads += wrw.getWorklaodNum();
 			numTimeout +=  wrw.getTimeoutNum();
 			numWorkloadsOver += wrw.getWorklaodNumOvertime();
@@ -138,6 +137,7 @@ public class SDNBroker extends SimEntity {
 			}
 
 		}
+		return wlsList;
 	}
 
 	public void submitDeployApplication(SDNDatacenter dc, String filename) {

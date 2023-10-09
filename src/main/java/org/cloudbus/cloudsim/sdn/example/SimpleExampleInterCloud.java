@@ -66,9 +66,10 @@ public class SimpleExampleInterCloud {
 	 * Creates main() to run this example.
 	 *
 	 * @param args the args
+	 * @return
 	 */
 	@SuppressWarnings("unused")
-	public void main(String[] args) throws IOException {
+	public List<Workload> main(String[] args) throws IOException {
 		CloudSimEx.setStartTime();
 
 		workloads = new ArrayList<String>();
@@ -163,21 +164,25 @@ public class SimpleExampleInterCloud {
 			if(!SimpleExampleInterCloud.logEnabled)
 				Log.disable();
 
-			startSimulation(broker, dcs.values());
+			List<Workload> res = startSimulation(broker, dcs.values());
+
+			return res;
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.printLine("Unwanted errors happen");
 		}
+
+		return null;
 	}
 
-	public static void startSimulation(SDNBroker broker, Collection<SDNDatacenter> dcs) {
+	public static List<Workload> startSimulation(SDNBroker broker, Collection<SDNDatacenter> dcs) {
 		double finishTime = CloudSim.startSimulation();
 		CloudSim.stopSimulation();
 
 		Log.enable();
 
-		broker.printResult();
+		List<Workload> reswls = broker.printResult();
 
 		Log.printLine(finishTime+": ========== EXPERIMENT FINISHED ===========");
 
@@ -193,6 +198,7 @@ public class SimpleExampleInterCloud {
 
 		Log.printLine("Simultanously used hosts:"+maxHostHandler.getMaxNumHostsUsed());
 		Log.printLine("CloudSim SDN finished!");
+		return reswls;
 	}
 
 	private static List<Switch> getAllSwitchList(Collection<SDNDatacenter> dcs) {
