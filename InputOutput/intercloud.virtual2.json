@@ -1,0 +1,109 @@
+{
+  "nodes" : [
+    {
+      "name" : "vm01",
+      "type" : "vm",
+      "size" : 1000,
+      "pes": 1,
+      "mips" : 500,
+      "ram"  : 512,
+	  "datacenter": "dc1",
+      "host": "host01"
+    },
+    {
+      "name": "vm02",
+      "type" : "vm",
+      "size" : 1000,
+      "pes": 1,
+      "mips" : 500,
+      "ram"  : 512,
+      "datacenter": "dc1",
+      "host": "host02"
+    },
+    {
+      "name" : "vm03",
+      "type" : "vm",
+      "size" : 1000,
+      "pes": 1,
+      "mips" : 500,
+      "ram"  : 512,
+      "datacenter": "dc1",
+      "host": "host03"
+    },
+
+
+    {
+      "name": "vm21",
+      "type" : "vm",
+      "size" : 1000,
+      "pes": 1,
+      "mips" : 500,
+      "ram"  : 512,
+	  "datacenter": "dc2",
+      "host": "2host01"
+    },
+    {
+      "name": "vm22",
+      "type" : "vm",
+      "size" : 1000,
+      "pes": 1,
+      "mips" : 500,
+      "ram"  : 512,
+	  "datacenter": "dc2",
+      "host": "2host02"
+    },
+    {
+      "name": "vm23",
+      "type" : "vm",
+      "size" : 1000,
+      "pes": 1,
+      "mips" : 500,
+      "ram"  : 512,
+      "datacenter": "dc2",
+      "host": "2host03"
+    },
+
+
+    {
+      "name": "vm31",
+      "type" : "vm",
+      "size" : 1000,
+      "pes": 1,
+      "mips" : 500,
+      "ram"  : 512,
+      "datacenter": "dc3",
+      "host": "3host01"
+    },
+    {
+      "name": "vm32",
+      "type" : "vm",
+      "size" : 1000,
+      "pes": 1,
+      "mips" : 500,
+      "ram"  : 512,
+      "datacenter": "dc3",
+      "host": "3host02"
+    },
+    {
+      "name": "vm33",
+      "type" : "vm",
+      "size" : 1000,
+      "pes": 1,
+      "mips" : 500,
+      "ram"  : 512,
+      "datacenter": "dc3",
+      "host": "3host03"
+    }
+  ],
+
+  "flows" : [
+    { "name": "default", "source" : "vm01" , "destination" : "vm21" },
+    { "name": "default", "source" : "vm02" , "destination" : "vm21" },
+    { "name": "default", "source" : "vm21" , "destination" : "vm01" },
+    { "name": "default", "source" : "vm01" , "destination" : "vm31" },
+    { "name": "default", "source" : "vm21" , "destination" : "vm31" }
+  ],
+
+  "policies" : [
+  ]
+}
