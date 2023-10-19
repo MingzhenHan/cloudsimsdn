@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,9 @@ public class Controller {
     public ResultDTO uploadPhysical(MultipartFile file, HttpServletRequest req) throws IOException {
         System.out.println("上传物理拓扑文件");
         try {
-            file.transferTo(new File("D:\\11桌面备份11\\CloudSim-djy\\FAB\\cloudsimsdn\\InputOutput", file.getOriginalFilename() ));
+            String InputOutput = System.getProperty("user.dir")+"\\InputOutput";
+            System.out.println(InputOutput);
+            file.transferTo(new File(InputOutput, file.getOriginalFilename() ));
             physicalf = "InputOutput/" + file.getOriginalFilename();
         }catch (IOException e){
             System.out.print(e.getMessage());
@@ -47,7 +50,9 @@ public class Controller {
     public ResultDTO uploadVirtual(MultipartFile file, HttpServletRequest req) throws IOException {
         System.out.println("上传虚拟拓扑文件");
         try {
-            file.transferTo(new File("D:\\11桌面备份11\\CloudSim-djy\\FAB\\cloudsimsdn\\InputOutput", file.getOriginalFilename() ));
+            String InputOutput = System.getProperty("user.dir")+"\\InputOutput";
+            System.out.println(InputOutput);
+            file.transferTo(new File(InputOutput, file.getOriginalFilename() ));
             virtualf = "InputOutput/" + file.getOriginalFilename();
         }catch (IOException e){
             System.out.print(e.getMessage());
@@ -59,7 +64,9 @@ public class Controller {
     public ResultDTO uploadWorkload(MultipartFile file, HttpServletRequest req) throws IOException {
         System.out.println("上传负载文件");
         try {
-            file.transferTo(new File("D:\\11桌面备份11\\CloudSim-djy\\FAB\\cloudsimsdn\\InputOutput", file.getOriginalFilename() ));
+            String InputOutput = System.getProperty("user.dir")+"\\InputOutput";
+            System.out.println(InputOutput);
+            file.transferTo(new File(InputOutput, file.getOriginalFilename() ));
             workloadf = "InputOutput/" + file.getOriginalFilename();
         }catch (IOException e){
             System.out.print(e.getMessage());
