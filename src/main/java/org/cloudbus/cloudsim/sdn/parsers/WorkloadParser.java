@@ -188,25 +188,48 @@ public class WorkloadParser {
 		try {
 			while (((line = bufReader.readLine()) != null)
 					&& (parsedWorkloads.size() < numRequests) ){
-				//System.out.println("parsing:"+line);
-				Workload tr = new Workload(workloadNum++, this.resultWriter);
-
+/*************************************************************/
 				String[] splitLine = line.split(",");
 				Queue<String> lineitems = new LinkedList<String>(Arrays.asList(splitLine));
-				// 比如待解析数据：0,vm01,0,5,l12,vm02,10000,5,,,,
-				tr.time = Double.parseDouble(lineitems.poll());
-				// For debug only
-				if(tr.time < this.forcedStartTime || tr.time > this.forcedFinishTime) // Skip Workloads before the set start time
-					continue;
-
-				String vmName = lineitems.poll();
-				tr.submitVmId = getVmId(vmName);
-				tr.submitVmName = vmName;
-				tr.submitPktSize = Integer.parseInt(lineitems.poll());
-
-				tr.request = parseRequest(tr.submitVmId, lineitems);
-
-				parsedWorkloads.add(tr);
+				// 比如待解析数据：[number],[periodtime],0,vm01,0,5,l12,vm02,10000,5,,,,
+				Integer periodCount = Integer.parseInt(lineitems.poll());// number
+				Double periodTime = Double.parseDouble(lineitems.poll());
+				for (int i=0; i<periodCount; ++i) {
+					Workload tr = new Workload(workloadNum++, this.resultWriter);
+					Queue<String> lineitemscopy = new LinkedList<String>(lineitems);
+					// 比如待解析数据：0,vm01,0,5,l12,vm02,10000,5,,,,
+					tr.time = Double.parseDouble(lineitemscopy.poll());// start_time
+					tr.time += i * periodTime;
+					// For debug only
+					if(tr.time < this.forcedStartTime || tr.time > this.forcedFinishTime) // Skip Workloads before the set start time
+						continue;
+					String vmName = lineitemscopy.poll();
+					tr.submitVmId = getVmId(vmName);
+					tr.submitVmName = vmName;
+					tr.submitPktSize = Integer.parseInt(lineitemscopy.poll());
+					tr.request = parseRequest(tr.submitVmId, lineitemscopy);
+					parsedWorkloads.add(tr);
+				}
+/*************************************************************/
+//				//System.out.println("parsing:"+line);
+//				Workload tr = new Workload(workloadNum++, this.resultWriter);
+//
+//				String[] splitLine = line.split(",");
+//				Queue<String> lineitems = new LinkedList<String>(Arrays.asList(splitLine));
+//				// 比如待解析数据：[number],[periodtime],0,vm01,0,5,l12,vm02,10000,5,,,,
+//				tr.time = Double.parseDouble(lineitems.poll());// start_time
+//				// For debug only
+//				if(tr.time < this.forcedStartTime || tr.time > this.forcedFinishTime) // Skip Workloads before the set start time
+//					continue;
+//
+//				String vmName = lineitems.poll();
+//				tr.submitVmId = getVmId(vmName);
+//				tr.submitVmName = vmName;
+//				tr.submitPktSize = Integer.parseInt(lineitems.poll());
+//
+//				tr.request = parseRequest(tr.submitVmId, lineitems);
+//
+//				parsedWorkloads.add(tr);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
