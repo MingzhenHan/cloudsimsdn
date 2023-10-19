@@ -285,6 +285,7 @@ public class SDNBroker extends SimEntity {
 	private void scheduleRequest(WorkloadParser workParser) {
 		// 这里指的是appID
 		int workloadId = this.workloadId.get(workParser);
+		// 读表格
 		workParser.parseNextWorkloads();
 		List<Workload> parsedWorkloads = workParser.getParsedWorkloads();
 
