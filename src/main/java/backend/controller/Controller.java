@@ -26,7 +26,7 @@ public class Controller {
     }
 
     @RequestMapping("/run")
-    public ResultDTO run(@RequestBody String req) throws IOException {
+    public ResultDTO run() throws IOException {
         System.out.println("\n开始仿真");
         String args[] = {"LFF","example-intercloud/intercloud.physical2.xml","example-intercloud/intercloud.virtual2.json", "example-intercloud/one-workload.csv"};
         simulator = new SimpleExampleInterCloud();
