@@ -4,6 +4,7 @@ target/
 !**/src/main/**
 !**/src/test/**
 simulator_front/node_modules/
+cloudsim_frontend/
 
 ### STS ###
 .apt_generated

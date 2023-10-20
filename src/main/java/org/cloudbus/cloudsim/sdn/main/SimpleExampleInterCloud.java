@@ -28,8 +28,10 @@ import org.cloudbus.cloudsim.sdn.workload.Workload;
 import org.json.JSONObject;
 import org.json.XML;
 
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -103,46 +105,10 @@ public class SimpleExampleInterCloud {
 			boolean trace_flag = false; // mean trace events
 			CloudSim.init(num_user, calendar, trace_flag);
 
-			VmAllocationPolicyFactory vmAllocationFac = null;
-			LinkSelectionPolicy ls = null;
-			switch(vmAllocPolicy) {
-			case CombMFF:
-			case MFF:
-				vmAllocationFac = new VmAllocationPolicyFactory() {
-					public VmAllocationPolicy create(List<? extends Host> hostList) { return new VmAllocationPolicyCombinedMostFullFirst(hostList); }
-				};
-				ls = new LinkSelectionPolicyBandwidthAllocation();
-				break;
-			case CombLFF:
-			case LFF:
-				vmAllocationFac = new VmAllocationPolicyFactory() {
-					public VmAllocationPolicy create(List<? extends Host> hostList) { return new VmAllocationPolicyCombinedLeastFullFirst(hostList); }
-				};
-				ls = new LinkSelectionPolicyBandwidthAllocation();
-				break;
-			case MipMFF:
-				vmAllocationFac = new VmAllocationPolicyFactory() {
-					public VmAllocationPolicy create(List<? extends Host> hostList) { return new VmAllocationPolicyMipsMostFullFirst(hostList); }
-				};
-				ls = new LinkSelectionPolicyBandwidthAllocation();
-				break;
-			case MipLFF:
-				vmAllocationFac = new VmAllocationPolicyFactory() {
-					public VmAllocationPolicy create(List<? extends Host> hostList) { return new VmAllocationPolicyMipsLeastFullFirst(hostList); }
-				};
-				ls = new LinkSelectionPolicyBandwidthAllocation();
-				break;
-//			case Overbooking:
-//				vmAllocationFac = new VmAllocationPolicyFactory() {
-//					public VmAllocationPolicy create(List<? extends Host> hostList) { return new OverbookingVmAllocationPolicy(hostList); }
-//				};
-//				snos = new OverbookingNetworkOperatingSystem(physicalTopologyFile);
-//				break;
-			default:
-				System.err.println("Choose proper VM placement polilcy!");
-				printUsage();
-				System.exit(1);
-			}
+			VmAllocationPolicyFactory vmAllocationFac = new VmAllocationPolicyFactory() {
+				public VmAllocationPolicy create(List<? extends Host> hostList) { return new VmAllocationPolicyCombinedLeastFullFirst(hostList); }
+			};
+			LinkSelectionPolicy ls = new LinkSelectionPolicyBandwidthAllocation();
 
 			Configuration.monitoringTimeInterval = Configuration.migrationTimeInterval = 1;
 
@@ -348,12 +314,11 @@ public class SimpleExampleInterCloud {
 		//设置缩进
 		String jsonPrettyPrintString = xmlJSONObj.toString(4);
 		//保存格式化后的json
-		FileWriter writer = new FileWriter("example-intercloud/hmz_convert.json");
+		FileWriter writer = new FileWriter("InputOutput/exampleWrite.json");
 		writer.write(jsonPrettyPrintString);
 		writer.close();
 //		System.out.println(jsonPrettyPrintString);
 	}
-
 
 	/// Under development
 	/*
