@@ -16,20 +16,24 @@ package org.cloudbus.cloudsim.sdn.workload;
  */
 public class Workload implements Comparable<Workload> {
 	public int workloadId;
+	public int jobId;
 	public int appId;
 	public double time;
 	public int submitVmId;
 	public String submitVmName;
+	public String destVmName;
 	public int submitPktSize;
+
 	public Request request;
 
 	public WorkloadResultWriter resultWriter;
 
 	public boolean failed = false;
 
-	public Workload(int workloadId, WorkloadResultWriter writer) {
+	public Workload(int workloadId, int jobId, WorkloadResultWriter writer) {
 		this.workloadId = workloadId;
 		this.resultWriter = writer;
+		this.jobId = jobId;
 	}
 
 	public void writeResult() {

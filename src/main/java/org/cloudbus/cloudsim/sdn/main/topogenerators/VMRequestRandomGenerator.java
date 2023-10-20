@@ -6,7 +6,7 @@
  * Copyright (c) 2015, The University of Melbourne, Australia
  */
 
-package org.cloudbus.cloudsim.sdn.example.topogenerators;
+package org.cloudbus.cloudsim.sdn.main.topogenerators;
 
 import org.apache.commons.math3.distribution.ExponentialDistribution;
 import org.apache.commons.math3.distribution.ParetoDistribution;

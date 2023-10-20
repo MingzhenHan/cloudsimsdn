@@ -11,7 +11,7 @@ package org.cloudbus.cloudsim.sdn.workload;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.sdn.Configuration;
 import org.cloudbus.cloudsim.sdn.LogWriter;
-import org.cloudbus.cloudsim.sdn.example.LogPrinter;
+import org.cloudbus.cloudsim.sdn.main.LogPrinter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

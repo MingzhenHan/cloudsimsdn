@@ -46,6 +46,7 @@ public class WorkloadParser {
 	private WorkloadResultWriter resultWriter = null;
 
 	private int workloadNum = 0;
+	private String destVMName;
 
 	private BufferedReader bufReader = null;
 
@@ -150,6 +151,7 @@ public class WorkloadParser {
 			}
 
 			String vmName = lineitems.poll();
+			destVMName = vmName;
 			int toVmId = getVmId(vmName);
 
 			long pktSize = Long.parseLong(lineitems.poll());
@@ -186,6 +188,7 @@ public class WorkloadParser {
 		String line;
 
 		try {
+			int jobid = 1;
 			while (((line = bufReader.readLine()) != null)
 					&& (parsedWorkloads.size() < numRequests) ){
 /*************************************************************/
@@ -195,21 +198,23 @@ public class WorkloadParser {
 				Integer periodCount = Integer.parseInt(lineitems.poll());// number
 				Double periodTime = Double.parseDouble(lineitems.poll());
 				for (int i=0; i<periodCount; ++i) {
-					Workload tr = new Workload(workloadNum++, this.resultWriter);
+					Workload wl = new Workload(workloadNum++, jobid, this.resultWriter);
 					Queue<String> lineitemscopy = new LinkedList<String>(lineitems);
 					// 比如待解析数据：0,vm01,0,5,l12,vm02,10000,5,,,,
-					tr.time = Double.parseDouble(lineitemscopy.poll());// start_time
-					tr.time += i * periodTime;
+					wl.time = Double.parseDouble(lineitemscopy.poll());// start_time
+					wl.time += i * periodTime;
 					// For debug only
-					if(tr.time < this.forcedStartTime || tr.time > this.forcedFinishTime) // Skip Workloads before the set start time
+					if(wl.time < this.forcedStartTime || wl.time > this.forcedFinishTime) // Skip Workloads before the set start time
 						continue;
 					String vmName = lineitemscopy.poll();
-					tr.submitVmId = getVmId(vmName);
-					tr.submitVmName = vmName;
-					tr.submitPktSize = Integer.parseInt(lineitemscopy.poll());
-					tr.request = parseRequest(tr.submitVmId, lineitemscopy);
-					parsedWorkloads.add(tr);
+					wl.submitVmId = getVmId(vmName);
+					wl.submitVmName = vmName;
+					wl.submitPktSize = Integer.parseInt(lineitemscopy.poll());
+					wl.request = parseRequest(wl.submitVmId, lineitemscopy);
+					wl.destVmName = destVMName;
+					parsedWorkloads.add(wl);
 				}
+				++jobid;
 /*************************************************************/
 //				//System.out.println("parsing:"+line);
 //				Workload tr = new Workload(workloadNum++, this.resultWriter);

@@ -6,7 +6,7 @@
  * Copyright (c) 2015, The University of Melbourne, Australia
  */
 
-package org.cloudbus.cloudsim.sdn.example.topogenerators;
+package org.cloudbus.cloudsim.sdn.main.topogenerators;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,12 +14,12 @@ import java.util.List;
 
 /**
  * This class creates Virtual Environment for Edge experiments.
- * 
+ *
  * @author Jungmin Son
  * @since CloudSimSDN 3.0
  */
 public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGeneratorVmTypes {
-	
+
 	public static void main(String [] argv) {
 		//String jsonFileName = "virtual.wiki.complex.json";
 
@@ -27,30 +27,30 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 		boolean noscale = false;
 		vmGenerator.generateLarge3TierTopologyEdge("edge.virtual.json", noscale);
 	}
-	
+
 	public void generateLarge3TierTopologyEdge(String jsonFileName, boolean noscale) {
 		final int numWeb=4;
 		final int numApp=12;
-		final int numDB=0;		
-		
+		final int numDB=0;
+
 		final int groupNum = 2;
-		final Long[] linkBW = new Long[]{1500000L, 1500000L, 1500000L, 
+		final Long[] linkBW = new Long[]{1500000L, 1500000L, 1500000L,
 				1500000L, 1500000L, 1500000L, 1500000L, 1500000L, 1500000L, 1500000L, 1500000L, 1500000L,
 				1500000L, 1500000L, 1500000L};
-		
+
 		//Random rand = new Random(SEED);
 		for(int vmGroupId = 0;vmGroupId < groupNum; vmGroupId++) {
 			TimeGen startTime = new TimeGen(-1);
 			TimeGen endTime = new TimeGen(-1);
-			
+
 			generateVMGroupComplex(numWeb, numApp, numDB, startTime, endTime, linkBW[vmGroupId], vmGroupId, noscale);
 		}
-		
+
 		wrtieJSON(jsonFileName);
 	}
-	
+
 	int vmNum = 0;
-	
+
 	enum VMtype {
 		WebServer,
 		AppServer,
@@ -58,7 +58,7 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 		Proxy,
 		Firewall
 	}
-	
+
 	public VMSpec createVM(VMtype vmtype, double startTime, double endTime, int vmGroupId, int vmGroupSubId, long vmBW) {
 		String name = "vm";
 		int pes = 1;
@@ -109,7 +109,7 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 		name += vmGroupId;
 		if(host != null)
 			host += vmGroupId;
-		
+
 		if(vmGroupSubId != -1) {
 			name += "-" + vmGroupSubId;
 			if(host != null)
@@ -120,7 +120,7 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 		VMSpec vm = addVM(name, datacenter, host, pes, mips, vmRam, vmSize, vmBW, startTime, endTime);
 		return vm;
 	}
-	
+
 	public void generateVMGroupComplex(int numWeb, int numApp, int numDB, TimeGen startTime, TimeGen endTime, Long linkBw, int groupId, boolean noscale) {
 		System.out.printf("Generating VM Group(%d)\n", groupId);
 		VMSpec [] webs = new VMSpec[numWeb];
@@ -128,7 +128,7 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 		VMSpec [] dbs = new VMSpec[numDB];
 		for(int i=0;i<numWeb;i++)
 			webs[i] = this.createVM(VMtype.WebServer, startTime.getStartTime(), endTime.getEndTime(), groupId, i, linkBw);
-		
+
 		double sTime = startTime.getStartTime();
 		for(int i=0;i<numApp;i++)
 		{
@@ -138,7 +138,7 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 		}
 		for(int i=0;i<numDB;i++)
 			dbs[i] = this.createVM(VMtype.DBServer, startTime.getStartTime(), endTime.getEndTime(), groupId, i, linkBw);
-		
+
 		int maxNum = Integer.max(numWeb, numApp);
 		maxNum=Integer.max(maxNum, numDB);
 
@@ -146,7 +146,7 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 		long linkBwPerCh = linkBw/2;
 		if(noscale)
 			linkBwPerCh = linkBw;//linkBw;
-		
+
 		if(linkBw > 0) {
 			for(int i=0;i<maxNum;i++)
 			{
@@ -154,16 +154,16 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 				//addLinkAutoNameBoth(apps[i%numApp], dbs[i%numDB], linkBwPerCh);
 			}
 		}
-		
+
 		// Create SFC!!!
 		createSFCPolicy(webs, apps, dbs, startTime, endTime, linkBw, groupId, noscale);
 	}
-	
+
 	private List<SFSpec>[] createSFCombination(SFSpec[] sp1, SFSpec[] sp2) {
 		int maxNum = sp1.length;
 		if(sp2 !=null)
 			maxNum = Integer.max(sp1.length, sp2.length);
-		
+
 		@SuppressWarnings("unchecked")
 		List<SFSpec>[] chains = new List[maxNum];
 		for(int i=0; i<maxNum; i++) {
@@ -172,9 +172,9 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 			if(sp2 !=null)
 				chains[i].add(sp2[i%sp2.length]);
 		}
-		return chains;		
+		return chains;
 	}
-	
+
 	public void createSFCPolicy(VMSpec [] webs, VMSpec [] apps, VMSpec [] dbs, TimeGen startTime, TimeGen endTime, Long linkBw, int groupId, boolean noscale) {
 		int lb1Num = 1;
 		int fwNum = 1;
@@ -190,7 +190,7 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 			 idsNum = 3;
 			 */
 		}
-		
+
 		SFSpec [] lb1s = new SFSpec[lb1Num];
 		for(int i=0; i<lb1Num; i++)
 		{
@@ -231,7 +231,7 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 				expTime = 2.0;
 			addSFCPolicyCollective(apps, webs, chains, expTime);
 		}
-		
+
 		// Policy for App -> DB
 		/*
 		{
@@ -260,8 +260,8 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 			addSFCPolicyCollective(apps, webs, chains, expTime);
 		}//*/
 	}
-	
-	
+
+
 	public void addSFCPolicyCollective(VMSpec[] srcList, VMSpec[] dstList, List<SFSpec>[] sfChains, double expectedTime) {
 		int maxNum = Integer.max(srcList.length, dstList.length);
 		for(int i=0;i<maxNum;i++)
@@ -271,7 +271,7 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 			List<SFSpec> sfChain = sfChains[i%sfChains.length];
 			String linkname = getAutoLinkName(src, dest);
 			String policyname = "sfc-"+linkname;
-			
+
 			//double thisExp = expectedTime;
 			//if(src.name.charAt(src.name.length()-1) - '0' < srcList.length/2)
 			//	thisExp *= 2;
@@ -282,10 +282,10 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 	public SFSpec addSFFirewall(String name, long linkBw, TimeGen startTime, TimeGen endTime, boolean noscale) {
 		String datacenter = "edgedc";
 		String [] subdatacenter = {"netcloud"};
-		
+
 		int pes = 8; // for AutoScale
 		if(noscale)
-			pes = 16; 	// for fixed number : total mips = 3*8000 = 24,000. MI/op = 25. -> 960 operations / sec 
+			pes = 16; 	// for fixed number : total mips = 3*8000 = 24,000. MI/op = 25. -> 960 operations / sec
 		long mips = 10000;
 		int ram = 1000;
 		long storage = 1000;
@@ -293,7 +293,7 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 		//long miPerOperation = 25;
 		long miPerOperation = 800;
 		SFSpec sf = addSF(name, datacenter, Arrays.asList(subdatacenter), pes, mips, ram, storage, bw, startTime.getStartTime(), endTime.getEndTime(), miPerOperation, "Firewall");
-		
+
 		return sf;
 	}
 
@@ -302,30 +302,30 @@ public class VirtualTopologyGeneratorVmTypesEdge extends VirtualTopologyGenerato
 		String [] subdatacenter = {"netcloud"};
 		int pes = 2; // for AutoScale
 		if(noscale)
-			pes = 10;	// for fixed number : total mips = 5*8000 = 40,000. MI/op = 10. -> 4,000 operations / sec 
+			pes = 10;	// for fixed number : total mips = 5*8000 = 40,000. MI/op = 10. -> 4,000 operations / sec
 		long mips = 10000;
 		int ram = 1000;
 		long storage = 1000;
 		long bw = linkBw;
 		long miPerOperation = 20; //10
 		SFSpec sf = addSF(name, datacenter, Arrays.asList(subdatacenter), pes, mips, ram, storage, bw, startTime.getStartTime(), endTime.getEndTime(), miPerOperation, "LoadBalancer");
-		
+
 		return sf;
 	}
-	
+
 	public SFSpec addSFIntrusionDetectionSystem(String name, long linkBw, TimeGen startTime, TimeGen endTime, boolean noscale) {
 		String datacenter = "edgedc";
 		String [] subdatacenter = {"netcloud"};
 		int pes = 6; // for AutoScale
 		if(noscale)
-			pes = 12;	// for fixed number : total mips = 5*8000 = 40,000. MI/op = 30. -> 1333.3333 operations / sec 
+			pes = 12;	// for fixed number : total mips = 5*8000 = 40,000. MI/op = 30. -> 1333.3333 operations / sec
 		long mips = 10000;
 		int ram = 1000;
 		long storage = 1000;
 		long bw = linkBw;
 		long miPerOperation = 200;//30;
 		SFSpec sf = addSF(name, datacenter, Arrays.asList(subdatacenter), pes, mips, ram, storage, bw, startTime.getStartTime(), endTime.getEndTime(), miPerOperation, "IDS");
-		
+
 		return sf;
-	}	
+	}
 }

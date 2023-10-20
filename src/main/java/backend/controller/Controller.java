@@ -1,18 +1,15 @@
 package backend.controller;
 
 //import com.reins.bookstore.service.LoginService;
-import org.cloudbus.cloudsim.core.CloudSim;
-import org.cloudbus.cloudsim.sdn.example.SimpleExampleInterCloud;
+import org.cloudbus.cloudsim.sdn.main.SimpleExampleInterCloud;
 import org.cloudbus.cloudsim.sdn.workload.Workload;
 import org.cloudbus.cloudsim.sdn.workload.WorkloadResultWriter;
-import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -93,8 +90,10 @@ public class Controller {
                 Time = finishTime - startTime;
 //------------------------------------------
             WorkloadResult wr = new WorkloadResult();
-            wr.jobid = workload.workloadId;
+            wr.jobid = workload.jobId;
+            wr.workloadid = workload.workloadId;
             wr.vmid = workload.submitVmName;
+            wr.destid = workload.destVmName;
             if(workload.failed)
                 wr.status = "timeout";
             else

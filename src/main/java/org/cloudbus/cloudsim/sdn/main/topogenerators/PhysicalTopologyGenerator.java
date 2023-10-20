@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2015, The University of Melbourne, Australia
  */
-package org.cloudbus.cloudsim.sdn.example.topogenerators;
+package org.cloudbus.cloudsim.sdn.main.topogenerators;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

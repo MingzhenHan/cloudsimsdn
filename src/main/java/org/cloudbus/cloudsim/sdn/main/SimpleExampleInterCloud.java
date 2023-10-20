@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2015, The University of Melbourne, Australia
  */
-package org.cloudbus.cloudsim.sdn.example;
+package org.cloudbus.cloudsim.sdn.main;
 
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.core.CloudSim;
