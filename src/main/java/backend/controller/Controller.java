@@ -36,19 +36,6 @@ public class Controller {
     @RequestMapping("/createtopo")
     public ResultDTO createTopo(/*@RequestBody Map<String, String> req*/){
         System.out.println("创建物理拓扑");
-//        JSONObject topo = new JSONObject();
-//        List<JSONObject> datacenters = new ArrayList<JSONObject>();
-//        for(int i=0; i<3; ++i){//比如3个dc
-//            JSONObject dc = new JSONObject().put("name","dc"+String.valueOf(i)).put("type", "cloud");
-////            dc.put("name", "dc"+String.valueOf(i));
-////            dc.put("type", "cloud");
-//            datacenters.add(dc);
-//        }
-//        JSONObject[] dcs = datacenters.toArray(new JSONObject[datacenters.size()]);
-//        topo.put("datacenters", 1);
-//        topo.put("nodes", 1);
-//        topo.put("links",1);
-//        return ResultDTO.success(topo.toString());
         Topo topo = new Topo();
         List<topodatacenter> datacenters = new ArrayList<>();
         for(int i=0; i<3; ++i){//比如3个dc

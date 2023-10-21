@@ -113,7 +113,7 @@ public class SimpleExampleInterCloud {
 			Configuration.monitoringTimeInterval = Configuration.migrationTimeInterval = 1;
 
 			// Create multiple Datacenters
-			xml2Json(physicalTopologyFile);
+//			xml2Json(physicalTopologyFile);
 			Map<NetworkOperatingSystem, SDNDatacenter> dcs = createPhysicalTopology("example-intercloud/hmz_convert.json", ls, vmAllocationFac);
 
 			// Broker
