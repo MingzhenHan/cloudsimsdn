@@ -202,7 +202,7 @@ public class PhysicalTopologyParser {
 					int MAX_PORTS = 256;
 
 					long bw = new BigDecimal((Long)node.get("bw")).longValueExact();
-					long iops = (Long) node.get("iops");
+					long iops = 0;//(Long) node.get("iops");
 					int upports = MAX_PORTS;
 					int downports = MAX_PORTS;
 					if (node.get("upports")!= null)
@@ -301,8 +301,8 @@ public class PhysicalTopologyParser {
 				double lat = ((Long) link.get("latency")).doubleValue();
 				Node srcNode = nameNodeTable.get(src);
 				Node dstNode = nameNodeTable.get(dst);
-
-				Link l = new Link(srcNode, dstNode, lat, -1); // Temporary Link (blueprint) to create the real one in NOS
+				// TODO: -1?
+				Link l = new Link(srcNode, dstNode, lat, -1); //(Double) link.get("bw")); // Temporary Link (blueprint) to create the real one in NOS
 				this.links.add(l);
 			}
 		} catch (FileNotFoundException e) {

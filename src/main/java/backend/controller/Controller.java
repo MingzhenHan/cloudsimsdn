@@ -1,6 +1,7 @@
 package backend.controller;
 
 //import com.reins.bookstore.service.LoginService;
+import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.sdn.main.SimpleExampleInterCloud;
 import org.cloudbus.cloudsim.sdn.workload.Workload;
 import org.cloudbus.cloudsim.sdn.workload.WorkloadResultWriter;
@@ -25,34 +26,29 @@ public class Controller {
     private SimpleExampleInterCloud simulator;
 
     private String physicalf = "InputOutput/physical2.xml";
-    private String virtualf = "InputOutput/virtual2.json";
-    private String workloadf = "InputOutput/one-workload.csv";
+    private String virtualf = "example-intercloud/intercloud.virtual2.json";
+    private String workloadf = "example-intercloud/one-workload.csv";
+    private boolean halfDuplex = true;
+
     @RequestMapping("/visit")
-    public ResultDTO login(@RequestBody Map<String, String> req){
+    public ResultDTO login(@RequestBody String req){
         System.out.println("访问后端");
+        System.out.println(CloudSim.HalfDuplex);
+        System.out.println(CloudSim.HalfDuplex);
+        System.out.println(CloudSim.HalfDuplex);
         return ResultDTO.success("This is simulator backend");
     }
 
-    @RequestMapping("/createtopo")
-    public ResultDTO createTopo(/*@RequestBody Map<String, String> req*/){
-        System.out.println("创建物理拓扑");
-        Topo topo = new Topo();
-        List<topodatacenter> datacenters = new ArrayList<>();
-        for(int i=0; i<3; ++i){//比如3个dc
-            topodatacenter dc = new topodatacenter("dc"+String.valueOf(i), "cloud");
-            datacenters.add(dc);
-        }
-        List<toponode> nodes = new ArrayList<>();
-        for(int i=0; i<3; ++i){//比如3个dc
-            toponode node = new toponode("host"+String.valueOf(i), "host", "dc1", 1000000);
-            nodes.add(node);
-            node = new toponode("edge"+String.valueOf(i), "edge", "dc1", 2,1000000);
-            nodes.add(node);
-        }
-        topo.datacenters = datacenters;
-        topo.nodes = nodes;
-
-        return ResultDTO.success(topo);
+    @RequestMapping("/halfduplex")
+    public ResultDTO halfduplex(@RequestBody String req) {
+        JSONObject state = new JSONObject(req);
+        halfDuplex = state.getBoolean("switchstate");
+        System.out.println(String.valueOf(halfDuplex));
+        CloudSim.HalfDuplex = halfDuplex;
+        System.out.println(CloudSim.HalfDuplex);
+        System.out.println(CloudSim.HalfDuplex);
+        System.out.println(CloudSim.HalfDuplex);
+        return ResultDTO.success("ok");
     }
 
     @RequestMapping("/writephysical")
@@ -68,7 +64,7 @@ public class Controller {
                 .put("name","inter")
                 .put("type","interclouud")
                 .put("datacenter","net")
-                .put("bw", 10000000);
+                .put("bw", 100000000); //100M
         topo.accumulate("nodes", inter);
 
         for(int i=1;i<=array.length();i++)
@@ -81,6 +77,8 @@ public class Controller {
             int hostnum = dcConfig.getInt("hostnum");//4;
             int edgeports = dcConfig.getInt("edgeports");//2;
             int coreports = dcConfig.getInt("coreports");//2;
+            long edgebw = dcConfig.getLong("edgebw");
+            long corebw = dcConfig.getLong("corebw");
             //-------------
             int edgenum = (hostnum+edgeports-1) / edgeports;
             int corenum = (edgenum+coreports-1) / coreports;
@@ -94,12 +92,12 @@ public class Controller {
                     .put("name","gw"+String.valueOf(i))
                     .put("type","gateway")
                     .put("datacenter","net")
-                    .put("bw", 10000000);
+                    .put("bw", corebw);
             JSONObject gateway_copy = new JSONObject()
                     .put("name","gw"+String.valueOf(i))
                     .put("type","gateway")
                     .put("datacenter","dc"+String.valueOf(i))
-                    .put("bw", 10000000);
+                    .put("bw", corebw);
             topo.accumulate("nodes", gateway).accumulate("nodes",gateway_copy);
             // 解析dc的core switches
             for(int j=1; j<=corenum; ++j){
@@ -108,7 +106,7 @@ public class Controller {
                         .put("type","core")
                         .put("datacenter","dc"+String.valueOf(i))
                         .put("ports",coreports)
-                        .put("bw", 10000000);
+                        .put("bw", corebw);
                 topo.accumulate("nodes", core);
                 //新建link: gw <-> core
                 topo.accumulate("links", new JSONObject().put("source","gw"+String.valueOf(i))
@@ -121,7 +119,7 @@ public class Controller {
                         .put("type","edge")
                         .put("datacenter","dc"+String.valueOf(i))
                         .put("ports",edgeports)
-                        .put("bw", 10000000);
+                        .put("bw", edgebw);
                 topo.accumulate("nodes", edge);
                 //新建link: core <-> edge. 比如edge1~2连core1
                 topo.accumulate("links", new JSONObject().put("source",String.valueOf(i)+"core"+String.valueOf((j-1+corenum)/corenum))
@@ -196,7 +194,7 @@ public class Controller {
     public ResultDTO run() throws IOException {
         System.out.println("\n开始仿真");
 //        String args[] = {"LFF","example-intercloud/intercloud.physical2.xml","example-intercloud/intercloud.virtual2.json", "example-intercloud/one-workload.csv"};
-        String args[] = {"LFF",physicalf,virtualf,workloadf};
+        String args[] = {"",physicalf,virtualf,workloadf};
         simulator = new SimpleExampleInterCloud();
         List<Workload> wls = simulator.main(args);
         List<WorkloadResult> wrlist = new ArrayList<>();

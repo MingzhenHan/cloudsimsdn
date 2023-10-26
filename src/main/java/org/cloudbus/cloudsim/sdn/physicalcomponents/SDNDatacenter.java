@@ -240,7 +240,7 @@ public class SDNDatacenter extends Datacenter {
 
 		}
 /*******************************************************************************************/
-		double wirelessBwUp = 20000;
+		double wirelessBwUp = CloudSim.wirelessBw;
 		Channel channel = channelManager.findChannel(src, dst, flowId+1000);
 		time = CloudSim.clock();
 		if(channel == null) {
@@ -285,7 +285,7 @@ public class SDNDatacenter extends Datacenter {
 			}
 		}
 /*******************************************************************************************/
-		double wirelessBwDown = 20000;
+		double wirelessBwDown = CloudSim.wirelessBw;
 		Channel channel = channelManager.findChannel(src, dst, flowId+2000);
 		if(channel == null) {
 			channel = new Channel(flowId + 2000, src, dst, originCh.nodesAll, originCh.linksAll, wirelessBwDown,

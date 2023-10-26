@@ -82,7 +82,7 @@ public class SimpleExampleInterCloud {
 			System.exit(1);
 		}
 
-		VmAllocationPolicyEnum vmAllocPolicy = VmAllocationPolicyEnum.valueOf(args[0]);
+		VmAllocationPolicyEnum vmAllocPolicy = VmAllocationPolicyEnum.valueOf("LFF");
 		if(args.length > 1)
 			physicalTopologyFile = args[1];
 

@@ -31,6 +31,7 @@ import java.util.*;
 public class CloudSim {
 	public static WirelessScheduler wirelessScheduler = new WirelessScheduler();
 
+	static public double wirelessBw = 20000000; //20M
 	/** The Constant CLOUDSIM_VERSION_STRING. */
 	private static final String CLOUDSIM_VERSION_STRING = "3.0";
 	public static boolean HalfDuplex = true; //半双工
