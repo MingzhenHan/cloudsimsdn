@@ -323,7 +323,6 @@ public class SDNDatacenter extends Datacenter {
 		if(channel == null) {
 			channel = new Channel(flowId + 3000, src, dst, originCh.nodesAll, originCh.linksAll, ethernetBw,
 					(SDNVm) NetworkOperatingSystem.findVmGlobal(src), (SDNVm) NetworkOperatingSystem.findVmGlobal(dst), true, 3);
-			ethernetBw = channel.reCalcuMinBandwidth();
 			if (channel == null) {
 				// failed to create channel
 				System.err.println("ERROR!! Cannot create channel!" + pkt);

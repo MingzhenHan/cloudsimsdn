@@ -61,8 +61,11 @@ public class Controller {
         topo.accumulate("datacenters", new JSONObject().put("name","net").put("type", "wirelessnetwork"));
         // 解析wirelessnetworkd的interswitch
         JSONObject inter = new JSONObject()
+                .put("upports", 0)
+                .put("downports", 0)
+                .put("iops", 1000000000)
                 .put("name","inter")
-                .put("type","interclouud")
+                .put("type","intercloud")
                 .put("datacenter","net")
                 .put("bw", 100000000); //100M
         topo.accumulate("nodes", inter);
@@ -89,11 +92,17 @@ public class Controller {
             topo.accumulate("datacenters", dc);
             // 解析dc的gateway
             JSONObject gateway = new JSONObject()
+                    .put("upports", 0)
+                    .put("downports", 0)
+                    .put("iops", 1000000000)
                     .put("name","gw"+String.valueOf(i))
                     .put("type","gateway")
                     .put("datacenter","net")
                     .put("bw", corebw);
             JSONObject gateway_copy = new JSONObject()
+                    .put("upports", 0)
+                    .put("downports", 0)
+                    .put("iops", 1000000000)
                     .put("name","gw"+String.valueOf(i))
                     .put("type","gateway")
                     .put("datacenter","dc"+String.valueOf(i))
@@ -102,6 +111,9 @@ public class Controller {
             // 解析dc的core switches
             for(int j=1; j<=corenum; ++j){
                 JSONObject core = new JSONObject()
+                        .put("upports", 0)
+                        .put("downports", 0)
+                        .put("iops", 1000000000)
                         .put("name",String.valueOf(i)+"core"+String.valueOf(j))
                         .put("type","core")
                         .put("datacenter","dc"+String.valueOf(i))
@@ -115,6 +127,9 @@ public class Controller {
             // 解析dc的edge switches
             for(int j=1; j<=edgenum; ++j){
                 JSONObject edge = new JSONObject()
+                        .put("upports", 0)
+                        .put("downports", 0)
+                        .put("iops", 1000000000)
                         .put("name",String.valueOf(i)+"edge"+String.valueOf(j))
                         .put("type","edge")
                         .put("datacenter","dc"+String.valueOf(i))
@@ -122,12 +137,15 @@ public class Controller {
                         .put("bw", edgebw);
                 topo.accumulate("nodes", edge);
                 //新建link: core <-> edge. 比如edge1~2连core1
-                topo.accumulate("links", new JSONObject().put("source",String.valueOf(i)+"core"+String.valueOf((j-1+corenum)/corenum))
+                topo.accumulate("links", new JSONObject().put("source",String.valueOf(i)+"core"+String.valueOf((j-1+coreports)/coreports))
                         .put("destination", String.valueOf(i)+"edge"+String.valueOf(j)).put("latency", 1.0));
             }
             // 解析dc的hosts
             for(int j=1; j<=hostnum; ++j){
                 JSONObject host = new JSONObject()
+                        .put("upports", 0)
+                        .put("downports", 0)
+                        .put("iops", 1000000000)
                         .put("name",String.valueOf(i)+"host"+String.valueOf(j))
                         .put("type","host")
                         .put("datacenter","dc"+String.valueOf(i))
@@ -138,7 +156,7 @@ public class Controller {
                         .put("storage", 10000000);
                 topo.accumulate("nodes", host);
                 //新建link: edge <-> host. 比如host1~2连edge1
-                topo.accumulate("links", new JSONObject().put("source",String.valueOf(i)+"edge"+String.valueOf((j-1+corenum)/corenum))
+                topo.accumulate("links", new JSONObject().put("source",String.valueOf(i)+"edge"+String.valueOf((j-1+edgeports)/edgeports))
                         .put("destination", String.valueOf(i)+"host"+String.valueOf(j)).put("latency", 1.0));
             }
         }

@@ -114,8 +114,8 @@ public class SimpleExampleInterCloud {
 
 			// Create multiple Datacenters
 //			xml2Json(physicalTopologyFile);
-			Map<NetworkOperatingSystem, SDNDatacenter> dcs = createPhysicalTopology("example-intercloud/hmz_convert.json", ls, vmAllocationFac);
-
+//			Map<NetworkOperatingSystem, SDNDatacenter> dcs = createPhysicalTopology("example-intercloud/hmz_convert.json", ls, vmAllocationFac);
+			Map<NetworkOperatingSystem, SDNDatacenter> dcs = createPhysicalTopology("InputOutput/exampleWrite.json", ls, vmAllocationFac);
 			// Broker
 			SDNBroker broker = createBroker();
 			int brokerId = broker.getId();

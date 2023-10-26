@@ -301,7 +301,7 @@ public class PhysicalTopologyParser {
 				double lat = ((Long) link.get("latency")).doubleValue();
 				Node srcNode = nameNodeTable.get(src);
 				Node dstNode = nameNodeTable.get(dst);
-				// TODO: -1?
+				// TODO: -1? bw在addLink函数中根据switch赋值
 				Link l = new Link(srcNode, dstNode, lat, -1); //(Double) link.get("bw")); // Temporary Link (blueprint) to create the real one in NOS
 				this.links.add(l);
 			}

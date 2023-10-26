@@ -150,7 +150,7 @@ public abstract class PhysicalTopology {
 	public void addLink(Node fromNode, Node toNode, double latency){
 		int from = fromNode.getAddress();
 		int to = toNode.getAddress();
-
+		// TODO: link的bw在这里计算
 		long bw = (fromNode.getBandwidth()<toNode.getBandwidth())? fromNode.getBandwidth():toNode.getBandwidth();
 
 		if(!nodesTable.containsKey(from)||!nodesTable.containsKey(to)){
