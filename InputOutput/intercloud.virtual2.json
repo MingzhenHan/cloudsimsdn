@@ -30,7 +30,16 @@
       "datacenter": "dc1",
       "host": "1host3"
     },
-
+    {
+      "name" : "vm04",
+      "type" : "vm",
+      "size" : 1000,
+      "pes": 1,
+      "mips" : 500,
+      "ram"  : 512,
+      "datacenter": "dc1",
+      "host": "1host4"
+    },
 
     {
       "name": "vm21",
@@ -97,6 +106,10 @@
   ],
 
   "flows" : [
+    { "name": "default", "source" : "vm01" , "destination" : "vm04" },
+    { "name": "default", "source" : "vm02" , "destination" : "vm04" },
+    { "name": "default", "source" : "vm03" , "destination" : "vm04" },
+    { "name": "default", "source" : "vm02" , "destination" : "vm01" },
     { "name": "default", "source" : "vm01" , "destination" : "vm21" },
     { "name": "default", "source" : "vm02" , "destination" : "vm21" },
     { "name": "default", "source" : "vm21" , "destination" : "vm01" },

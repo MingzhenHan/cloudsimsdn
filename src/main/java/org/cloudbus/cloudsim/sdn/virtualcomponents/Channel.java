@@ -550,7 +550,7 @@ public class Channel {
 
 	/**
 	 * 若channel的带宽为0，返回Double.POSITIVE_INFINITY。
-	 * 否则规定至少 0.01s，不足就补到 0.01
+	 * 否则规定至少 0.001s，不足就补到 0.001
 	 */
 	public double nextFinishTime() {
 		return packetScheduler.nextFinishTime();

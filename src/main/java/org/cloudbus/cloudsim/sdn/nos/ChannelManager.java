@@ -121,7 +121,7 @@ public class ChannelManager {
 		//System.err.println("NOS.addChannel:"+getKey(src, dst, chId));
 		this.channelTable.put(getChannelKey(src, dst, chId), ch);
 //		ch.initialize();
-		ch.totalLatency = 0.01;
+		ch.totalLatency = 0;
 	}
 
 	public Channel findChannel(int from, int to, int channelId) {

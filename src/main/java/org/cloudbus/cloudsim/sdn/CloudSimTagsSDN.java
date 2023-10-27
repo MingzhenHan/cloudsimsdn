@@ -22,6 +22,7 @@ public class CloudSimTagsSDN {
 	public static final int SDN_ARRIVED_INTERCLOUD = SDN_BASE + 102; // 有包裹到达 Intercloud(wifi)
 	public static final int SDN_ARRIVED_GATEWAY2 = SDN_BASE + 103; // 有包裹到达对方 Gateway
 	public static final int SDN_WIRELESS_TIMESLIDE = SDN_BASE + 200;
+	public static final int SDN_HOST_SEND_DELAY = SDN_BASE + 999; //主机发送数据包的延迟
 	public static final int SDN_PACKET_COMPLETE = SDN_BASE + 1;	// Deliver Cloudlet (computing workload) to VM
 	public static final int SDN_PACKET_FAILED = SDN_BASE + 2;	// Deliver Cloudlet (computing workload) to VM
 	public static final int SDN_INTERNAL_PACKET_PROCESS = SDN_BASE + 3;

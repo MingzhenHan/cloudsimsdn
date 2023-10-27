@@ -177,7 +177,7 @@ public class PhysicalTopologyParser {
 					long mips = (Long) node.get("mips");
 					int ram = new BigDecimal((Long)node.get("ram")).intValueExact();
 					long storage = (Long) node.get("storage");
-					long bw = new BigDecimal((Long)node.get("bw")).intValueExact();
+					long bw = new BigDecimal((Long)node.get("bw")).longValueExact();
 
 					int num = 1;
 					if (node.get("nums")!= null)

@@ -27,6 +27,7 @@ import org.cloudbus.cloudsim.sdn.workload.Processing;
 import org.cloudbus.cloudsim.sdn.workload.Request;
 import org.cloudbus.cloudsim.sdn.workload.Transmission;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -213,6 +214,8 @@ public class SDNDatacenter extends Datacenter {
 			case CloudSimTagsSDN.SDN_ARRIVED_GATEWAY2:
 				PacketAcrossArrivedGateway((ChanAndTrans)ev.getData());
 				break;
+			case CloudSimTagsSDN.SDN_HOST_SEND_DELAY:
+				processNextActivity((Request)ev.getData());
 			default:
 				System.out.println("Unknown event recevied by SdnDatacenter. Tag:"+ev.getTag());
 		}
@@ -413,7 +416,7 @@ public class SDNDatacenter extends Datacenter {
 				if (estimatedFinishDelay < CloudSim.getMinTimeBetweenEvents()) {
 					estimatedFinishDelay = CloudSim.getMinTimeBetweenEvents();
 				}
-
+				// 加上主机发送带宽的延迟？？
 				send(getId(), estimatedFinishDelay, CloudSimTags.VM_DATACENTER_EVENT);
 			}
 
@@ -465,6 +468,11 @@ public class SDNDatacenter extends Datacenter {
 						} else {
 							//consume the next activity from request. It should be a transmission.
 							processNextActivity(req);
+
+//							Transmission tr = (Transmission) req.getNextActivity();
+//							// 主机发送时延 10MB
+//							BigDecimal delay = new BigDecimal(tr.getPacket().getSize()).divide(BigDecimal.valueOf(CloudSim.HostSendBw));
+//							send(this.getId(), delay.doubleValue(), CloudSimTagsSDN.SDN_HOST_SEND_DELAY, req);
 						}
 					}
 				}

@@ -45,9 +45,7 @@ public class Controller {
         halfDuplex = state.getBoolean("switchstate");
         System.out.println(String.valueOf(halfDuplex));
         CloudSim.HalfDuplex = halfDuplex;
-        System.out.println(CloudSim.HalfDuplex);
-        System.out.println(CloudSim.HalfDuplex);
-        System.out.println(CloudSim.HalfDuplex);
+        CloudSim.wirelessBw = 10000000; //10M
         return ResultDTO.success("ok");
     }
 
@@ -80,8 +78,8 @@ public class Controller {
             int hostnum = dcConfig.getInt("hostnum");//4;
             int edgeports = dcConfig.getInt("edgeports");//2;
             int coreports = dcConfig.getInt("coreports");//2;
-            long edgebw = dcConfig.getLong("edgebw");
-            long corebw = dcConfig.getLong("corebw");
+            long edgebw = dcConfig.getLong("edgebw") * 1000000; // MB
+            long corebw = dcConfig.getLong("corebw") * 1000000; // MB
             //-------------
             int edgenum = (hostnum+edgeports-1) / edgeports;
             int corenum = (edgenum+coreports-1) / coreports;
@@ -149,7 +147,7 @@ public class Controller {
                         .put("name",String.valueOf(i)+"host"+String.valueOf(j))
                         .put("type","host")
                         .put("datacenter","dc"+String.valueOf(i))
-                        .put("bw", 10000000)
+                        .put("bw", edgebw)
                         .put("pes",1)
                         .put("mips",30000000)
                         .put("ram", 10240)

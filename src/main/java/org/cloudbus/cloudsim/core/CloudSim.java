@@ -31,10 +31,11 @@ import java.util.*;
 public class CloudSim {
 	public static WirelessScheduler wirelessScheduler = new WirelessScheduler();
 
-	static public double wirelessBw = 20000000; //20M
+	public static double wirelessBw = 10000000; //10M
+	public static long HostSendBw = 10000000; // 10M
 	/** The Constant CLOUDSIM_VERSION_STRING. */
 	private static final String CLOUDSIM_VERSION_STRING = "3.0";
-	public static boolean HalfDuplex = true; //半双工
+	public static boolean HalfDuplex = false; //半双工
 
 	/** The id of CIS entity. */
 	private static int cisId = -1;
@@ -60,7 +61,7 @@ public class CloudSim {
 	private static double terminateAt = -1;
 
 	/** The minimal time between events. Events within shorter periods after the last event are discarded. */
-	private static double minTimeBetweenEvents = 0.01;
+	private static double minTimeBetweenEvents = 0.001;
 
 	/**
 	 * Initialises all the common attributes.
