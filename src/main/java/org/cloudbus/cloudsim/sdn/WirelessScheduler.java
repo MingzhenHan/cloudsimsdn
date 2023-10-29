@@ -58,7 +58,7 @@ public class WirelessScheduler {
 	private boolean channelExisted(String chankey, Channel chan) {
 		List<Channel> list = chanTable.get(chankey);
 		for (Channel list_i:list ) {
-			if (list_i.getChId() == chan.getChId()) {
+			if(list_i.getSrcId() == chan.getSrcId() && list_i.getDstId() == chan.getDstId() && list_i.packetScheduler == chan.packetScheduler){
 				return true;
 			}
 		}

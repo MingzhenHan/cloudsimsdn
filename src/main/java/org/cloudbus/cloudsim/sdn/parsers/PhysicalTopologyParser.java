@@ -94,11 +94,11 @@ public class PhysicalTopologyParser {
 		return parser.dcAndWirelessGateway;
 	}
 
-	public static void loadPhysicalTopologySingleDC(String physicalTopologyFilename, NetworkOperatingSystem nos, HostFactory hostFactory) {
-		PhysicalTopologyParser parser = new PhysicalTopologyParser(physicalTopologyFilename, hostFactory);
-		parser.parse(nos);
-		nos.configurePhysicalTopology(parser.getHosts(), parser.getSwitches(), parser.getLinks());
-	}
+//	public static void loadPhysicalTopologySingleDC(String physicalTopologyFilename, NetworkOperatingSystem nos, HostFactory hostFactory) {
+//		PhysicalTopologyParser parser = new PhysicalTopologyParser(physicalTopologyFilename, hostFactory);
+//		parser.parse(nos);
+//		nos.configurePhysicalTopology(parser.getHosts(), parser.getSwitches(), parser.getLinks());
+//	}
 
 	public Collection<SDNHost> getHosts() {
 		return this.sdnHosts.values();

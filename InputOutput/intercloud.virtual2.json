@@ -18,7 +18,8 @@
       "mips" : 500,
       "ram"  : 512,
       "datacenter": "dc1",
-      "host": "1host2"
+      "host": "1host2",
+      "ip" : ""
     },
     {
       "name" : "vm03",

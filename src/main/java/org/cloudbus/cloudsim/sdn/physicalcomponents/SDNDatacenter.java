@@ -99,7 +99,7 @@ public class SDNDatacenter extends Datacenter {
 			} else {
 				data[2] = CloudSimTags.FALSE;
 			}
-			send(vm.getUserId(), CloudSim.getMinTimeBetweenEvents(), CloudSimTags.VM_CREATE_ACK, data);
+			send(vm.getUserId(), 0, CloudSimTags.VM_CREATE_ACK, data);
 		}
 
 		if (result) {
@@ -320,7 +320,7 @@ public class SDNDatacenter extends Datacenter {
 		int src = pkt.getOrigin(); // 发送方虚机
 		int dst = pkt.getDestination(); // 接收方虚机
 		int flowId = pkt.getFlowId();
-		double ethernetBw = 100000; //需要重计算
+		double ethernetBw = 100000; //TODO:需要重计算
 
 		Channel channel = channelManager.findChannel(src, dst, flowId+3000);
 		if(channel == null) {
@@ -331,6 +331,16 @@ public class SDNDatacenter extends Datacenter {
 				System.err.println("ERROR!! Cannot create channel!" + pkt);
 				return;
 			}
+			// 重计算以太网带宽
+			List<Link> links = channel.links;
+			List<Node> nodes = channel.nodes; //gateway开始
+			ethernetBw = Double.POSITIVE_INFINITY;
+			for (int i=0; i<links.size(); ++i){
+				if(ethernetBw > links.get(i).getFreeBandwidth(nodes.get(i))) {
+					ethernetBw = links.get(i).getFreeBandwidth(nodes.get(i));
+				}
+			}
+			channel.requestedBandwidth = channel.allocatedBandwidth = ethernetBw;
 		}
 		channelManager.addChannel(src, dst, flowId+3000, channel);
 		Transmission tr = new Transmission(pkt);
@@ -402,6 +412,8 @@ public class SDNDatacenter extends Datacenter {
 
 			// Check the new estimated time by using host's update VM processing funciton.
 			// This function is called only to check the next finish time
+			double tmptime = CloudSim.clock();
+			// cloudlet的预计执行时间
 			estimatedFinishTime = host.updateVmsProcessing(CloudSim.clock());
 
 			double estimatedFinishDelay = estimatedFinishTime - CloudSim.clock();

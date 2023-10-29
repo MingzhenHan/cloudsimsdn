@@ -7,15 +7,16 @@ import org.cloudbus.cloudsim.sdn.workload.Workload;
 import org.cloudbus.cloudsim.sdn.workload.WorkloadResultWriter;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.simple.JSONValue;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class Controller {
     private String physicalf = "InputOutput/physical2.xml";
     private String virtualf = "example-intercloud/intercloud.virtual2.json";
     private String workloadf = "example-intercloud/one-workload.csv";
-    private boolean halfDuplex = true;
+    private boolean halfDuplex = false;
 
     @RequestMapping("/visit")
     public ResultDTO login(@RequestBody String req){
@@ -49,6 +50,30 @@ public class Controller {
         return ResultDTO.success("ok");
     }
 
+    @RequestMapping("/writeJsonFile")
+    public String writeJsonFile() throws Exception {
+        JSONObject obj1 = new JSONObject().put("name", "xxx").put("gender", "male").put("phone", "123");
+        JSONObject obj2 = new JSONObject().put("name", "yyy").put("gender", "female").put("phone", "456");
+        JSONArray array = new JSONArray();
+        array.put(obj1).put(obj2);
+        OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("./test.json"),"UTF-8");
+        osw.write(array.toString());
+        osw.flush();//清空缓冲区，强制输出数据
+        osw.close();//关闭输出流
+        return array.toString();
+    }
+
+    @RequestMapping("/readJsonFile")
+    public String readJsonFile(String req) throws Exception {
+        String content = new String(Files.readAllBytes(Paths.get("./test.json")));
+        JSONArray array = new JSONArray(content);
+        @SuppressWarnings("unchecked")
+        Iterator<Object> iter = array.iterator();
+        while(iter.hasNext()){
+            System.out.println(iter.next());
+        }
+        return array.toString();
+    }
     @RequestMapping("/writephysical")
     public ResultDTO JsonWrite(@RequestBody String req) throws Exception{
         OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("InputOutput/exampleWrite.json"),"UTF-8");

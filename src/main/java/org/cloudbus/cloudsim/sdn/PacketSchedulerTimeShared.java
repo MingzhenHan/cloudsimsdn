@@ -39,7 +39,12 @@ public class PacketSchedulerTimeShared extends PacketSchedulerSpaceShared {
 			this.inTransmission.remove(transmission);
 		}
 
-		previousTime = currentTime;
+
+		if(processedThisRound == 0){
+			previousTime = currentTime; //对于disable的wirelesschannel，可以不更进时间
+		} else {
+			previousTime = currentTime;
+		}
 
 		//Log.printLine(CloudSim.clock() + ": Channel.updatePacketProcessing() ("+this.toString()+"):Time spent:"+timeSpent+
 		//		", BW/host:"+channel.getAllocatedBandwidth()+", Processed:"+processedThisRound);

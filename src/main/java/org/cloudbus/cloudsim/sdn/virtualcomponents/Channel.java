@@ -37,17 +37,17 @@ import java.util.List;
 public class Channel {
 	public boolean isWireless;
 	public int wirelessLevel = 0;
-	private List<Node> nodes;
+	public List<Node> nodes;
 	public List<Node> nodesAll;
-	private List<Link> links;
+	public List<Link> links;
 	public List<Link> linksAll;
-	private double allocatedBandwidth; // Actual bandwidth allocated to the channel
+	public double allocatedBandwidth; // Actual bandwidth allocated to the channel
 	private double previousTime;
 
 	private final int srcId;
 	private final int dstId;
 	private final int chId;// flowID，也是 channelID
-	private double requestedBandwidth;	// Requested by user
+	public double requestedBandwidth;	// Requested by user
 
 	public double totalLatency = 0;
 
@@ -55,7 +55,7 @@ public class Channel {
 //	private SDNVm dstVm;
 
 	//PacketScheduler packetScheduler = new PacketSchedulerSpaceShared(this);
-	PacketScheduler packetScheduler = new PacketSchedulerTimeShared(this);
+	public PacketScheduler packetScheduler = new PacketSchedulerTimeShared(this);
 
 	public Channel(int chId, int srcId, int dstId, List<Node> nodes, List<Link> links, double bandwidth, SDNVm srcVm, SDNVm dstVm, boolean wireless, int wirelessLevel) {
 		this.isWireless = wireless;

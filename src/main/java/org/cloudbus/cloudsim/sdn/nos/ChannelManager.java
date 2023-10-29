@@ -121,7 +121,8 @@ public class ChannelManager {
 		//System.err.println("NOS.addChannel:"+getKey(src, dst, chId));
 		this.channelTable.put(getChannelKey(src, dst, chId), ch);
 //		ch.initialize();
-		ch.totalLatency = 0;
+		// 无线channel这里好像不能设为0？
+		ch.totalLatency = 0.01;
 	}
 
 	public Channel findChannel(int from, int to, int channelId) {

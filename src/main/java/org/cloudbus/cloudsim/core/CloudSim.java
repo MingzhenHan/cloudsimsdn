@@ -61,7 +61,7 @@ public class CloudSim {
 	private static double terminateAt = -1;
 
 	/** The minimal time between events. Events within shorter periods after the last event are discarded. */
-	private static double minTimeBetweenEvents = 0.001;
+	private static double minTimeBetweenEvents = 0.0001;
 
 	/**
 	 * Initialises all the common attributes.
@@ -888,6 +888,7 @@ public class CloudSim {
 		while (true) {
 			FutureQueue a = future;
 			DeferredQueue b = deferred;
+			double time = clock();
 			if (runClockTick() || abruptTerminate) {
 				// future为空，即可停止循环。结束模拟。
 				break;

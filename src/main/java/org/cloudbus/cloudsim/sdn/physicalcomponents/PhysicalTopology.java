@@ -153,6 +153,9 @@ public abstract class PhysicalTopology {
 		// TODO: link的bw在这里计算
 		// HOST的bw？
 		long bw = (fromNode.getBandwidth()<toNode.getBandwidth())? fromNode.getBandwidth():toNode.getBandwidth();
+		if(fromNode instanceof IntercloudSwitch || toNode instanceof IntercloudSwitch){
+			bw = Long.MAX_VALUE;
+		}
 
 		if(!nodesTable.containsKey(from)||!nodesTable.containsKey(to)){
 			throw new IllegalArgumentException("Unknown node on link:"+nodesTable.get(from).getAddress()+"->"+nodesTable.get(to).getAddress());

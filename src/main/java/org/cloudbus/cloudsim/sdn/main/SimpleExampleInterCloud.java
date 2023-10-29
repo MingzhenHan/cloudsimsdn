@@ -110,7 +110,7 @@ public class SimpleExampleInterCloud {
 			};
 			LinkSelectionPolicy ls = new LinkSelectionPolicyBandwidthAllocation();
 
-			Configuration.monitoringTimeInterval = Configuration.migrationTimeInterval = 1;
+			Configuration.monitoringTimeInterval = Configuration.migrationTimeInterval = 5;
 
 			// Create multiple Datacenters
 //			xml2Json(physicalTopologyFile);

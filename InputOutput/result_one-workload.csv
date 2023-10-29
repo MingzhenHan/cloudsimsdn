@@ -1,32 +1,224 @@
 Workload_ID,    App_ID,SubmitTime,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,Tr:StartTime,Tr:EndTime,Tr:NetworkTime,   Tr:Size,Tr:Channel,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,ResponseTime,
- 0, 0, 0, 0, 0.002, 0.002, 1, 0.102, 0.114, 0.012, 1000000, -1, 0.114, 0.116, 0.002, 1,     0.116,
- 1, 0, 1, 1, 1.002, 0.002, 1, 1.102, 1.114, 0.012, 1000000, -1, 1.114, 1.116, 0.002, 1,     0.116,
- 3, 0, 10, 10, 10.002, 0.002, 1, 10.102, 20.118, 10.016, 1000000, -1,TimeOut
- 2, 0, 10, 10, 10.002, 0.002, 1, 10.102, 20.319, 10.217, 1000000, -1, 20.319, 20.321, 0.002, 1,    10.321,
- 4, 0, 12, 12, 12.002, 0.002, 1, 12.102, 22.118, 10.016, 1000000, -1,TimeOut
- 5, 0, 20, 20, 20.002, 0.002, 1, 20.102, 30.33, 10.228, 1000000, -1, 30.33, 30.332, 0.002, 1,    10.332,
- 6, 0, 22, 22, 22.002, 0.002, 1, 22.102, 40.33, 18.228, 1000000, -1,TimeOut
- 9, 0, 22.5, 22.5, 22.502, 0.002, 1, 22.602, 40.33, 17.728, 1000000, -1,TimeOut
- 7, 0, 24, 24, 24.002, 0.002, 1, 24.102, 40.33, 16.228, 1000000, -1,TimeOut
- 8, 0, 20.5, 20.5, 20.502, 0.002, 1, 20.602, 40.33, 19.728, 1000000, -1, 40.33, 40.332, 0.002, 1,    19.832,
+ 0, 2, 0, 0, 0.002, 0.002, 1, 0.002, 0.014, 0.012, 1000000, -1, 0.014, 0.016, 0.002, 1,     0.016,
+ 1, 2, 1, 1, 1.002, 0.002, 1, 1.002, 1.014, 0.012, 1000000, -1, 1.014, 1.016, 0.002, 1,     0.016,
+ 3, 2, 10, 10, 10.002, 0.002, 1, 10.002, 11.049, 1.047, 100000, -1, 11.049, 11.051, 0.002, 1,     1.051,
+ 2, 2, 10, 10, 10.002, 0.002, 1, 10.002, 11.059, 1.057, 100000, -1, 11.059, 11.061, 0.002, 1,     1.061,
+ 4, 2, 12, 12, 12.002, 0.002, 1, 12.002, 13.049, 1.047, 100000, -1, 13.049, 13.051, 0.002, 1,     1.051,
+ 5, 2, 20, 20, 20.002, 0.002, 1, 20.002, 21.052, 1.05, 100000, -1, 21.052, 21.054, 0.002, 1,     1.054,
+ 8, 2, 20.5, 20.5, 20.502, 0.002, 1, 20.502, 22.052, 1.55, 100000, -1, 22.052, 22.054, 0.002, 1,     1.554,
+ 6, 2, 22, 22, 22.002, 0.002, 1, 22.002, 23.052, 1.05, 100000, -1, 23.052, 23.054, 0.002, 1,     1.054,
+ 9, 2, 22.5, 22.5, 22.502, 0.002, 1, 22.502, 24.052, 1.55, 100000, -1, 24.052, 24.054, 0.002, 1,     1.554,
+ 7, 2, 24, 24, 24.002, 0.002, 1, 24.002, 25.049, 1.047, 100000, -1, 25.049, 25.051, 0.002, 1,     1.051,
 #======================================
-#Number of workloads:5
-#Timeout workloads:5
+#Number of workloads:10
+#Timeout workloads:0
 #Timeout workloads per cent:0
 #Over workloads:0
 #Over workloads per cent:0
-#Number of Cloudlets:10
+#Number of Cloudlets:20
 #Over Cloudlets:0
 #Over Cloudlets per cent:0
-#Number of transmissions:5
-#Over transmissions:5
+#Number of transmissions:10
+#Over transmissions:10
 #Over transmissions per cent:1
 #======================================
-#Total serve time:40.71700000000001
-#CPU serve time:0.019999999999998685
-#Network serve time:40.19700000000002
-#Average total serve time:8.143400000000003
-#Average CPU serve time per workload:0.003999999999999737
-#Average network serve time per workload:8.039400000000004
-#Average CPU serve time per Cloudlet:0.0019999999999998686
-#Average network serve time per transmission:8.039400000000004
+#Total serve time:9.462000000000028
+#CPU serve time:0.03999999999999293
+#Network serve time:9.422000000000036
+#Average total serve time:0.9462000000000028
+#Average CPU serve time per workload:0.003999999999999293
+#Average network serve time per workload:0.9422000000000036
+#Average CPU serve time per Cloudlet:0.0019999999999996466
+#Average network serve time per transmission:0.9422000000000036
+Workload_ID,    App_ID,SubmitTime,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,Tr:StartTime,Tr:EndTime,Tr:NetworkTime,   Tr:Size,Tr:Channel,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,ResponseTime,
+ 0, 3, 0, 0, 0.002, 0.002, 1, 0.002, 0.014, 0.012, 1000000, -1, 0.014, 0.016, 0.002, 1,     0.016,
+ 1, 3, 1, 1, 1.002, 0.002, 1, 1.002, 1.014, 0.012, 1000000, -1, 1.014, 1.016, 0.002, 1,     0.016,
+ 3, 3, 10, 10, 10.002, 0.002, 1, 10.002, 11.049, 1.047, 100000, -1, 11.049, 11.051, 0.002, 1,     1.051,
+ 2, 3, 10, 10, 10.002, 0.002, 1, 10.002, 11.059, 1.057, 100000, -1, 11.059, 11.061, 0.002, 1,     1.061,
+ 4, 3, 12, 12, 12.002, 0.002, 1, 12.002, 13.049, 1.047, 100000, -1, 13.049, 13.051, 0.002, 1,     1.051,
+ 5, 3, 20, 20, 20.002, 0.002, 1, 20.002, 21.052, 1.05, 100000, -1, 21.052, 21.054, 0.002, 1,     1.054,
+ 8, 3, 20.5, 20.5, 20.502, 0.002, 1, 20.502, 22.052, 1.55, 100000, -1, 22.052, 22.054, 0.002, 1,     1.554,
+ 6, 3, 22, 22, 22.002, 0.002, 1, 22.002, 23.052, 1.05, 100000, -1, 23.052, 23.054, 0.002, 1,     1.054,
+ 9, 3, 22.5, 22.5, 22.502, 0.002, 1, 22.502, 24.052, 1.55, 100000, -1, 24.052, 24.054, 0.002, 1,     1.554,
+ 7, 3, 24, 24, 24.002, 0.002, 1, 24.002, 25.049, 1.047, 100000, -1, 25.049, 25.051, 0.002, 1,     1.051,
+#======================================
+#Number of workloads:10
+#Timeout workloads:0
+#Timeout workloads per cent:0
+#Over workloads:0
+#Over workloads per cent:0
+#Number of Cloudlets:20
+#Over Cloudlets:0
+#Over Cloudlets per cent:0
+#Number of transmissions:10
+#Over transmissions:10
+#Over transmissions per cent:1
+#======================================
+#Total serve time:9.462000000000028
+#CPU serve time:0.03999999999999293
+#Network serve time:9.422000000000036
+#Average total serve time:0.9462000000000028
+#Average CPU serve time per workload:0.003999999999999293
+#Average network serve time per workload:0.9422000000000036
+#Average CPU serve time per Cloudlet:0.0019999999999996466
+#Average network serve time per transmission:0.9422000000000036
+Workload_ID,    App_ID,SubmitTime,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,Tr:StartTime,Tr:EndTime,Tr:NetworkTime,   Tr:Size,Tr:Channel,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,ResponseTime,
+ 0, 4, 0, 0, 0.002, 0.002, 1, 0.002, 0.014, 0.012, 1000000, -1, 0.014, 0.016, 0.002, 1,     0.016,
+ 1, 4, 1, 1, 1.002, 0.002, 1, 1.002, 1.014, 0.012, 1000000, -1, 1.014, 1.016, 0.002, 1,     0.016,
+ 3, 4, 10, 10, 10.002, 0.002, 1, 10.002, 11.049, 1.047, 100000, -1, 11.049, 11.051, 0.002, 1,     1.051,
+ 2, 4, 10, 10, 10.002, 0.002, 1, 10.002, 11.059, 1.057, 100000, -1, 11.059, 11.061, 0.002, 1,     1.061,
+ 4, 4, 12, 12, 12.002, 0.002, 1, 12.002, 13.049, 1.047, 100000, -1, 13.049, 13.051, 0.002, 1,     1.051,
+ 5, 4, 20, 20, 20.002, 0.002, 1, 20.002, 21.052, 1.05, 100000, -1, 21.052, 21.054, 0.002, 1,     1.054,
+ 8, 4, 20.5, 20.5, 20.502, 0.002, 1, 20.502, 22.052, 1.55, 100000, -1, 22.052, 22.054, 0.002, 1,     1.554,
+ 6, 4, 22, 22, 22.002, 0.002, 1, 22.002, 23.052, 1.05, 100000, -1, 23.052, 23.054, 0.002, 1,     1.054,
+ 9, 4, 22.5, 22.5, 22.502, 0.002, 1, 22.502, 24.052, 1.55, 100000, -1, 24.052, 24.054, 0.002, 1,     1.554,
+ 7, 4, 24, 24, 24.002, 0.002, 1, 24.002, 25.049, 1.047, 100000, -1, 25.049, 25.051, 0.002, 1,     1.051,
+#======================================
+#Number of workloads:10
+#Timeout workloads:0
+#Timeout workloads per cent:0
+#Over workloads:0
+#Over workloads per cent:0
+#Number of Cloudlets:20
+#Over Cloudlets:0
+#Over Cloudlets per cent:0
+#Number of transmissions:10
+#Over transmissions:10
+#Over transmissions per cent:1
+#======================================
+#Total serve time:9.462000000000028
+#CPU serve time:0.03999999999999293
+#Network serve time:9.422000000000036
+#Average total serve time:0.9462000000000028
+#Average CPU serve time per workload:0.003999999999999293
+#Average network serve time per workload:0.9422000000000036
+#Average CPU serve time per Cloudlet:0.0019999999999996466
+#Average network serve time per transmission:0.9422000000000036
+Workload_ID,    App_ID,SubmitTime,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,Tr:StartTime,Tr:EndTime,Tr:NetworkTime,   Tr:Size,Tr:Channel,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,ResponseTime,
+ 0, 5, 0, 0, 0.002, 0.002, 1, 0.002, 0.014, 0.012, 1000000, -1, 0.014, 0.016, 0.002, 1,     0.016,
+ 1, 5, 1, 1, 1.002, 0.002, 1, 1.002, 1.014, 0.012, 1000000, -1, 1.014, 1.016, 0.002, 1,     0.016,
+ 3, 5, 10, 10, 10.002, 0.002, 1, 10.002, 11.049, 1.047, 100000, -1, 11.049, 11.051, 0.002, 1,     1.051,
+ 2, 5, 10, 10, 10.002, 0.002, 1, 10.002, 11.059, 1.057, 100000, -1, 11.059, 11.061, 0.002, 1,     1.061,
+ 4, 5, 12, 12, 12.002, 0.002, 1, 12.002, 13.049, 1.047, 100000, -1, 13.049, 13.051, 0.002, 1,     1.051,
+ 5, 5, 20, 20, 20.002, 0.002, 1, 20.002, 21.052, 1.05, 100000, -1, 21.052, 21.054, 0.002, 1,     1.054,
+ 8, 5, 20.5, 20.5, 20.502, 0.002, 1, 20.502, 22.052, 1.55, 100000, -1, 22.052, 22.054, 0.002, 1,     1.554,
+ 6, 5, 22, 22, 22.002, 0.002, 1, 22.002, 23.052, 1.05, 100000, -1, 23.052, 23.054, 0.002, 1,     1.054,
+ 9, 5, 22.5, 22.5, 22.502, 0.002, 1, 22.502, 24.052, 1.55, 100000, -1, 24.052, 24.054, 0.002, 1,     1.554,
+ 7, 5, 24, 24, 24.002, 0.002, 1, 24.002, 25.049, 1.047, 100000, -1, 25.049, 25.051, 0.002, 1,     1.051,
+#======================================
+#Number of workloads:10
+#Timeout workloads:0
+#Timeout workloads per cent:0
+#Over workloads:0
+#Over workloads per cent:0
+#Number of Cloudlets:20
+#Over Cloudlets:0
+#Over Cloudlets per cent:0
+#Number of transmissions:10
+#Over transmissions:10
+#Over transmissions per cent:1
+#======================================
+#Total serve time:9.462000000000028
+#CPU serve time:0.03999999999999293
+#Network serve time:9.422000000000036
+#Average total serve time:0.9462000000000028
+#Average CPU serve time per workload:0.003999999999999293
+#Average network serve time per workload:0.9422000000000036
+#Average CPU serve time per Cloudlet:0.0019999999999996466
+#Average network serve time per transmission:0.9422000000000036
+Workload_ID,    App_ID,SubmitTime,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,Tr:StartTime,Tr:EndTime,Tr:NetworkTime,   Tr:Size,Tr:Channel,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,ResponseTime,
+ 0, 6, 0, 0, 0.002, 0.002, 1, 0.002, 0.014, 0.012, 1000000, -1, 0.014, 0.016, 0.002, 1,     0.016,
+ 1, 6, 1, 1, 1.002, 0.002, 1, 1.002, 1.014, 0.012, 1000000, -1, 1.014, 1.016, 0.002, 1,     0.016,
+ 3, 6, 10, 10, 10.002, 0.002, 1, 10.002, 11.049, 1.047, 100000, -1, 11.049, 11.051, 0.002, 1,     1.051,
+ 2, 6, 10, 10, 10.002, 0.002, 1, 10.002, 11.059, 1.057, 100000, -1, 11.059, 11.061, 0.002, 1,     1.061,
+ 4, 6, 12, 12, 12.002, 0.002, 1, 12.002, 13.049, 1.047, 100000, -1, 13.049, 13.051, 0.002, 1,     1.051,
+ 5, 6, 20, 20, 20.002, 0.002, 1, 20.002, 21.052, 1.05, 100000, -1, 21.052, 21.054, 0.002, 1,     1.054,
+ 8, 6, 20.5, 20.5, 20.502, 0.002, 1, 20.502, 22.052, 1.55, 100000, -1, 22.052, 22.054, 0.002, 1,     1.554,
+ 6, 6, 22, 22, 22.002, 0.002, 1, 22.002, 23.052, 1.05, 100000, -1, 23.052, 23.054, 0.002, 1,     1.054,
+ 9, 6, 22.5, 22.5, 22.502, 0.002, 1, 22.502, 24.052, 1.55, 100000, -1, 24.052, 24.054, 0.002, 1,     1.554,
+ 7, 6, 24, 24, 24.002, 0.002, 1, 24.002, 25.049, 1.047, 100000, -1, 25.049, 25.051, 0.002, 1,     1.051,
+#======================================
+#Number of workloads:10
+#Timeout workloads:0
+#Timeout workloads per cent:0
+#Over workloads:0
+#Over workloads per cent:0
+#Number of Cloudlets:20
+#Over Cloudlets:0
+#Over Cloudlets per cent:0
+#Number of transmissions:10
+#Over transmissions:10
+#Over transmissions per cent:1
+#======================================
+#Total serve time:9.462000000000028
+#CPU serve time:0.03999999999999293
+#Network serve time:9.422000000000036
+#Average total serve time:0.9462000000000028
+#Average CPU serve time per workload:0.003999999999999293
+#Average network serve time per workload:0.9422000000000036
+#Average CPU serve time per Cloudlet:0.0019999999999996466
+#Average network serve time per transmission:0.9422000000000036
+Workload_ID,    App_ID,SubmitTime,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,Tr:StartTime,Tr:EndTime,Tr:NetworkTime,   Tr:Size,Tr:Channel,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,ResponseTime,
+ 0, 7, 0, 0, 0.002, 0.002, 1, 0.002, 0.014, 0.012, 1000000, -1, 0.014, 0.016, 0.002, 1,     0.016,
+ 1, 7, 1, 1, 1.002, 0.002, 1, 1.002, 1.014, 0.012, 1000000, -1, 1.014, 1.016, 0.002, 1,     0.016,
+ 3, 7, 10, 10, 10.002, 0.002, 1, 10.002, 11.049, 1.047, 100000, -1, 11.049, 11.051, 0.002, 1,     1.051,
+ 2, 7, 10, 10, 10.002, 0.002, 1, 10.002, 11.059, 1.057, 100000, -1, 11.059, 11.061, 0.002, 1,     1.061,
+ 4, 7, 12, 12, 12.002, 0.002, 1, 12.002, 13.049, 1.047, 100000, -1, 13.049, 13.051, 0.002, 1,     1.051,
+ 5, 7, 20, 20, 20.002, 0.002, 1, 20.002, 21.052, 1.05, 100000, -1, 21.052, 21.054, 0.002, 1,     1.054,
+ 8, 7, 20.5, 20.5, 20.502, 0.002, 1, 20.502, 22.052, 1.55, 100000, -1, 22.052, 22.054, 0.002, 1,     1.554,
+ 6, 7, 22, 22, 22.002, 0.002, 1, 22.002, 23.052, 1.05, 100000, -1, 23.052, 23.054, 0.002, 1,     1.054,
+ 9, 7, 22.5, 22.5, 22.502, 0.002, 1, 22.502, 24.052, 1.55, 100000, -1, 24.052, 24.054, 0.002, 1,     1.554,
+ 7, 7, 24, 24, 24.002, 0.002, 1, 24.002, 25.049, 1.047, 100000, -1, 25.049, 25.051, 0.002, 1,     1.051,
+#======================================
+#Number of workloads:10
+#Timeout workloads:0
+#Timeout workloads per cent:0
+#Over workloads:0
+#Over workloads per cent:0
+#Number of Cloudlets:20
+#Over Cloudlets:0
+#Over Cloudlets per cent:0
+#Number of transmissions:10
+#Over transmissions:10
+#Over transmissions per cent:1
+#======================================
+#Total serve time:9.462000000000028
+#CPU serve time:0.03999999999999293
+#Network serve time:9.422000000000036
+#Average total serve time:0.9462000000000028
+#Average CPU serve time per workload:0.003999999999999293
+#Average network serve time per workload:0.9422000000000036
+#Average CPU serve time per Cloudlet:0.0019999999999996466
+#Average network serve time per transmission:0.9422000000000036
+Workload_ID,    App_ID,SubmitTime,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,Tr:StartTime,Tr:EndTime,Tr:NetworkTime,   Tr:Size,Tr:Channel,Pr:StartTime,Pr:EndTime,Pr:CPUTime,   Pr:Size,ResponseTime,
+ 0, 8, 0, 0, 0.002, 0.002, 1, 0.002, 0.014, 0.012, 1000000, -1, 0.014, 0.016, 0.002, 1,     0.016,
+ 1, 8, 1, 1, 1.002, 0.002, 1, 1.002, 1.014, 0.012, 1000000, -1, 1.014, 1.016, 0.002, 1,     0.016,
+ 3, 8, 10, 10, 10.002, 0.002, 1, 10.002, 11.049, 1.047, 100000, -1, 11.049, 11.051, 0.002, 1,     1.051,
+ 2, 8, 10, 10, 10.002, 0.002, 1, 10.002, 11.059, 1.057, 100000, -1, 11.059, 11.061, 0.002, 1,     1.061,
+ 4, 8, 12, 12, 12.002, 0.002, 1, 12.002, 13.049, 1.047, 100000, -1, 13.049, 13.051, 0.002, 1,     1.051,
+ 5, 8, 20, 20, 20.002, 0.002, 1, 20.002, 21.052, 1.05, 100000, -1, 21.052, 21.054, 0.002, 1,     1.054,
+ 8, 8, 20.5, 20.5, 20.502, 0.002, 1, 20.502, 22.052, 1.55, 100000, -1, 22.052, 22.054, 0.002, 1,     1.554,
+ 6, 8, 22, 22, 22.002, 0.002, 1, 22.002, 23.052, 1.05, 100000, -1, 23.052, 23.054, 0.002, 1,     1.054,
+ 9, 8, 22.5, 22.5, 22.502, 0.002, 1, 22.502, 24.052, 1.55, 100000, -1, 24.052, 24.054, 0.002, 1,     1.554,
+ 7, 8, 24, 24, 24.002, 0.002, 1, 24.002, 25.049, 1.047, 100000, -1, 25.049, 25.051, 0.002, 1,     1.051,
+#======================================
+#Number of workloads:10
+#Timeout workloads:0
+#Timeout workloads per cent:0
+#Over workloads:0
+#Over workloads per cent:0
+#Number of Cloudlets:20
+#Over Cloudlets:0
+#Over Cloudlets per cent:0
+#Number of transmissions:10
+#Over transmissions:10
+#Over transmissions per cent:1
+#======================================
+#Total serve time:9.462000000000028
+#CPU serve time:0.03999999999999293
+#Network serve time:9.422000000000036
+#Average total serve time:0.9462000000000028
+#Average CPU serve time per workload:0.003999999999999293
+#Average network serve time per workload:0.9422000000000036
+#Average CPU serve time per Cloudlet:0.0019999999999996466
+#Average network serve time per transmission:0.9422000000000036

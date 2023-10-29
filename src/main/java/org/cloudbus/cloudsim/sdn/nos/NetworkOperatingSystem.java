@@ -270,16 +270,16 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 					continue; // 在上一层 caller 会删除空闲 channel
 				}
 				if(ch.isWireless && ch.wirelessLevel == 1){ // 包即将抵达intercloud(wifi)，给netDC发消息，新建wirelessDownChan(intercloud->gateway)并addTransmission
-					double delay = ch.getTotalLatency(); // gateway->intercloud的延迟
-					send(CloudSim.getEntityId("net"), delay, CloudSimTagsSDN.SDN_ARRIVED_INTERCLOUD, new ChanAndTrans(ch, tr));
+//					double delay = ch.getTotalLatency(); // gateway->intercloud的延迟
+					send(CloudSim.getEntityId("net"), CloudSim.getMinTimeBetweenEvents(), CloudSimTagsSDN.SDN_ARRIVED_INTERCLOUD, new ChanAndTrans(ch, tr));
 					continue; // 在上一层 caller 会删除空闲 channel
 				}
 				if(ch.isWireless && ch.wirelessLevel == 2){ // 包即将跨平台抵达Gateway，新建EthernetChan(gateway->desthost)并addTransmission
-					double delay = ch.getTotalLatency(); // intercloud->gateway的延迟
+//					double delay = ch.getTotalLatency(); // intercloud->gateway的延迟
 					Packet pkt = tr.getPacket();
 					int vmId = pkt.getDestination();
 					Datacenter dc = SDNDatacenter.findDatacenterGlobal(vmId);
-					send(dc.getId(), delay, CloudSimTagsSDN.SDN_ARRIVED_GATEWAY2, new ChanAndTrans(ch, tr));
+					send(dc.getId(), CloudSim.getMinTimeBetweenEvents(), CloudSimTagsSDN.SDN_ARRIVED_GATEWAY2, new ChanAndTrans(ch, tr));
 					continue; // 在上一层 caller 会删除空闲 channel
 				}
 /* **********************************************************************/
