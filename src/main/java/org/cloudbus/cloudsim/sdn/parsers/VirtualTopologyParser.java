@@ -12,6 +12,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import org.cloudbus.cloudsim.CloudletScheduler;
 import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.sdn.CloudletSchedulerSpaceSharedMonitor;
 import org.cloudbus.cloudsim.sdn.Configuration;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.FlowConfig;
@@ -108,8 +109,9 @@ public class VirtualTopologyParser {
 			ArrayList<String> optionalDatacenter = null;
 
 			String hostName = "";
-			if(node.get("host") != null)
+			if(node.get("host") != null){
 				hostName = (String)node.get("host");
+			}
 
 			long nums =1;
 			if(node.get("nums") != null)

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NetworkTopo RleaseDate="27/01/2021 21:52:27" ICDVerison="BP2.3.1">
+    <Switches>
+        <Switch Name="core1" Network="A" PortNum="2" Type="core" Speed="100" IpAddress="10.31.42.1" Guid="a2e6640e-8d60-411a-977f-d09c5aab8d04" ExtGuid="123">
+        </Switch>
+
+        <Switch Name="edge1" Network="A" PortNum="4" Type="edge" Speed="100" IpAddress="10.31.42.2" Guid="a2e6640e-8d60-411a-977f-d09c5aab8d04" ExtGuid="124">
+        </Switch>
+        <Switch Name="edge2" Network="A" PortNum="4" Type="edge" Speed="100" IpAddress="10.31.42.3" Guid="a2e6640e-8d60-411a-977f-d09c5aab8d04" ExtGuid="125">
+        </Switch>
+    </Switches>
+
+    <Links>
+        <Link Name="LINK1" Src="core1" Dst="edge1" BW="100" Latency="0.1">
+        </Link>
+        <Link Name="LINK2" Src="core1" Dst="edge2" BW="100" Latency="0.1">
+        </Link>
+
+        <Link Name="LINK3" Src="edge1" Dst="host1" BW="100" Latency="0.1">
+        </Link>
+        <Link Name="LINK4" Src="edge1" Dst="host2" BW="100" Latency="0.1">
+        </Link>
+        <Link Name="LINK5" Src="edge1" Dst="host3" BW="100" Latency="0.1">
+        </Link>
+        <Link Name="LINK6" Src="edge1" Dst="host4" BW="100" Latency="0.1">
+        </Link>
+
+        <Link Name="LINK7" Src="edge2" Dst="host5" BW="100" Latency="0.1">
+        </Link>
+        <Link Name="LINK8" Src="edge2" Dst="host6" BW="100" Latency="0.1">
+        </Link>
+        <Link Name="LINK9" Src="edge2" Dst="host7" BW="100" Latency="0.1">
+        </Link>
+        <Link Name="LINK10" Src="edge2" Dst="host8" BW="100" Latency="0.1">
+        </Link>
+    </Links>
+
+    <EndSystems>
+        <EndSystem Name="GPM1" HwType="GPM" ATA="-1" EdeSubscriberIndex="-1" EquipmentPosition="-1" HwTableBankIndex="-1">
+            <AesPhysPorts>
+                <AesPhysPort Name="pio_A664_A" Speed="100" MACAddress="-1" Medium="-1" Network="A"/>
+                <AesPhysPort Name="pio_A664_B" Speed="100" MACAddress="-1" Medium="-1" Network="B"/>
+            </AesPhysPorts>
+        </EndSystem>
+    </EndSystems>
+
+</NetworkTopo>

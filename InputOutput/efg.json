@@ -1,0 +1,122 @@
+{"nodes": [
+    {
+        "size": 1000,
+        "name": "10.31.40.2",
+        "host": "host4",
+        "start": 0.406,
+        "datacenter": "A",
+        "end": 1.443,
+        "type": "vm",
+        "mips": 500,
+        "pes": 1,
+        "ram": 512
+    },
+    {
+        "size": 1000,
+        "name": "10.31.40.3",
+        "host": "host2",
+        "start": 0.406,
+        "datacenter": "A",
+        "end": 2.453,
+        "type": "vm",
+        "mips": 500,
+        "pes": 1,
+        "ram": 512
+    },
+    {
+        "size": 1000,
+        "name": "10.31.40.1",
+        "host": "host1",
+        "start": 2.453,
+        "datacenter": "A",
+        "end": 3.503,
+        "type": "vm",
+        "mips": 500,
+        "pes": 1,
+        "ram": 512
+    },
+    {
+        "size": 1000,
+        "name": "10.31.40.4",
+        "host": "host6",
+        "start": 0.406,
+        "datacenter": "A",
+        "end": 5.433,
+        "type": "vm",
+        "mips": 500,
+        "pes": 1,
+        "ram": 512
+    },
+    {
+        "size": 1000,
+        "name": "10.31.40.8",
+        "host": "host1",
+        "start": 0.406,
+        "datacenter": "A",
+        "end": 8.428,
+        "type": "vm",
+        "mips": 500,
+        "pes": 1,
+        "ram": 512
+    },
+    {
+        "size": 1000,
+        "name": "10.31.40.7",
+        "host": "host3",
+        "start": 0.406,
+        "datacenter": "A",
+        "end": 8.428,
+        "type": "vm",
+        "mips": 500,
+        "pes": 1,
+        "ram": 512
+    },
+    {
+        "size": 1000,
+        "name": "10.31.40.6",
+        "host": "host5",
+        "start": 0.406,
+        "datacenter": "A",
+        "end": 8.428,
+        "type": "vm",
+        "mips": 500,
+        "pes": 1,
+        "ram": 512
+    },
+    {
+        "size": 1000,
+        "name": "10.31.40.10",
+        "host": "host7",
+        "start": 0.406,
+        "datacenter": "A",
+        "end": 8.428,
+        "type": "vm",
+        "mips": 500,
+        "pes": 1,
+        "ram": 512
+    },
+    {
+        "size": 1000,
+        "name": "10.31.40.5",
+        "host": "host8",
+        "start": 0.406,
+        "datacenter": "A",
+        "end": 8.428,
+        "type": "vm",
+        "mips": 500,
+        "pes": 1,
+        "ram": 512
+    },
+    {
+        "size": 1000,
+        "name": "10.31.40.9",
+        "host": "host8",
+        "start": 0.406,
+        "datacenter": "A",
+        "end": 8.428,
+        "type": "vm",
+        "mips": 500,
+        "pes": 1,
+        "ram": 512
+    }
+]}

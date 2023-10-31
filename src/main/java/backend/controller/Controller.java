@@ -7,6 +7,7 @@ import org.cloudbus.cloudsim.sdn.workload.Workload;
 import org.cloudbus.cloudsim.sdn.workload.WorkloadResultWriter;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.XML;
 import org.json.simple.JSONValue;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,11 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 //@Scope(value = "singleton")
@@ -50,143 +49,145 @@ public class Controller {
         return ResultDTO.success("ok");
     }
 
-    @RequestMapping("/writeJsonFile")
-    public String writeJsonFile() throws Exception {
-        JSONObject obj1 = new JSONObject().put("name", "xxx").put("gender", "male").put("phone", "123");
-        JSONObject obj2 = new JSONObject().put("name", "yyy").put("gender", "female").put("phone", "456");
-        JSONArray array = new JSONArray();
-        array.put(obj1).put(obj2);
-        OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("./test.json"),"UTF-8");
-        osw.write(array.toString());
-        osw.flush();//清空缓冲区，强制输出数据
-        osw.close();//关闭输出流
-        return array.toString();
-    }
-
-    @RequestMapping("/readJsonFile")
-    public String readJsonFile(String req) throws Exception {
-        String content = new String(Files.readAllBytes(Paths.get("./test.json")));
-        JSONArray array = new JSONArray(content);
-        @SuppressWarnings("unchecked")
-        Iterator<Object> iter = array.iterator();
-        while(iter.hasNext()){
-            System.out.println(iter.next());
+    @RequestMapping("/convertphytopo")
+    public ResultDTO convertphytopo() throws IOException {
+        String xml = Files.readString(Path.of("./example-intercloud/615topo.xml"));
+        JSONObject xmlJSONObj = XML.toJSONObject(xml);
+        //设置缩进
+        JSONObject topo = xmlJSONObj.getJSONObject("NetworkTopo");
+        JSONArray switches = topo.getJSONObject("Switches").getJSONArray("Switch");
+        JSONArray links = topo.getJSONObject("Links").getJSONArray("Link");
+        xml = Files.readString(Path.of("./example-intercloud/615host8.xml"));
+        xmlJSONObj = XML.toJSONObject(xml);
+        JSONArray hosts = xmlJSONObj.getJSONObject("adag").getJSONArray("node");
+        // 计算多少dc
+        Set<String> dcnames = new HashSet<>();
+        for(Object obj : switches){
+            JSONObject swch = (JSONObject) obj;
+            String dcname = swch.getString("Network");
+            dcnames.add(dcname);
         }
-        return array.toString();
-    }
-    @RequestMapping("/writephysical")
-    public ResultDTO JsonWrite(@RequestBody String req) throws Exception{
-        OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("InputOutput/exampleWrite.json"),"UTF-8");
-        JSONObject topo = new JSONObject();
-        JSONArray array= new JSONArray(req);
-        System.out.println(array);
-        // 解析wirelessnetwork
-        topo.accumulate("datacenters", new JSONObject().put("name","net").put("type", "wirelessnetwork"));
-        // 解析wirelessnetworkd的interswitch
-        JSONObject inter = new JSONObject()
+        topo = new JSONObject();
+        // 新建wirelessnetwork dc、interswitch
+        topo.accumulate("datacenters", new JSONObject()
+                .put("name","net").put("type", "wirelessnetwork"));
+        topo.accumulate("nodes", new JSONObject()
                 .put("upports", 0)
                 .put("downports", 0)
                 .put("iops", 1000000000)
                 .put("name","inter")
                 .put("type","intercloud")
                 .put("datacenter","net")
-                .put("bw", 100000000); //100M
-        topo.accumulate("nodes", inter);
-
-        for(int i=1;i<=array.length();i++)
-        {
-            //新建linklink: inter <-> gw
-            topo.accumulate("links", new JSONObject().put("source","inter")
-                    .put("destination", "gw"+String.valueOf(i)).put("latency", 1.0));
-            JSONObject dcConfig = array.getJSONObject(i-1);
-            //-------------以下是dcConfig
-            int hostnum = dcConfig.getInt("hostnum");//4;
-            int edgeports = dcConfig.getInt("edgeports");//2;
-            int coreports = dcConfig.getInt("coreports");//2;
-            long edgebw = dcConfig.getLong("edgebw") * 1000000; // MB
-            long corebw = dcConfig.getLong("corebw") * 1000000; // MB
-            //-------------
-            int edgenum = (hostnum+edgeports-1) / edgeports;
-            int corenum = (edgenum+coreports-1) / coreports;
-            // 解析dc
-            JSONObject dc = new JSONObject()
-                    .put("name","dc"+String.valueOf(i))
-                    .put("type", "cloud");
-            topo.accumulate("datacenters", dc);
-            // 解析dc的gateway
-            JSONObject gateway = new JSONObject()
+                .put("bw", 100000000) //100M
+        );
+        // 新建普通dc、gateways
+        for(String dcname : dcnames){
+            topo.accumulate("datacenters", new JSONObject()
+                    .put("name",dcname).put("type", "cloud"));
+            topo.accumulate("nodes", new JSONObject()
                     .put("upports", 0)
                     .put("downports", 0)
                     .put("iops", 1000000000)
-                    .put("name","gw"+String.valueOf(i))
+                    .put("name","gw"+dcname)
                     .put("type","gateway")
                     .put("datacenter","net")
-                    .put("bw", corebw);
-            JSONObject gateway_copy = new JSONObject()
+                    .put("bw", 100000000) //100M
+            );
+            topo.accumulate("nodes", new JSONObject()
                     .put("upports", 0)
                     .put("downports", 0)
                     .put("iops", 1000000000)
-                    .put("name","gw"+String.valueOf(i))
+                    .put("name","gw"+dcname)
                     .put("type","gateway")
-                    .put("datacenter","dc"+String.valueOf(i))
-                    .put("bw", corebw);
-            topo.accumulate("nodes", gateway).accumulate("nodes",gateway_copy);
-            // 解析dc的core switches
-            for(int j=1; j<=corenum; ++j){
-                JSONObject core = new JSONObject()
-                        .put("upports", 0)
-                        .put("downports", 0)
-                        .put("iops", 1000000000)
-                        .put("name",String.valueOf(i)+"core"+String.valueOf(j))
-                        .put("type","core")
-                        .put("datacenter","dc"+String.valueOf(i))
-                        .put("ports",coreports)
-                        .put("bw", corebw);
-                topo.accumulate("nodes", core);
-                //新建link: gw <-> core
-                topo.accumulate("links", new JSONObject().put("source","gw"+String.valueOf(i))
-                        .put("destination", String.valueOf(i)+"core"+String.valueOf(j)).put("latency", 1.0));
-            }
-            // 解析dc的edge switches
-            for(int j=1; j<=edgenum; ++j){
-                JSONObject edge = new JSONObject()
-                        .put("upports", 0)
-                        .put("downports", 0)
-                        .put("iops", 1000000000)
-                        .put("name",String.valueOf(i)+"edge"+String.valueOf(j))
-                        .put("type","edge")
-                        .put("datacenter","dc"+String.valueOf(i))
-                        .put("ports",edgeports)
-                        .put("bw", edgebw);
-                topo.accumulate("nodes", edge);
-                //新建link: core <-> edge. 比如edge1~2连core1
-                topo.accumulate("links", new JSONObject().put("source",String.valueOf(i)+"core"+String.valueOf((j-1+coreports)/coreports))
-                        .put("destination", String.valueOf(i)+"edge"+String.valueOf(j)).put("latency", 1.0));
-            }
-            // 解析dc的hosts
-            for(int j=1; j<=hostnum; ++j){
-                JSONObject host = new JSONObject()
-                        .put("upports", 0)
-                        .put("downports", 0)
-                        .put("iops", 1000000000)
-                        .put("name",String.valueOf(i)+"host"+String.valueOf(j))
-                        .put("type","host")
-                        .put("datacenter","dc"+String.valueOf(i))
-                        .put("bw", edgebw)
-                        .put("pes",1)
-                        .put("mips",30000000)
-                        .put("ram", 10240)
-                        .put("storage", 10000000);
-                topo.accumulate("nodes", host);
-                //新建link: edge <-> host. 比如host1~2连edge1
-                topo.accumulate("links", new JSONObject().put("source",String.valueOf(i)+"edge"+String.valueOf((j-1+edgeports)/edgeports))
-                        .put("destination", String.valueOf(i)+"host"+String.valueOf(j)).put("latency", 1.0));
+                    .put("datacenter",dcname)
+                    .put("bw", 100000000) //100M
+            );
+        }
+        // 解析所有的主机、交换机、links
+        for(Object obj : hosts){
+            JSONObject host = (JSONObject) obj;
+            topo.accumulate("nodes", new JSONObject()
+                    .put("name",host.getString("name"))
+                    .put("type","host")
+                    .put("datacenter",host.getString("network"))
+                    .put("bw",(long) host.getDouble("bandwidth")*1000000)
+                    .put("pes",host.getInt("cores"))
+                    .put("mips",host.getLong("mips"))
+                    .put("ram", host.getInt("memory"))
+                    .put("storage",host.getLong("storage")));
+        }
+        for(Object obj : switches){
+            JSONObject swch = (JSONObject) obj;
+            topo.accumulate("nodes", new JSONObject()
+                    .put("upports", 0)
+                    .put("downports", 0)
+                    .put("iops", 1000000000)
+                    .put("name",swch.getString("Name"))
+                    .put("type",swch.getString("Type"))
+                    .put("datacenter",swch.getString("Network"))
+                    .put("ports",swch.getInt("PortNum"))
+                    .put("bw",(long) swch.getDouble("Speed")*1000000));
+        }
+        for(Object obj : links){
+            JSONObject link = (JSONObject) obj;
+            topo.accumulate("links", new JSONObject()
+                    .put("source",link.getString("Src"))
+                    .put("destination",link.getString("Dst"))
+                    .put("latency",0/*link.getDouble("Latency")*/ ));
+        }
+        // 补建links：gateway<->interswitch
+        for(String dcname : dcnames){
+            topo.accumulate("links", new JSONObject()
+                    .put("source","inter")
+                    .put("destination","gw"+dcname)
+                    .put("latency",0));
+        }
+        // 补建links：core<->gateway
+        for(Object obj : switches){
+            JSONObject swch = (JSONObject) obj;
+            if( swch.getString("Type").equals("core")){
+                topo.accumulate("links", new JSONObject()
+                        .put("source",swch.getString("Name"))
+                        .put("destination","gw"+swch.getString("Network"))
+                        .put("latency",0));
             }
         }
-        osw.write(topo.toString());
-        osw.flush();//清空缓冲区，强制输出数据
-        osw.close();//关闭输出流
-        return ResultDTO.success(topo.toString());
+
+        String jsonPrettyPrintString = topo.toString(4);
+        //保存格式化后的json
+        FileWriter writer = new FileWriter("InputOutput/abc.json");
+        writer.write(jsonPrettyPrintString);
+        writer.close();
+        return ResultDTO.success(jsonPrettyPrintString);
+    }
+
+    // 必需保持 hostname = “host” + hostid 对应关系。flows字段在解析workload文件时添加
+    @RequestMapping("/convertvirtopo")
+    public ResultDTO convertvirtopo() throws Exception{
+        String content = Files.readString(Path.of("./example-intercloud/result1.json"));
+        JSONArray json = new JSONArray(content);
+        JSONObject vir = new JSONObject();
+        for(Object obj : json){
+            JSONObject vm = (JSONObject) obj;
+            vir.accumulate("nodes", new JSONObject()
+                    .put("type", "vm")
+                    .put("name", vm.getString("ip"))
+                    .put("size", 1000)
+                    .put("pes", 1)
+                    .put("mips", 500)
+                    .put("ram", 512)
+                    .put("datacenter", "A") //TODO:根据host解析dc
+                    .put("host", "host"+String.valueOf(vm.getInt("hostId")))
+                    .put("start", Double.valueOf(vm.getString("start")))
+                    .put("end", Double.valueOf(vm.getString("end")))
+            );
+        }
+        String jsonPrettyPrintString = vir.toString(4);
+        //保存格式化后的json
+        FileWriter writer = new FileWriter("InputOutput/efg.json");
+        writer.write(jsonPrettyPrintString);
+        writer.close();
+        return ResultDTO.success(jsonPrettyPrintString);
     }
 
     @PostMapping("/uploadphysical")
