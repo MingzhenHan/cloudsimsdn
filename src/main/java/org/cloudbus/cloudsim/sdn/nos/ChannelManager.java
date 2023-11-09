@@ -110,7 +110,7 @@ public class ChannelManager {
 
 			this.channelTable.put(getChannelKey(src, dst, chId), ch);
 			ch.initialize();
-
+			// TODO: 去掉dedicated
 			ch.adjustDedicatedBandwidthAlongLink();
 			ch.adjustSharedBandwidthAlongLink();
 
