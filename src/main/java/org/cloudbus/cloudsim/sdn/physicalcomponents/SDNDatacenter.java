@@ -11,10 +11,7 @@ import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
-import org.cloudbus.cloudsim.sdn.ChanAndTrans;
-import org.cloudbus.cloudsim.sdn.CloudSimTagsSDN;
-import org.cloudbus.cloudsim.sdn.CloudletSchedulerMonitor;
-import org.cloudbus.cloudsim.sdn.Packet;
+import org.cloudbus.cloudsim.sdn.*;
 import org.cloudbus.cloudsim.sdn.nos.ChannelManager;
 import org.cloudbus.cloudsim.sdn.nos.NetworkOperatingSystem;
 import org.cloudbus.cloudsim.sdn.policies.vmallocation.VmAllocationInGroup;
@@ -189,6 +186,7 @@ public class SDNDatacenter extends Datacenter {
 		switch(ev.getTag()){
 			case CloudSimTagsSDN.REQUEST_SUBMIT:
 				processRequestSubmit((Request) ev.getData());
+				this.nos.updateBWMonitor(Configuration.monitoringTimeInterval);
 				break;
 			case CloudSimTagsSDN.SDN_PACKET_COMPLETE:
 				processPacketCompleted((Packet)ev.getData());
@@ -213,6 +211,7 @@ public class SDNDatacenter extends Datacenter {
 				break;
 			case CloudSimTagsSDN.SDN_ARRIVED_GATEWAY2:
 				PacketAcrossArrivedGateway((ChanAndTrans)ev.getData());
+				this.nos.updateBWMonitor(Configuration.monitoringTimeInterval);
 				break;
 			case CloudSimTagsSDN.SDN_HOST_SEND_DELAY:
 				processNextActivity((Request)ev.getData());

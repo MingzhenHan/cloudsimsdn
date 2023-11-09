@@ -1,0 +1,20 @@
+Link,Clock,ProcessedBytes,utilization
+Switch: 1edge1->1host2,1.0,50000000,50.0
+1host1->Switch: 1edge1,1.0,50000000,50.0
+Switch: 2edge1->2host1,10.0,8000000,8.0
+Switch: 2core1->Switch: 2edge1,10.0,8000000,8.0
+Switch: 1edge1->Switch: 1core1,10.0,8000000,8.0
+1host1->Switch: 1edge1,10.0,8000000,8.0
+Switch: 2edge1->2host1,20.0,5000000,5.0
+Switch: 2core1->Switch: 2edge1,20.0,5000000,5.0
+Switch: 1edge1->Switch: 1core1,20.0,10000000,10.0
+1host2->Switch: 1edge1,20.0,5000000,5.0
+1host1->Switch: 1edge1,20.0,5000000,5.0
+Switch: 1edge1->Switch: 1core1,20.42520000000006,2000000,2.0
+1host1->Switch: 1edge1,20.42520000000006,2000000,2.0
+2host1->Switch: 2edge1,20.435200000000062,2000000,2.0
+Switch: 2edge1->Switch: 2core1,20.435200000000062,2000000,2.0
+Switch: 2edge1->2host1,21.0,2000000,2.0
+Switch: 2core1->Switch: 2edge1,21.0,2000000,2.0
+Switch: 1core1->Switch: 1edge1,21.0,2000000,2.0
+Switch: 1edge1->1host1,21.0,2000000,2.0

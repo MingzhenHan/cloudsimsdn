@@ -144,7 +144,7 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 				if(this.datacenter != null)
 					this.datacenter.processUpdateProcessing();
 				channelManager.updatePacketProcessing();
-
+				double tmp = CloudSim.clock();
 				this.updateBWMonitor(Configuration.monitoringTimeInterval);
 				this.updateHostMonitor(Configuration.monitoringTimeInterval);
 				this.updateSwitchMonitor(Configuration.monitoringTimeInterval);
@@ -164,7 +164,7 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 
 //					System.err.println(CloudSim.clock() + ": Elasped time="+ CloudSimEx.getElapsedTimeString()+", "
 //					+CloudSimEx.getNumFutureEvents()+" more events,"+" # packets="+numPackets+", next monitoring in "+nextMonitorDelay);
-//					send(this.getId(), nextMonitorDelay, CloudSimTagsSDN.MONITOR_UPDATE_UTILIZATION);
+					send(this.getId(), nextMonitorDelay, CloudSimTagsSDN.MONITOR_UPDATE_UTILIZATION);
 				}
 				break;
 			default: System.out.println("Unknown event received by "+super.getName()+". Tag:"+ev.getTag());
@@ -602,7 +602,7 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 //	}
 
 	// for monitoring
-	private void updateBWMonitor(double monitoringTimeUnit) {
+	public void updateBWMonitor(double monitoringTimeUnit) {
 		double highest=0;
 		// Update utilization of all links
 		Set<Link> links = new HashSet<Link>(this.topology.getAllLinks());

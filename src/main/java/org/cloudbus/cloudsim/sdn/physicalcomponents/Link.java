@@ -8,8 +8,11 @@
 
 package org.cloudbus.cloudsim.sdn.physicalcomponents;
 
+import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.sdn.LogWriter;
 import org.cloudbus.cloudsim.sdn.monitor.MonitoringValues;
+import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.GatewaySwitch;
+import org.cloudbus.cloudsim.sdn.physicalcomponents.switches.IntercloudSwitch;
 import org.cloudbus.cloudsim.sdn.virtualcomponents.Channel;
 
 import java.util.LinkedList;
@@ -24,6 +27,7 @@ import java.util.List;
  * @since CloudSimSDN 1.0
  */
 public class Link {
+
 	// bi-directional link (one link = both ways)
 	private Node highOrder;
 	private Node lowOrder;
@@ -262,19 +266,35 @@ public class Link {
 	private long monitoringProcessedBytesPerUnitDown = 0;
 
 	public double updateMonitor(double logTime, double timeUnit) {
+		if(CloudSim.linkutif){
+			LogWriter log = LogWriter.getLogger("link_utilization.csv");
+			log.printLine("Link,Clock,ProcessedBytes,utilization");
+			CloudSim.linkutif = false;
+		}
 		long capacity = (long) (this.getBw() * timeUnit);
-		double utilization1 = (double)monitoringProcessedBytesPerUnitUp / capacity;
+		double utilization1 = (double)monitoringProcessedBytesPerUnitUp / capacity * 100;
 		mvUp.add(utilization1, logTime);
-		monitoringProcessedBytesPerUnitUp = 0;
+		if(monitoringProcessedBytesPerUnitUp != 0
+				&& this.lowOrder instanceof IntercloudSwitch != true
+				&& this.highOrder instanceof IntercloudSwitch != true
+				&& this.lowOrder instanceof GatewaySwitch != true
+				&& this.highOrder instanceof GatewaySwitch != true){
+			LogWriter log = LogWriter.getLogger("link_utilization.csv");
+			log.printLine(this.lowOrder+"->"+this.highOrder+","+logTime+","+ monitoringProcessedBytesPerUnitUp+","+utilization1);
+			monitoringProcessedBytesPerUnitUp = 0;
+		}
 
-		LogWriter log = LogWriter.getLogger("link_utilization_up.csv");
-		log.printLine(this.lowOrder+","+logTime+","+utilization1);
-
-		double utilization2 = (double)monitoringProcessedBytesPerUnitDown / capacity;
+		double utilization2 = (double)monitoringProcessedBytesPerUnitDown / capacity * 100;
 		mvDown.add(utilization2, logTime);
-		monitoringProcessedBytesPerUnitDown = 0;
-		LogWriter logDown = LogWriter.getLogger("link_utilization_down.csv");
-		logDown.printLine(this.highOrder+","+logTime+","+utilization2);
+		if(monitoringProcessedBytesPerUnitDown != 0
+				&& this.lowOrder instanceof IntercloudSwitch != true
+				&& this.highOrder instanceof IntercloudSwitch != true
+				&& this.lowOrder instanceof GatewaySwitch != true
+				&& this.highOrder instanceof GatewaySwitch != true) {
+			LogWriter logDown = LogWriter.getLogger("link_utilization.csv");
+			logDown.printLine(this.highOrder+"->"+this.lowOrder+","+logTime+","+monitoringProcessedBytesPerUnitDown+","+utilization2);
+			monitoringProcessedBytesPerUnitDown = 0;
+		}
 
 		return Double.max(utilization1, utilization2);
 	}
