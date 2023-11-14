@@ -111,6 +111,7 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 	@Override
 	public void startEntity() {
 		send(this.getId(), Configuration.monitoringTimeInterval, CloudSimTagsSDN.MONITOR_UPDATE_UTILIZATION);
+		send(this.getId(), Configuration.monitoringTimeInterval, CloudSimTagsSDN.MONITOR_BW_UTILIZATION);
 	}
 
 	@Override
@@ -140,18 +141,27 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 			case CloudSimTags.VM_DESTROY:
 				processVmDestroyAck(ev);
 				break;
+			case CloudSimTagsSDN.MONITOR_BW_UTILIZATION:
+				this.updateBWMonitor(Configuration.monitoringTimeInterval);
+				Set<Integer> excludetags = new HashSet<Integer>();
+				excludetags.add(CloudSimTagsSDN.MONITOR_BW_UTILIZATION);
+				excludetags.add(CloudSimTagsSDN.MONITOR_UPDATE_UTILIZATION);
+				if(CloudSimEx.hasMoreEvent(excludetags)){
+					send(this.getId(), Configuration.monitoringTimeInterval, CloudSimTagsSDN.MONITOR_BW_UTILIZATION);
+				}
+
 			case CloudSimTagsSDN.MONITOR_UPDATE_UTILIZATION:
 				if(this.datacenter != null)
 					this.datacenter.processUpdateProcessing();
 				channelManager.updatePacketProcessing();
-				double tmp = CloudSim.clock();
-				this.updateBWMonitor(Configuration.monitoringTimeInterval);
 				this.updateHostMonitor(Configuration.monitoringTimeInterval);
 				this.updateSwitchMonitor(Configuration.monitoringTimeInterval);
 
 				this.updateVmMonitor(CloudSim.clock());
 
-				if(CloudSimEx.hasMoreEvent(CloudSimTagsSDN.MONITOR_UPDATE_UTILIZATION)) {
+				excludetags = new HashSet<Integer>() ;
+				excludetags.add(CloudSimTagsSDN.MONITOR_UPDATE_UTILIZATION);
+				if(CloudSimEx.hasMoreEvent(excludetags)){
 					double nextMonitorDelay = Configuration.monitoringTimeInterval;
 					double nextEventDelay = CloudSimEx.getNextEventTime() - CloudSim.clock();
 
@@ -346,79 +356,6 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 //		CloudSim.cancelAll(destNOSID, new PredicateType(CloudSimTagsSDN.SDN_WIRELESS_TIMESLIDE));
 		send(destNOSID, 0.01, CloudSimTagsSDN.SDN_WIRELESS_TIMESLIDE, chankey);
 	}
-//	public void updateChannelBandwidth(int src, int dst, int flowId, long newBandwidth) {
-//		if(channelManager.updateChannelBandwidth(src, dst, flowId, newBandwidth)) {
-//			// As the requested bandwidth updates, find alternative path if the current path cannot provide the new bandwidth.
-//			SDNHost sender = findHost(src);
-//			vnMapper.updateDynamicForwardingTableRec(sender, src, dst, flowId, false);
-//
-//			sendAdjustAllChannelEvent();
-//		}
-//	}
-
-	private void migrateChannel(Vm vm, SDNHost oldHost, SDNHost newHost) {
-		for(Channel ch:channelManager.findAllChannels(vm.getId())) {
-			List<Node> nodes = new ArrayList<Node>();
-			List<Link> links = new ArrayList<Link>();
-
-			SDNHost sender = findHost(ch.getSrcId());	// After migrated
-
-			vnMapper.buildNodesLinks(ch.getSrcId(), ch.getDstId(),
-					ch.getChId(), sender, nodes, links);
-
-			// update with the new nodes and links
-			ch.updateRoute(nodes, links);
-		}
-	}
-
-//	public void removeExtraVm(SDNVm vm) {
-//		vmMapId2Vm.remove(vm.getId());
-//		gvmMapId2Vm.remove(vm.getId());
-//
-//		Log.printLine(CloudSim.clock() + ": " + getName() + ": Remove extra VM #" + vm.getId()
-//			+ " in " + datacenter.getName() + ", (" + vm.getStartTime() + "~" +vm.getFinishTime() + ")");
-//
-//		send(datacenter.getId(), vm.getStartTime(), CloudSimTags.VM_DESTROY, vm);
-//	}
-//
-//	public void addExtraPath(int orgVmId, int newVmId) {
-//		List<FlowConfig> newFlowList = new ArrayList<FlowConfig>();
-//		// This function finds all Flows involving orgVmId and add another virtual path for newVmId.
-//		for(FlowConfig flow:this.flowMapVmId2Flow.get(orgVmId)) {
-//			int srcId = flow.getSrcId();
-//			int dstId = flow.getDstId();
-//			int flowId = flow.getFlowId();
-//
-//			// Replace the source or destination with the new VM
-//			if(srcId == orgVmId)
-//				srcId = newVmId;
-//			if(dstId == orgVmId)
-//				dstId = newVmId;
-//			if(findVmGlobal(srcId) == null || findVmGlobal(dstId) == null)
-//				continue;
-//
-//			FlowConfig extraFlow = new FlowConfig(srcId, dstId, flowId, flow.getBw(), flow.getLatency());
-//			newFlowList.add(extraFlow);
-//
-//			if(vnMapper.buildForwardingTable(srcId, dstId, flowId) == false) {
-//				throw new RuntimeException("Cannot build a forwarding table!");
-//			}
-//		}
-//
-//		for(FlowConfig flow:newFlowList)
-//			insertFlowToMap(flow);
-//	}
-//
-//	public void updateVmMips(SDNVm orgVm, int newPe, double newMips) {
-//		Host host = orgVm.getHost();
-//		this.datacenter.getVmAllocationPolicy().deallocateHostForVm(orgVm);
-//
-//		orgVm.updatePeMips(newPe, newMips);
-//		if(!this.datacenter.getVmAllocationPolicy().allocateHostForVm(orgVm, host)) {
-//			System.err.println("ERROR!! VM cannot be resized! "+orgVm+" (new Pe "+newPe+", Mips "+newMips+") in host: "+host);
-//			System.exit(-1);
-//		}
-//	}
 
 	public long getBandwidthBackup(int flowId) {
 		FlowConfig flow = gFlowMapFlowId2Flow.get(flowId);
@@ -542,43 +479,6 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 //			gFlowMapFlowId2Flow.put(flow.getFlowId(), flow);
 //		}
 	}
-
-//	public void addSFCPolicy(ServiceFunctionChainPolicy policy) {
-//		sfcForwarder.addPolicy(policy);
-//		List<FlowConfig> extraFlows = createExtraFlowSFCPolicy(policy);
-//		for(FlowConfig flow:extraFlows)
-//			insertFlowToMap(flow);
-//	}
-
-//	private List<FlowConfig> createExtraFlowSFCPolicy(ServiceFunctionChainPolicy policy) {
-//		// Add extra Flow for ServiceFunctionChain
-//
-//		List<FlowConfig> flowList = new LinkedList<FlowConfig>();
-//		int flowId = policy.getFlowId();
-//
-//		long bw = 0;
-//		double latency = 0.0;
-//
-//		if(flowId != -1)
-//		{
-//			FlowConfig orgFlow = gFlowMapFlowId2Flow.get(flowId);
-//			bw = orgFlow.getBw();
-//			latency = orgFlow.getLatency();
-//		}
-//
-//		List<Integer> vmIds = policy.getServiceFunctionChainIncludeVM();
-//		for(int i=0; i < vmIds.size()-1; i++) {
-//			// Build channel chain: SrcVM ---> SF1 ---> SF2 ---> DstVM
-//			int fromId = vmIds.get(i);
-//			int toId = vmIds.get(i+1);
-//
-//			FlowConfig sfcFlow = new FlowConfig(fromId, toId, flowId, bw, latency);
-//			flowList.add(sfcFlow);
-//		}
-//
-//		policy.setInitialBandwidth(bw);
-//		return flowList;
-//	}
 
 	// for monitoring
 	public void updateBWMonitor(double monitoringTimeUnit) {

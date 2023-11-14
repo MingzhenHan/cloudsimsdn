@@ -1,39 +1,35 @@
 Link,Clock,ProcessedBytes,utilization
 1host1->Switch: 1edge1,1.0,50000000,50.0
 Switch: 1edge1->1host2,1.0,50000000,50.0
-Switch: 2edge1->2host1,10.0,80000,0.08
-Switch: 2core1->Switch: 2edge1,10.0,80000,0.08
-1host1->Switch: 1edge1,10.0,80000,0.08
-Switch: 1edge1->Switch: 1core1,10.0,80000,0.08
-Switch: 2edge1->2host1,20.0,14000000,14.000000000000002
-Switch: 2core1->Switch: 2edge1,20.0,14000000,14.000000000000002
-1host1->Switch: 1edge1,20.0,6000000,6.0
-Switch: 1edge1->Switch: 1core1,20.0,12000000,12.0
-1host2->Switch: 1edge1,20.0,6000000,6.0
-1host1->Switch: 1edge1,20.42520100000006,2000000,2.0
-Switch: 1edge1->Switch: 1core1,20.42520100000006,2000000,2.0
-2host1->Switch: 2edge1,20.435201000000063,2000000,2.0
-Switch: 2edge1->Switch: 2core1,20.435201000000063,2000000,2.0
-Switch: 2edge1->2host1,21.0,2000000,2.0
-Switch: 2core1->Switch: 2edge1,21.0,2000000,2.0
-Switch: 1edge1->1host1,21.0,2000000,2.0
-Switch: 1core1->Switch: 1edge1,21.0,2000000,2.0
-Switch: 1edge1->1host2,1.0,50000000,50.0
+Switch: 2core1->Switch: 2edge1,6.0,700000,0.7000000000000001
+Switch: 2edge1->2host1,6.0,700000,0.7000000000000001
+Switch: 1edge1->Switch: 1core1,6.0,700000,0.7000000000000001
+1host1->Switch: 1edge1,6.0,700000,0.7000000000000001
+Switch: 2core1->Switch: 2edge1,11.0,1200000,1.2
+Switch: 2edge1->2host1,11.0,1200000,1.2
+Switch: 1edge1->Switch: 1core1,11.0,1200000,1.2
+1host1->Switch: 1edge1,11.0,600000,0.6
+1host2->Switch: 1edge1,11.0,600000,0.6
+Switch: 2edge1->Switch: 2core1,21.0,4000000,4.0
+2host1->Switch: 2edge1,21.0,4000000,4.0
+Switch: 1edge1->Switch: 1core1,21.0,2000000,2.0
+Switch: 1core1->Switch: 1edge1,21.0,4000000,4.0
+1host1->Switch: 1edge1,21.0,2000000,2.0
+Switch: 1edge1->1host1,21.0,4000000,4.0
 1host1->Switch: 1edge1,1.0,50000000,50.0
-Switch: 2core1->Switch: 2edge1,10.0,80000,0.08
-Switch: 2edge1->2host1,10.0,80000,0.08
-1host1->Switch: 1edge1,10.0,80000,0.08
-Switch: 1edge1->Switch: 1core1,10.0,80000,0.08
-Switch: 2core1->Switch: 2edge1,20.0,14000000,14.000000000000002
-Switch: 2edge1->2host1,20.0,14000000,14.000000000000002
-1host2->Switch: 1edge1,20.0,6000000,6.0
-1host1->Switch: 1edge1,20.0,6000000,6.0
-Switch: 1edge1->Switch: 1core1,20.0,12000000,12.0
-1host1->Switch: 1edge1,20.42520100000006,2000000,2.0
-Switch: 1edge1->Switch: 1core1,20.42520100000006,2000000,2.0
-Switch: 2edge1->Switch: 2core1,20.435201000000063,2000000,2.0
-2host1->Switch: 2edge1,20.435201000000063,2000000,2.0
-Switch: 2core1->Switch: 2edge1,21.0,2000000,2.0
-Switch: 2edge1->2host1,21.0,2000000,2.0
-Switch: 1edge1->1host1,21.0,2000000,2.0
-Switch: 1core1->Switch: 1edge1,21.0,2000000,2.0
+Switch: 1edge1->1host2,1.0,50000000,50.0
+Switch: 2core1->Switch: 2edge1,6.0,700000,0.7000000000000001
+Switch: 2edge1->2host1,6.0,700000,0.7000000000000001
+Switch: 1edge1->Switch: 1core1,6.0,700000,0.7000000000000001
+1host1->Switch: 1edge1,6.0,700000,0.7000000000000001
+Switch: 2core1->Switch: 2edge1,11.0,1200000,1.2
+Switch: 2edge1->2host1,11.0,1200000,1.2
+Switch: 1edge1->Switch: 1core1,11.0,1200000,1.2
+1host1->Switch: 1edge1,11.0,600000,0.6
+1host2->Switch: 1edge1,11.0,600000,0.6
+Switch: 2edge1->Switch: 2core1,21.0,4000000,4.0
+2host1->Switch: 2edge1,21.0,4000000,4.0
+Switch: 1edge1->Switch: 1core1,21.0,2000000,2.0
+Switch: 1core1->Switch: 1edge1,21.0,4000000,4.0
+1host1->Switch: 1edge1,21.0,2000000,2.0
+Switch: 1edge1->1host1,21.0,4000000,4.0

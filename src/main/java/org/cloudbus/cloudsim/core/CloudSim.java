@@ -35,7 +35,7 @@ public class CloudSim {
 	public static long HostSendBw = 10000000; // 10M
 	/** The Constant CLOUDSIM_VERSION_STRING. */
 	private static final String CLOUDSIM_VERSION_STRING = "3.0";
-	public static boolean HalfDuplex = false; //半双工
+	public static boolean HalfDuplex = true; //半双工
     public static boolean linkutif = true;
 
     /** The id of CIS entity. */

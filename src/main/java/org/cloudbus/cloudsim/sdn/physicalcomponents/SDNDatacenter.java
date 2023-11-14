@@ -132,7 +132,7 @@ public class SDNDatacenter extends Datacenter {
 		switch(ev.getTag()){
 			case CloudSimTagsSDN.REQUEST_SUBMIT:
 				processRequestSubmit((Request) ev.getData());
-				this.nos.updateBWMonitor(Configuration.monitoringTimeInterval);
+//				this.nos.updateBWMonitor(Configuration.monitoringTimeInterval);
 				break;
 			case CloudSimTagsSDN.SDN_PACKET_COMPLETE:
 				processPacketCompleted((Packet)ev.getData());
@@ -148,7 +148,7 @@ public class SDNDatacenter extends Datacenter {
 				break;
 			case CloudSimTagsSDN.SDN_ARRIVED_GATEWAY2:
 				PacketAcrossArrivedGateway((ChanAndTrans)ev.getData());
-				this.nos.updateBWMonitor(Configuration.monitoringTimeInterval);
+//				this.nos.updateBWMonitor(Configuration.monitoringTimeInterval);
 				break;
 //			case CloudSimTagsSDN.SDN_HOST_SEND_DELAY:
 //				processNextActivity((Request)ev.getData());
@@ -176,7 +176,6 @@ public class SDNDatacenter extends Datacenter {
 				processPacketFailed(pkt);
 				return;
 			}
-
 		}
 /*******************************************************************************************/
 		double wirelessBwUp = CloudSim.wirelessBw;

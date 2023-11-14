@@ -12,6 +12,7 @@ import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.SimEvent;
 
 import java.util.Iterator;
+import java.util.Set;
 
 public class CloudSimEx extends CloudSim {
 	private static long startTime;
@@ -42,12 +43,12 @@ public class CloudSimEx extends CloudSim {
 		return future.size() + deferred.size();
 	}
 
-	public static boolean hasMoreEvent(int excludeEventTag) {
+	public static boolean hasMoreEvent(Set<Integer> excludeEventTag) {
 		if(future.size() > 0) {
 			Iterator<SimEvent> fit = future.iterator();
 			while(fit.hasNext()) {
 				SimEvent ev = fit.next();
-				if(ev.getTag() != excludeEventTag)
+				if(excludeEventTag.contains(ev.getTag()) != true)
 					return true;
 			}
 		}
@@ -55,7 +56,7 @@ public class CloudSimEx extends CloudSim {
 			Iterator<SimEvent> fit = deferred.iterator();
 			while(fit.hasNext()) {
 				SimEvent ev = fit.next();
-				if(ev.getTag() != excludeEventTag)
+				if(excludeEventTag.contains(ev.getTag()) != true)
 					return true;
 			}
 		}

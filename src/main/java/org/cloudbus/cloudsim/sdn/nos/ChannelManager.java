@@ -110,9 +110,7 @@ public class ChannelManager {
 
 			this.channelTable.put(getChannelKey(src, dst, chId), ch);
 			ch.initialize();
-			// TODO: 去掉dedicated
-//			ch.adjustDedicatedBandwidthAlongLink();
-			// Expect: adjustDedicatedBandwidthAlongLink()与adjustSharedBandwidthAlongLink()行为一致
+
 			ch.adjustSharedBandwidthAlongLink();
 
 			nos.sendAdjustAllChannelEvent();
@@ -153,6 +151,8 @@ public class ChannelManager {
 	 * 遍历所有 channels，若有空闲 chan(没有传输的包)，删除它。
 	 */
 	private void updateChannel() {
+		//TODO: 更新带宽利用率
+//		this.nos.updateBWMonitor(1);
 		List<String> removeCh = new ArrayList<String>();
 		for(String key:this.channelTable.keySet()) {
 			Channel ch = this.channelTable.get(key);
@@ -190,6 +190,9 @@ public class ChannelManager {
 	}
 
 	public void adjustAllChannel() {
+		//TODO: 更新带宽利用率
+//		this.nos.updateBWMonitor(1);
+
 		for(Channel ch:this.channelTable.values()) {
 			if(ch.adjustSharedBandwidthAlongLink()) {
 				// Channel BW is changed. send event.

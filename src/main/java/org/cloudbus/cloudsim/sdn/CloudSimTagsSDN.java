@@ -16,7 +16,7 @@ package org.cloudbus.cloudsim.sdn;
  * @since CloudSimSDN 1.0
  */
 public class CloudSimTagsSDN {
-    /** Starting constant value for network-related tags. **/
+	/** Starting constant value for network-related tags. **/
 	private static final int SDN_BASE = 89000000;
 	public static final int SDN_ARRIVED_GATEWAY = SDN_BASE + 101; // 有包裹到达 Gateway
 	public static final int SDN_ARRIVED_INTERCLOUD = SDN_BASE + 102; // 有包裹到达 Intercloud(wifi)
@@ -42,7 +42,7 @@ public class CloudSimTagsSDN {
 
 	public static final int MONITOR_UPDATE_UTILIZATION = SDN_BASE + 25;
 //	public static final int CHECK_MIGRATION = SDN_BASE + 26;
-
+	public static final int MONITOR_BW_UTILIZATION = SDN_BASE + 33;
 	private CloudSimTagsSDN() {
 		throw new UnsupportedOperationException("CloudSimTags cannot be instantiated");
 	}
