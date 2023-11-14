@@ -207,11 +207,13 @@ public class Channel {
 		// Get the lowest bandwidth along links in the channel
 		double lowestSharedBw = Double.POSITIVE_INFINITY;
 
+		/* 依次计算每条link可以给本channel的带宽（linkBW/number），取最小值 */
 		for(int i=0; i<nodes.size()-1; i++) {
 			Node from = nodes.get(i);
 			//Node to = nodes.get(i+1);
 			Link link = links.get(i);
 
+//			link.getSharedBandwidthPerChannel(from) = link.getBw() / link.getChannelCount(from)
 			if(lowestSharedBw > link.getSharedBandwidthPerChannel(from))
 				lowestSharedBw = link.getSharedBandwidthPerChannel(from);
 		}
@@ -242,45 +244,45 @@ public class Channel {
 	/**
 	 * 重新计算channel上的最小带宽
 	 */
-	public boolean adjustDedicatedBandwidthAlongLink() {
-		if(chId != -1 && chId != 2999)
-			return false;
-//		double factor = this.getAdjustedRequestedBandwidth();
-//		double requestedBandwidth = this.getRequestedBandwidth() * factor;
-//		if(factor < 1.0) {
-//			System.err.println("Channel.adjustDedicatedBandwidthAlongLink(): "+this+": Cannot allocate requested Bw("+this.getRequestedBandwidth()+"). Allocate only "
-//					+requestedBandwidth);
+//	public boolean adjustDedicatedBandwidthAlongLink() {
+//		if(chId != -1 && chId != 2999)
+//			return false;
+////		double factor = this.getAdjustedRequestedBandwidth();
+////		double requestedBandwidth = this.getRequestedBandwidth() * factor;
+////		if(factor < 1.0) {
+////			System.err.println("Channel.adjustDedicatedBandwidthAlongLink(): "+this+": Cannot allocate requested Bw("+this.getRequestedBandwidth()+"). Allocate only "
+////					+requestedBandwidth);
+////		}
+//		double lowestLinkBwShared = Double.POSITIVE_INFINITY;
+//		// Find the minimum bandwidth of Channel
+//		/* 依次计算每条link可以给本channel的带宽（linkBW/number），取最小值 */
+//		for(int i=0; i<nodes.size()-1; i++) {
+//			Node from = nodes.get(i);
+//			Link link = links.get(i);
+//			double link_bw = link.getBw();
+//			int numChannels = link.getChannelCount(from);
+//
+//			double link_bw_per_channel = link_bw / numChannels;
+//
+//			if(lowestLinkBwShared > link_bw_per_channel)
+//				lowestLinkBwShared = link_bw_per_channel;
 //		}
-		double lowestLinkBwShared = Double.POSITIVE_INFINITY;
-		// Find the minimum bandwidth of Channel
-		/* 依次计算每条link可以给本channel的带宽（linkBW/number），取最小值 */
-		for(int i=0; i<nodes.size()-1; i++) {
-			Node from = nodes.get(i);
-			Link link = links.get(i);
-			double link_bw = link.getBw();
-			int numChannels = link.getChannelCount(from);
-
-			double link_bw_per_channel = link_bw / numChannels;
-
-			if(lowestLinkBwShared > link_bw_per_channel)
-				lowestLinkBwShared = link_bw_per_channel;
-		}
-
-		// Dedicated channel.
-//		double channelBnadwidth = requestedBandwidth;
-//		if(allocateMoreAvailableBw && (requestedBandwidth < lowestLinkBwShared) ) {
-//			channelBnadwidth = lowestLinkBwShared;	// Give more BW if available.
+//
+//		// Dedicated channel.
+////		double channelBnadwidth = requestedBandwidth;
+////		if(allocateMoreAvailableBw && (requestedBandwidth < lowestLinkBwShared) ) {
+////			channelBnadwidth = lowestLinkBwShared;	// Give more BW if available.
+////		}
+//
+//		double channelBnadwidth = lowestLinkBwShared;
+//		// 该函数仅作用于以太网络
+//		if(this.allocatedBandwidth != channelBnadwidth && this.wirelessLevel!=1 && wirelessLevel!=2) {
+//			changeBandwidth(channelBnadwidth);
+//			return true;
 //		}
-
-		double channelBnadwidth = lowestLinkBwShared;
-		// 该函数仅作用于以太网络
-		if(this.allocatedBandwidth != channelBnadwidth && this.wirelessLevel!=1 && wirelessLevel!=2) {
-			changeBandwidth(channelBnadwidth);
-			return true;
-		}
-
-		return false;
-	}
+//
+//		return false;
+//	}
 	public boolean adjustSharedBandwidthAlongLink() {
 		if(chId != -1 && chId != 2999)
 			return false;

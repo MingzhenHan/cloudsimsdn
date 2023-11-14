@@ -142,33 +142,6 @@ public class Link {
 		updateRequestedBandwidthForDedicatedChannels(from);
 	}
 
-	/*
-	private double allocatedBandwidthDedicatedUp = 0;
-	private double allocatedBandwidthDedicatedDown = 0;
-
-	private double getAllocatedBandwidthForDedicatedChannels(Node from) {
-		if(this.isUplink(from))
-			return allocatedBandwidthDedicatedUp;
-		else
-			return allocatedBandwidthDedicatedDown;
-	}
-	*/
-
-	/**
-	 * Link取消dedicatedBw
-	 */
-	private double getAllocatedBandwidthForDedicatedChannels(Node from) {
-		return 0;
-//		double bw=0;
-//		for(Channel ch: getChannels(from)) {
-//			if(ch.getChId() != -1) {
-//				// chId == -1 : default channel
-//				bw += ch.getAllocatedBandwidth();
-//			}
-//		}
-//		return bw;
-	}
-
 	private double requestedBandwidthDedicatedUp = 0;
 	private double requestedBandwidthDedicatedDown = 0;
 
@@ -201,17 +174,6 @@ public class Link {
 		return channels.size();
 	}
 
-	public int getDedicatedChannelCount(Node from) {
-		int num=0;
-		for(Channel ch: getChannels(from)) {
-			if(ch.getChId() != -1) {
-				// chId == -1 : default channel
-				num ++;
-			}
-		}
-		return num;
-	}
-
 	public int getSharedChannelCount(Node from) {
 		int num =  getChannels(from).size() - 0;//getDedicatedChannelCount(from);
 		return num;
@@ -227,15 +189,6 @@ public class Link {
 		}
 		return freeBw;
 	}
-
-	/*
-	public double getFreeBandwidthForDedicatedChannel(Node from) {
-		double bw = this.getBw(from);
-		double dedicatedBw = getRequestedBandwidthForDedicatedChannels(from);
-
-		return bw-dedicatedBw;
-	}
-	*/
 
 	/**
 	 * LinkBw / ChannelCount

@@ -175,27 +175,6 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 		// override,见 NetworkOperatingSystemSimple
 	}
 
-	// Migrate network flow from previous routing
-	public void processVmMigrate(Vm vm, SDNHost oldHost, SDNHost newHost) {
-		// Find the virtual route associated with the migrated VM
-		// VM is already migrated to the new host
-		for(FlowConfig flow:this.flowMapVmId2Flow.get(vm.getId())) {
-			SDNHost sender = findHost(flow.getSrcId());	// Sender will be the new host after migrated
-			if(flow.getSrcId() == vm.getId())
-				sender = oldHost;	// In such case, sender should be changed to the old host
-
-			vnMapper.rebuildForwardingTable(flow.getSrcId(), flow.getDstId(), flow.getFlowId(), sender);
-		}
-
-		// Move the transferring data packets in the old channel to the new one.
-		migrateChannel(vm, oldHost, newHost);
-
-		// Print all routing tables.
-//		for(Node node:this.topology.getAllNodes()) {
-//			node.printVMRoute();
-//		}
-	}
-
 	private void processInternalPacketProcessing() {
 		if(channelManager.updatePacketProcessing()) {
 			sendInternalEvent();

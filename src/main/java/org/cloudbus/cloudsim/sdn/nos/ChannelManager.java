@@ -111,7 +111,7 @@ public class ChannelManager {
 			this.channelTable.put(getChannelKey(src, dst, chId), ch);
 			ch.initialize();
 			// TODO: 去掉dedicated
-			ch.adjustDedicatedBandwidthAlongLink();
+//			ch.adjustDedicatedBandwidthAlongLink();
 			// Expect: adjustDedicatedBandwidthAlongLink()与adjustSharedBandwidthAlongLink()行为一致
 			ch.adjustSharedBandwidthAlongLink();
 
@@ -189,23 +189,7 @@ public class ChannelManager {
 		tempRemovedChannels = new LinkedList<Channel>();
 	}
 
-//	public boolean updateChannelBandwidth(int src, int dst, int flowId, long newBandwidth) {
-//		Channel ch = this.channelTable.get(getChannelKey(src, dst, flowId));
-//		if(ch != null) {
-//			ch.updateRequestedBandwidth(newBandwidth);
-//			return true;
-//		}
-//
-//		return false;
-//	}
-
 	public void adjustAllChannel() {
-		for(Channel ch:this.channelTable.values()) {
-			if(ch.adjustDedicatedBandwidthAlongLink()) {
-				// Channel BW is changed. send event.
-			}
-		}
-
 		for(Channel ch:this.channelTable.values()) {
 			if(ch.adjustSharedBandwidthAlongLink()) {
 				// Channel BW is changed. send event.

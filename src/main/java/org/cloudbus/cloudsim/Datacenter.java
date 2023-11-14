@@ -224,14 +224,6 @@ public class Datacenter extends SimEntity {
 				processVmDestroy(ev, true);
 				break;
 
-			case CloudSimTags.VM_MIGRATE:
-				processVmMigrate(ev, false);
-				break;
-
-			case CloudSimTags.VM_MIGRATE_ACK:
-				processVmMigrate(ev, true);
-				break;
-
 			case CloudSimTags.VM_DATA_ADD:
 				processDataAdd(ev, false);
 				break;
@@ -495,59 +487,6 @@ public class Datacenter extends SimEntity {
 		}
 
 		getVmList().remove(vm);
-	}
-
-	/**
-	 * Process the event for an User/Broker who wants to migrate a VM. This Datacenter will
-	 * then send the status back to the User/Broker.
-	 *
-	 * @param ev information about the event just happened
-	 * @param ack indicates if the event's sender expects to receive
-         * an acknowledge message when the event finishes to be processed
-         *
-	 * @pre ev != null
-	 * @post $none
-	 */
-	protected void processVmMigrate(SimEvent ev, boolean ack) {
-		Object tmp = ev.getData();
-		if (!(tmp instanceof Map<?, ?>)) {
-			throw new ClassCastException("The data object must be Map<String, Object>");
-		}
-
-		@SuppressWarnings("unchecked")
-		Map<String, Object> migrate = (HashMap<String, Object>) tmp;
-
-		Vm vm = (Vm) migrate.get("vm");
-		Host host = (Host) migrate.get("host");
-
-		//destroy VM in src host
-		getVmAllocationPolicy().deallocateHostForVm(vm);
-		host.removeMigratingInVm(vm);
-		boolean result = getVmAllocationPolicy().allocateHostForVm(vm, host);
-		if (!result) {
-			Log.printLine("[Datacenter.processVmMigrate] VM allocation to the destination host failed");
-			System.exit(0);
-		}
-
-		if (ack) {
-			int[] data = new int[3];
-			data[0] = getId();
-			data[1] = vm.getId();
-
-			if (result) {
-				data[2] = CloudSimTags.TRUE;
-			} else {
-				data[2] = CloudSimTags.FALSE;
-			}
-			sendNow(ev.getSource(), CloudSimTags.VM_CREATE_ACK, data);
-		}
-
-		Log.formatLine(
-				"%.2f: Migration of VM #%d to Host #%d is completed",
-				CloudSim.clock(),
-				vm.getId(),
-				host.getId());
-		vm.setInMigration(false);
 	}
 
 	/**
@@ -1191,9 +1130,9 @@ public class Datacenter extends SimEntity {
 	 *
 	 * @return the scheduling interval
 	 */
-	protected double getSchedulingInterval() {
-		return schedulingInterval;
-	}
+//	protected double getSchedulingInterval() {
+//		return schedulingInterval;
+//	}
 
 	/**
 	 * Sets the scheduling interval.

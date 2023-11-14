@@ -127,59 +127,6 @@ public class SDNDatacenter extends Datacenter {
 		return result;
 	}
 
-	protected void processVmCreateInGroup(SimEvent ev, boolean ack) {
-		@SuppressWarnings("unchecked")
-		List<Object> params =(List<Object>)ev.getData();
-
-		Vm vm = (Vm)params.get(0);
-		VmGroup vmGroup=(VmGroup)params.get(1);
-
-		boolean result = ((VmAllocationInGroup)getVmAllocationPolicy()).allocateHostForVmInGroup(vm, vmGroup);
-
-		if (ack) {
-			int[] data = new int[3];
-			data[0] = getId();
-			data[1] = vm.getId();
-
-			if (result) {
-				data[2] = CloudSimTags.TRUE;
-			} else {
-				data[2] = CloudSimTags.FALSE;
-			}
-			send(vm.getUserId(), 0, CloudSimTags.VM_CREATE_ACK, data);
-			send(nos.getId(), 0, CloudSimTags.VM_CREATE_ACK, vm);
-		}
-
-		if (result) {
-			getVmList().add(vm);
-
-			if (vm.isBeingInstantiated()) {
-				vm.setBeingInstantiated(false);
-			}
-
-			vm.updateVmProcessing(CloudSim.clock(), getVmAllocationPolicy().getHost(vm).getVmScheduler()
-					.getAllocatedMipsForVm(vm));
-		}
-	}
-
-	@Override
-	protected void processVmMigrate(SimEvent ev, boolean ack) {
-		migrationCompleted++;
-
-		// Change network routing.
-		@SuppressWarnings("unchecked")
-		Map<String, Object> migrate = (HashMap<String, Object>) ev.getData();
-
-		Vm vm = (Vm) migrate.get("vm");
-		Host newHost = (Host) migrate.get("host");
-		Host oldHost = vm.getHost();
-
-		// Migrate the VM to another host.
-		super.processVmMigrate(ev, ack);
-
-		nos.processVmMigrate(vm, (SDNHost)oldHost, (SDNHost)newHost);
-	}
-
 	@Override
 	public void processOtherEvent(SimEvent ev){
 		switch(ev.getTag()){
@@ -193,15 +140,6 @@ public class SDNDatacenter extends Datacenter {
 			case CloudSimTagsSDN.SDN_PACKET_FAILED:
 				processPacketFailed((Packet)ev.getData());
 				break;
-			case CloudSimTagsSDN.SDN_VM_CREATE_IN_GROUP:
-				processVmCreateInGroup(ev, false);
-				break;
-			case CloudSimTagsSDN.SDN_VM_CREATE_IN_GROUP_ACK:
-				processVmCreateInGroup(ev, true);
-				break;
-//			case CloudSimTagsSDN.SDN_VM_CREATE_DYNAMIC:
-//				processVmCreateDynamic(ev);
-//				break;
 			case CloudSimTagsSDN.SDN_ARRIVED_GATEWAY:
 				PacketArrivedGateway((ChanAndTrans)ev.getData());
 				break;
@@ -212,8 +150,8 @@ public class SDNDatacenter extends Datacenter {
 				PacketAcrossArrivedGateway((ChanAndTrans)ev.getData());
 				this.nos.updateBWMonitor(Configuration.monitoringTimeInterval);
 				break;
-			case CloudSimTagsSDN.SDN_HOST_SEND_DELAY:
-				processNextActivity((Request)ev.getData());
+//			case CloudSimTagsSDN.SDN_HOST_SEND_DELAY:
+//				processNextActivity((Request)ev.getData());
 			default:
 				System.out.println("Unknown event recevied by SdnDatacenter. Tag:"+ev.getTag());
 		}
@@ -342,7 +280,6 @@ public class SDNDatacenter extends Datacenter {
 		}
 		channelManager.addChannel(src, dst, flowId+3000, channel);
 		Transmission tr = new Transmission(pkt);
-//		tr.setRequestedBW(ethernetBw);
 		channel.addTransmission(tr);
 		this.nos.sendInternalEvent();
 //		pkt.setPacketStartTime(pkt.getStartTime()/*CloudSim.clock()*/);
@@ -596,51 +533,6 @@ public class SDNDatacenter extends Datacenter {
 	public void printDebug() {
 		System.err.println(CloudSim.clock()+": # of currently processing Cloudlets: "+this.requestsTable.size());
 	}
-
-//	public void startMigrate() {
-//		if (isMigrateEnabled) {
-//			Log.printLine(CloudSim.clock()+": Migration started..");
-//
-//			List<Map<String, Object>> migrationMap = getVmAllocationPolicy().optimizeAllocation(
-//					getVmList());
-//
-//			if (migrationMap != null && migrationMap.size() > 0) {
-//				migrationAttempted += migrationMap.size();
-//
-//				// Process cloudlets before migration because cloudlets are processed during migration process..
-//				updateCloudletProcessing();
-//				checkCloudletCompletion();
-//
-//				for (Map<String, Object> migrate : migrationMap) {
-//					Vm vm = (Vm) migrate.get("vm");
-//					Host targetHost = (Host) migrate.get("host");
-////					Host oldHost = vm.getHost();
-//
-//					Log.formatLine(
-//							"%.2f: Migration of %s to %s is started",
-//							CloudSim.clock(),
-//							vm,
-//							targetHost);
-//
-//					targetHost.addMigratingInVm(vm);
-//
-//
-//					/** VM migration delay = RAM / bandwidth **/
-//					// we use BW / 2 to model BW available for migration purposes, the other
-//					// half of BW is for VM communication
-//					// around 16 seconds for 1024 MB using 1 Gbit/s network
-//					send(
-//							getId(),
-//							vm.getRam() / ((double) targetHost.getBw() / (2 * 8000)),
-//							CloudSimTags.VM_MIGRATE,
-//							migrate);
-//				}
-//			}
-//			else {
-//				//Log.printLine(CloudSim.clock()+": No VM to migrate");
-//			}
-//		}
-//	}
 
 	public NetworkOperatingSystem getNOS() {
 		return this.nos;

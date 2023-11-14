@@ -14,9 +14,9 @@ import org.cloudbus.cloudsim.Datacenter;
  * Contains various static command tags that indicate a type of action that needs to be undertaken
  * by CloudSim entities when they receive or send events. <b>NOTE:</b> To avoid conflicts with other
  * tags, CloudSim reserves negative numbers, 0 - 299, and 9600.
- * 
+ *
  * @todo There aren't negative reserved tags, but only positive tags (with 2 exceptions).
- * 
+ *
  * @author Manzur Murshed
  * @author Rajkumar Buyya
  * @author Anthony Sulistio
@@ -124,7 +124,7 @@ public class CloudSimTags {
 	public static final int RETURN_ACC_STATISTICS_BY_CATEGORY = BASE + 12;
 
 	/**
-	 * Denotes a request to register a CloudResource entity to a regional 
+	 * Denotes a request to register a CloudResource entity to a regional
 	 * {@link CloudInformationService} (CIS) entity.
 	 */
 	public static final int REGISTER_REGIONAL_GIS = BASE + 13;
@@ -147,13 +147,13 @@ public class CloudSimTags {
 	public static final int INFOPKT_RETURN = NETBASE + 6;
 
 	/**
-	 * Denotes the return of a Cloudlet back to sender. 
+	 * Denotes the return of a Cloudlet back to sender.
          * This tag is normally used by CloudResource entity.
 	 */
 	public static final int CLOUDLET_RETURN = BASE + 20;
 
 	/**
-	 * Denotes the submission of a Cloudlet. 
+	 * Denotes the submission of a Cloudlet.
          * This tag is normally used between CloudSim User and CloudResource entity.
 	 */
 	public static final int CLOUDLET_SUBMIT = BASE + 21;
@@ -195,13 +195,13 @@ public class CloudSimTags {
 	public static final int CLOUDLET_MOVE_ACK = BASE + 30;
 
 	/**
-	 * Denotes a request to create a new VM in a {@link Datacenter} with acknowledgement 
+	 * Denotes a request to create a new VM in a {@link Datacenter} with acknowledgement
          * information sent by the Datacenter.
 	 */
 	public static final int VM_CREATE = BASE + 31;
 
 	/**
-	 * Denotes a request to create a new VM in a {@link Datacenter} 
+	 * Denotes a request to create a new VM in a {@link Datacenter}
          * with acknowledgement information sent by the Datacenter.
 	 */
 	public static final int VM_CREATE_ACK = BASE + 32;
@@ -212,7 +212,7 @@ public class CloudSimTags {
 	public static final int VM_DESTROY = BASE + 33;
 
 	/**
-	 * Denotes a request to destroy a new VM in a {@link Datacenter} 
+	 * Denotes a request to destroy a new VM in a {@link Datacenter}
          * with acknowledgement information sent by the Datacener.
 	 */
 	public static final int VM_DESTROY_ACK = BASE + 34;
@@ -220,10 +220,10 @@ public class CloudSimTags {
 	/**
 	 * Denotes a request to migrate a new VM in a {@link Datacenter}.
 	 */
-	public static final int VM_MIGRATE = BASE + 35;
+//	public static final int VM_MIGRATE = BASE + 35;
 
 	/**
-	 * Denotes a request to migrate a new VM in a {@link Datacenter}  
+	 * Denotes a request to migrate a new VM in a {@link Datacenter}
          * with acknowledgement information sent by the Datacener.
 	 */
 	public static final int VM_MIGRATE_ACK = BASE + 36;
