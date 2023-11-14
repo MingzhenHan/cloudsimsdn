@@ -890,6 +890,7 @@ public class CloudSim {
 			FutureQueue a = future;
 			DeferredQueue b = deferred;
 			double time = clock();
+			// 11:315 [gateway1->inter] chan1传输完毕
 			if (runClockTick() || abruptTerminate) {
 				// future为空，即可停止循环。结束模拟。
 				break;

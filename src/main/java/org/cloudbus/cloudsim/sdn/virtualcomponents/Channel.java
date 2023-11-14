@@ -47,7 +47,7 @@ public class Channel {
 	private final int srcId;
 	private final int dstId;
 	private final int chId;// flowID，也是 channelID
-	public double requestedBandwidth;	// Requested by user
+	public double BandwidthBackup;// 带宽的备份，用于 enable / disable channel
 
 	public double totalLatency = 0;
 
@@ -133,15 +133,14 @@ public class Channel {
 		this.linksAll = links;
 //		this.nodes = nodes;
 //		this.links = links;
-		this.allocatedBandwidth = bandwidth;
-		this.requestedBandwidth = bandwidth;
+		this.allocatedBandwidth = this.BandwidthBackup = bandwidth;
 
 		this.srcVm = srcVm;
 		packetScheduler.setTimeOut(Configuration.TIME_OUT); // If the packet is not successfull in 3 seconds, it will be discarded.
 	}
 
 	public void enableChannel(){
-		this.allocatedBandwidth = this.requestedBandwidth;
+		this.allocatedBandwidth = this.BandwidthBackup;
 	}
 
 	public void disableChannel(){
@@ -240,23 +239,24 @@ public class Channel {
 	// Channel adjustment!
 	private boolean allocateMoreAvailableBw = false; // if true, we allocate leftover BW to channels (will get more than requested)
 
+	/**
+	 * 重新计算channel上的最小带宽
+	 */
 	public boolean adjustDedicatedBandwidthAlongLink() {
-		if(chId == -1)
+		if(chId != -1 && chId != 2999)
 			return false;
-
-		double factor = this.getAdjustedRequestedBandwidth();
-		double requestedBandwidth = this.getRequestedBandwidth() * factor;
-		if(factor < 1.0) {
-			System.err.println("Channel.adjustDedicatedBandwidthAlongLink(): "+this+": Cannot allocate requested Bw("+this.getRequestedBandwidth()+"). Allocate only "
-					+requestedBandwidth);
-		}
-
+//		double factor = this.getAdjustedRequestedBandwidth();
+//		double requestedBandwidth = this.getRequestedBandwidth() * factor;
+//		if(factor < 1.0) {
+//			System.err.println("Channel.adjustDedicatedBandwidthAlongLink(): "+this+": Cannot allocate requested Bw("+this.getRequestedBandwidth()+"). Allocate only "
+//					+requestedBandwidth);
+//		}
 		double lowestLinkBwShared = Double.POSITIVE_INFINITY;
-		// Find the minimum bandwidth per Channel
+		// Find the minimum bandwidth of Channel
+		/* 依次计算每条link可以给本channel的带宽（linkBW/number），取最小值 */
 		for(int i=0; i<nodes.size()-1; i++) {
 			Node from = nodes.get(i);
 			Link link = links.get(i);
-
 			double link_bw = link.getBw();
 			int numChannels = link.getChannelCount(from);
 
@@ -267,13 +267,14 @@ public class Channel {
 		}
 
 		// Dedicated channel.
-		double channelBnadwidth = requestedBandwidth;
+//		double channelBnadwidth = requestedBandwidth;
+//		if(allocateMoreAvailableBw && (requestedBandwidth < lowestLinkBwShared) ) {
+//			channelBnadwidth = lowestLinkBwShared;	// Give more BW if available.
+//		}
 
-		if(allocateMoreAvailableBw && (requestedBandwidth < lowestLinkBwShared) ) {
-			channelBnadwidth = lowestLinkBwShared;	// Give more BW if available.
-		}
-
-		if(this.allocatedBandwidth != channelBnadwidth) {
+		double channelBnadwidth = lowestLinkBwShared;
+		// 该函数仅作用于以太网络
+		if(this.allocatedBandwidth != channelBnadwidth && this.wirelessLevel!=1 && wirelessLevel!=2) {
 			changeBandwidth(channelBnadwidth);
 			return true;
 		}
@@ -281,7 +282,7 @@ public class Channel {
 		return false;
 	}
 	public boolean adjustSharedBandwidthAlongLink() {
-		if(chId != -1)
+		if(chId != -1 && chId != 2999)
 			return false;
 
 		// Get the lowest bandwidth along links in the channel
@@ -292,7 +293,8 @@ public class Channel {
 			throw new RuntimeException("Allocated bandwidth negative!!" + this + ", lowestLinkBw="+lowestLinkBw);
 		}
 
-		if(this.allocatedBandwidth != lowestLinkBw) {
+		// 该函数仅作用于以太网络
+		if(this.allocatedBandwidth != lowestLinkBw && this.wirelessLevel!=1 && wirelessLevel!=2) {
 			changeBandwidth(lowestLinkBw);
 			return true;
 		}
@@ -308,6 +310,14 @@ public class Channel {
 
 		if(this.allocatedBandwidth == Double.NEGATIVE_INFINITY || this.allocatedBandwidth == Double.POSITIVE_INFINITY)
 		{
+			int a = 0;
+			a = 0;
+			a = 0;
+			a = 0;
+			a = 0;
+			a = 0;
+			a = 0;
+			a = 0;
 			throw new RuntimeException("Allocated bandwidth infinity!!"+this);
 		}
 
@@ -473,14 +483,14 @@ public class Channel {
 		return dstId;
 	}
 
-	public double getRequestedBandwidth() {
-		return requestedBandwidth; // default: 0
+	public double getBandwidthBackup() {
+		return BandwidthBackup; // default: 0
 	}
 
-	public void updateRequestedBandwidth(double requestedBandwidth) {
-		this.requestedBandwidth = requestedBandwidth;
-		updateLinks();
-	}
+//	public void updateRequestedBandwidth(double requestedBandwidth) {
+//		this.requestedBandwidth = requestedBandwidth;
+//		updateLinks();
+//	}
 
 	// For monitor
 	private MonitoringValues mv = new MonitoringValues(MonitoringValues.ValueType.DataRate_BytesPerSecond);

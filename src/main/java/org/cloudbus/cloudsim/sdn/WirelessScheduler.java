@@ -85,7 +85,7 @@ public class WirelessScheduler {
 		for (String chankey: chanTable.keySet()) {
 			List<Channel> list = GetChanList(chankey);
 			for (Channel chan_i:list) {
-				if (chan_i.getChId() == ch.getChId()) {
+				if (chan_i.getSrcId() == ch.getSrcId() && chan_i.getDstId() == ch.getDstId() && chan_i.packetScheduler == ch.packetScheduler) {
 					list.remove(chan_i);
 					if (list.isEmpty()){
 						chanTable.remove(chankey);

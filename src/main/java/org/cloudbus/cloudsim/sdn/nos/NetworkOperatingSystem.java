@@ -266,7 +266,7 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 /* **********************************************************************/
 				if(ch.isWireless && ch.wirelessLevel == 0){ // 包即将抵达Gateway，新建wirelessUpChan(gateway->intercloud)并addTransmission
 					double delay = ch.getTotalLatency(); // 有线部分的物理链路延迟(srchost->gateway)
-					send(this.datacenter.getId(), delay, CloudSimTagsSDN.SDN_ARRIVED_GATEWAY, new ChanAndTrans(ch, tr));
+					send(this.datacenter.getId(), delay+0.000001, CloudSimTagsSDN.SDN_ARRIVED_GATEWAY, new ChanAndTrans(ch, tr));
 					continue; // 在上一层 caller 会删除空闲 channel
 				}
 				if(ch.isWireless && ch.wirelessLevel == 1){ // 包即将抵达intercloud(wifi)，给netDC发消息，新建wirelessDownChan(intercloud->gateway)并addTransmission
@@ -367,15 +367,15 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 //		CloudSim.cancelAll(destNOSID, new PredicateType(CloudSimTagsSDN.SDN_WIRELESS_TIMESLIDE));
 		send(destNOSID, 0.01, CloudSimTagsSDN.SDN_WIRELESS_TIMESLIDE, chankey);
 	}
-	public void updateChannelBandwidth(int src, int dst, int flowId, long newBandwidth) {
-		if(channelManager.updateChannelBandwidth(src, dst, flowId, newBandwidth)) {
-			// As the requested bandwidth updates, find alternative path if the current path cannot provide the new bandwidth.
-			SDNHost sender = findHost(src);
-			vnMapper.updateDynamicForwardingTableRec(sender, src, dst, flowId, false);
-
-			sendAdjustAllChannelEvent();
-		}
-	}
+//	public void updateChannelBandwidth(int src, int dst, int flowId, long newBandwidth) {
+//		if(channelManager.updateChannelBandwidth(src, dst, flowId, newBandwidth)) {
+//			// As the requested bandwidth updates, find alternative path if the current path cannot provide the new bandwidth.
+//			SDNHost sender = findHost(src);
+//			vnMapper.updateDynamicForwardingTableRec(sender, src, dst, flowId, false);
+//
+//			sendAdjustAllChannelEvent();
+//		}
+//	}
 
 	private void migrateChannel(Vm vm, SDNHost oldHost, SDNHost newHost) {
 		for(Channel ch:channelManager.findAllChannels(vm.getId())) {
@@ -392,56 +392,56 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 		}
 	}
 
-	public void removeExtraVm(SDNVm vm) {
-		vmMapId2Vm.remove(vm.getId());
-		gvmMapId2Vm.remove(vm.getId());
+//	public void removeExtraVm(SDNVm vm) {
+//		vmMapId2Vm.remove(vm.getId());
+//		gvmMapId2Vm.remove(vm.getId());
+//
+//		Log.printLine(CloudSim.clock() + ": " + getName() + ": Remove extra VM #" + vm.getId()
+//			+ " in " + datacenter.getName() + ", (" + vm.getStartTime() + "~" +vm.getFinishTime() + ")");
+//
+//		send(datacenter.getId(), vm.getStartTime(), CloudSimTags.VM_DESTROY, vm);
+//	}
+//
+//	public void addExtraPath(int orgVmId, int newVmId) {
+//		List<FlowConfig> newFlowList = new ArrayList<FlowConfig>();
+//		// This function finds all Flows involving orgVmId and add another virtual path for newVmId.
+//		for(FlowConfig flow:this.flowMapVmId2Flow.get(orgVmId)) {
+//			int srcId = flow.getSrcId();
+//			int dstId = flow.getDstId();
+//			int flowId = flow.getFlowId();
+//
+//			// Replace the source or destination with the new VM
+//			if(srcId == orgVmId)
+//				srcId = newVmId;
+//			if(dstId == orgVmId)
+//				dstId = newVmId;
+//			if(findVmGlobal(srcId) == null || findVmGlobal(dstId) == null)
+//				continue;
+//
+//			FlowConfig extraFlow = new FlowConfig(srcId, dstId, flowId, flow.getBw(), flow.getLatency());
+//			newFlowList.add(extraFlow);
+//
+//			if(vnMapper.buildForwardingTable(srcId, dstId, flowId) == false) {
+//				throw new RuntimeException("Cannot build a forwarding table!");
+//			}
+//		}
+//
+//		for(FlowConfig flow:newFlowList)
+//			insertFlowToMap(flow);
+//	}
+//
+//	public void updateVmMips(SDNVm orgVm, int newPe, double newMips) {
+//		Host host = orgVm.getHost();
+//		this.datacenter.getVmAllocationPolicy().deallocateHostForVm(orgVm);
+//
+//		orgVm.updatePeMips(newPe, newMips);
+//		if(!this.datacenter.getVmAllocationPolicy().allocateHostForVm(orgVm, host)) {
+//			System.err.println("ERROR!! VM cannot be resized! "+orgVm+" (new Pe "+newPe+", Mips "+newMips+") in host: "+host);
+//			System.exit(-1);
+//		}
+//	}
 
-		Log.printLine(CloudSim.clock() + ": " + getName() + ": Remove extra VM #" + vm.getId()
-			+ " in " + datacenter.getName() + ", (" + vm.getStartTime() + "~" +vm.getFinishTime() + ")");
-
-		send(datacenter.getId(), vm.getStartTime(), CloudSimTags.VM_DESTROY, vm);
-	}
-
-	public void addExtraPath(int orgVmId, int newVmId) {
-		List<FlowConfig> newFlowList = new ArrayList<FlowConfig>();
-		// This function finds all Flows involving orgVmId and add another virtual path for newVmId.
-		for(FlowConfig flow:this.flowMapVmId2Flow.get(orgVmId)) {
-			int srcId = flow.getSrcId();
-			int dstId = flow.getDstId();
-			int flowId = flow.getFlowId();
-
-			// Replace the source or destination with the new VM
-			if(srcId == orgVmId)
-				srcId = newVmId;
-			if(dstId == orgVmId)
-				dstId = newVmId;
-			if(findVmGlobal(srcId) == null || findVmGlobal(dstId) == null)
-				continue;
-
-			FlowConfig extraFlow = new FlowConfig(srcId, dstId, flowId, flow.getBw(), flow.getLatency());
-			newFlowList.add(extraFlow);
-
-			if(vnMapper.buildForwardingTable(srcId, dstId, flowId) == false) {
-				throw new RuntimeException("Cannot build a forwarding table!");
-			}
-		}
-
-		for(FlowConfig flow:newFlowList)
-			insertFlowToMap(flow);
-	}
-
-	public void updateVmMips(SDNVm orgVm, int newPe, double newMips) {
-		Host host = orgVm.getHost();
-		this.datacenter.getVmAllocationPolicy().deallocateHostForVm(orgVm);
-
-		orgVm.updatePeMips(newPe, newMips);
-		if(!this.datacenter.getVmAllocationPolicy().allocateHostForVm(orgVm, host)) {
-			System.err.println("ERROR!! VM cannot be resized! "+orgVm+" (new Pe "+newPe+", Mips "+newMips+") in host: "+host);
-			System.exit(-1);
-		}
-	}
-
-	public long getRequestedBandwidth(int flowId) {
+	public long getBandwidthBackup(int flowId) {
 		FlowConfig flow = gFlowMapFlowId2Flow.get(flowId);
 		if(flow != null)
 			return flow.getBw();
@@ -449,24 +449,24 @@ public abstract class NetworkOperatingSystem extends SimEntity {
 		return 0L;
 	}
 
-	public double getRequestedBandwidth(Packet pkt) {
+	public double getBandwidthBackup(Packet pkt) {
 		int src = pkt.getOrigin();
 		int dst = pkt.getDestination();
 		int flowId = pkt.getFlowId();
 		Channel channel=channelManager.findChannel(src, dst, flowId);
-		double bw = channel.getRequestedBandwidth();
+		double bw = channel.getBandwidthBackup();
 
 		return bw;
 	}
 
-	public void updateBandwidthFlow(int srcVm, int dstVm, int flowId, long newBw) {
-		if(flowId == -1) {
-			return;
-		}
-
-		FlowConfig flow = gFlowMapFlowId2Flow.get(flowId);
-		flow.updateReqiredBandwidth(newBw);
-	}
+//	public void updateBandwidthFlow(int srcVm, int dstVm, int flowId, long newBw) {
+//		if(flowId == -1) {
+//			return;
+//		}
+//
+//		FlowConfig flow = gFlowMapFlowId2Flow.get(flowId);
+//		flow.updateReqiredBandwidth(newBw);
+//	}
 
 	public void setDatacenter(SDNDatacenter dc) {
 		this.datacenter = dc;

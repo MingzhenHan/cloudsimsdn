@@ -154,16 +154,19 @@ public class Link {
 	}
 	*/
 
+	/**
+	 * Link取消dedicatedBw
+	 */
 	private double getAllocatedBandwidthForDedicatedChannels(Node from) {
-
-		double bw=0;
-		for(Channel ch: getChannels(from)) {
-			if(ch.getChId() != -1) {
-				// chId == -1 : default channel
-				bw += ch.getAllocatedBandwidth();
-			}
-		}
-		return bw;
+		return 0;
+//		double bw=0;
+//		for(Channel ch: getChannels(from)) {
+//			if(ch.getChId() != -1) {
+//				// chId == -1 : default channel
+//				bw += ch.getAllocatedBandwidth();
+//			}
+//		}
+//		return bw;
 	}
 
 	private double requestedBandwidthDedicatedUp = 0;
@@ -182,7 +185,7 @@ public class Link {
 		for(Channel ch: getChannels(from)) {
 			if(ch.getChId() != -1) {
 				// chId == -1 : default channel
-				bw += ch.getRequestedBandwidth(); // Only counted for 'Dedicated' channels
+				bw += ch.getBandwidthBackup(); // Only counted for 'Dedicated' channels
 			}
 		}
 		if(isUplink(from)) {
@@ -210,21 +213,18 @@ public class Link {
 	}
 
 	public int getSharedChannelCount(Node from) {
-		int num =  getChannels(from).size() - getDedicatedChannelCount(from);
+		int num =  getChannels(from).size() - 0;//getDedicatedChannelCount(from);
 		return num;
 	}
 
 	public double getFreeBandwidth(Node from) {
 		double bw = this.getBw(from);
-		double dedicatedBw = getAllocatedBandwidthForDedicatedChannels(from);
-
-		double freeBw = bw-dedicatedBw;
-
+//		double dedicatedBw = getAllocatedBandwidthForDedicatedChannels(from); //0
+		double freeBw = bw;//-dedicatedBw;
 		if(freeBw <0) {
 			System.err.println("This link has no free BW, all occupied by dedicated channels!"+this);
 			freeBw=0;
 		}
-
 		return freeBw;
 	}
 
@@ -237,8 +237,12 @@ public class Link {
 	}
 	*/
 
+	/**
+	 * LinkBw / ChannelCount
+	 */
 	public double getSharedBandwidthPerChannel(Node from) {
 		double freeBw = getFreeBandwidth(from);
+		// 所有channel均为SharedChannel
 		double sharedBwEachChannel = freeBw / getSharedChannelCount(from);
 
 		if(sharedBwEachChannel < 0)

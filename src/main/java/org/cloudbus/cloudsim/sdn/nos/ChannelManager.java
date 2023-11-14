@@ -51,7 +51,7 @@ public class ChannelManager {
 		double lowestBw = Double.POSITIVE_INFINITY;
 		double reqBw = 0;
 		if(flowId != -1) {
-			reqBw = nos.getRequestedBandwidth(flowId);
+			reqBw = nos.getBandwidthBackup(flowId);
 			if(reqBw == 0)
 				throw new RuntimeException("reqBW cannot be zero for dedicated channels!!"+flowId);
 		}
@@ -112,6 +112,7 @@ public class ChannelManager {
 			ch.initialize();
 			// TODO: 去掉dedicated
 			ch.adjustDedicatedBandwidthAlongLink();
+			// Expect: adjustDedicatedBandwidthAlongLink()与adjustSharedBandwidthAlongLink()行为一致
 			ch.adjustSharedBandwidthAlongLink();
 
 			nos.sendAdjustAllChannelEvent();
@@ -121,8 +122,7 @@ public class ChannelManager {
 		//System.err.println("NOS.addChannel:"+getKey(src, dst, chId));
 		this.channelTable.put(getChannelKey(src, dst, chId), ch);
 //		ch.initialize();
-		// 无线channel这里好像不能设为0？
-		ch.totalLatency = 0.01;
+		ch.totalLatency = 0;
 	}
 
 	public Channel findChannel(int from, int to, int channelId) {
@@ -189,15 +189,15 @@ public class ChannelManager {
 		tempRemovedChannels = new LinkedList<Channel>();
 	}
 
-	public boolean updateChannelBandwidth(int src, int dst, int flowId, long newBandwidth) {
-		Channel ch = this.channelTable.get(getChannelKey(src, dst, flowId));
-		if(ch != null) {
-			ch.updateRequestedBandwidth(newBandwidth);
-			return true;
-		}
-
-		return false;
-	}
+//	public boolean updateChannelBandwidth(int src, int dst, int flowId, long newBandwidth) {
+//		Channel ch = this.channelTable.get(getChannelKey(src, dst, flowId));
+//		if(ch != null) {
+//			ch.updateRequestedBandwidth(newBandwidth);
+//			return true;
+//		}
+//
+//		return false;
+//	}
 
 	public void adjustAllChannel() {
 		for(Channel ch:this.channelTable.values()) {

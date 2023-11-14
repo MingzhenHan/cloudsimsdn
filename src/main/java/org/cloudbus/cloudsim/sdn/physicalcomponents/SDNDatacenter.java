@@ -24,7 +24,6 @@ import org.cloudbus.cloudsim.sdn.workload.Processing;
 import org.cloudbus.cloudsim.sdn.workload.Request;
 import org.cloudbus.cloudsim.sdn.workload.Transmission;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -339,7 +338,7 @@ public class SDNDatacenter extends Datacenter {
 					ethernetBw = links.get(i).getFreeBandwidth(nodes.get(i));
 				}
 			}
-			channel.requestedBandwidth = channel.allocatedBandwidth = ethernetBw;
+			channel.BandwidthBackup = channel.allocatedBandwidth = ethernetBw;
 		}
 		channelManager.addChannel(src, dst, flowId+3000, channel);
 		Transmission tr = new Transmission(pkt);
@@ -566,7 +565,7 @@ public class SDNDatacenter extends Datacenter {
 		//send package to router via channel (NOS)
 		pkt = nos.addPacketToChannel(pkt);
 		pkt.setPacketStartTime(CloudSim.clock());
-		tr.setRequestedBW(nos.getRequestedBandwidth(pkt));
+		tr.setRequestedBW(nos.getBandwidthBackup(pkt));
 	}
 
 	/**
