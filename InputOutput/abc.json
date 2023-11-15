@@ -1,213 +1,96 @@
-{
-    "datacenters": [
+{"adag": {
+    "node": [
         {
-            "name": "net",
-            "type": "wirelessnetwork"
-        },
-        {
-            "name": "A",
-            "type": "cloud"
-        }
-    ],
-    "nodes": [
-        {
-            "upports": 0,
-            "bw": 100000000,
-            "downports": 0,
-            "iops": 1000000000,
-            "name": "inter",
-            "datacenter": "net",
-            "type": "intercloud"
-        },
-        {
-            "upports": 0,
-            "bw": 100000000,
-            "downports": 0,
-            "iops": 1000000000,
-            "name": "gwA",
-            "datacenter": "net",
-            "type": "gateway"
-        },
-        {
-            "upports": 0,
-            "bw": 100000000,
-            "downports": 0,
-            "iops": 1000000000,
-            "name": "gwA",
-            "datacenter": "A",
-            "type": "gateway"
-        },
-        {
-            "bw": 450000000,
+            "memory": 30720,
+            "cores": 8,
+            "bandwidth": 450,
             "name": "host1",
-            "datacenter": "A",
             "storage": 1363148800,
-            "type": "host",
             "mips": 30000,
-            "pes": 8,
-            "ram": 30720
+            "network": "A"
         },
         {
-            "bw": 250000000,
+            "memory": 30720,
+            "cores": 4,
+            "bandwidth": 250,
             "name": "host2",
-            "datacenter": "A",
             "storage": 1363148800,
-            "type": "host",
             "mips": 20000,
-            "pes": 4,
-            "ram": 30720
+            "network": "A"
         },
         {
-            "bw": 350000000,
+            "memory": 30720,
+            "cores": 8,
+            "bandwidth": 350,
             "name": "host3",
-            "datacenter": "A",
             "storage": 1363148800,
-            "type": "host",
             "mips": 25000,
-            "pes": 8,
-            "ram": 30720
+            "network": "A"
         },
         {
-            "bw": 300000000,
+            "memory": 30720,
+            "cores": 4,
+            "bandwidth": 300,
             "name": "host4",
-            "datacenter": "A",
             "storage": 1363148800,
-            "type": "host",
             "mips": 18000,
-            "pes": 4,
-            "ram": 30720
+            "network": "A"
         },
         {
-            "bw": 280000000,
+            "memory": 30720,
+            "cores": 8,
+            "bandwidth": 280,
             "name": "host5",
-            "datacenter": "A",
             "storage": 1363148800,
-            "type": "host",
             "mips": 21000,
-            "pes": 8,
-            "ram": 30720
+            "network": "B"
         },
         {
-            "bw": 570000000,
+            "memory": 30720,
+            "cores": 8,
+            "bandwidth": 570,
             "name": "host6",
-            "datacenter": "A",
             "storage": 1363148800,
-            "type": "host",
             "mips": 18000,
-            "pes": 8,
-            "ram": 30720
+            "network": "B"
         },
         {
-            "bw": 570000000,
+            "memory": 30720,
+            "cores": 6,
+            "bandwidth": 570,
             "name": "host7",
-            "datacenter": "A",
             "storage": 1363148800,
-            "type": "host",
             "mips": 38000,
-            "pes": 6,
-            "ram": 30720
+            "network": "B"
         },
         {
-            "bw": 660000000,
+            "memory": 30720,
+            "cores": 8,
+            "bandwidth": 660,
             "name": "host8",
-            "datacenter": "A",
             "storage": 1363148800,
-            "type": "host",
             "mips": 38000,
-            "pes": 8,
-            "ram": 30720
-        },
-        {
-            "upports": 0,
-            "bw": 100000000,
-            "downports": 0,
-            "iops": 1000000000,
-            "name": "core1",
-            "datacenter": "A",
-            "type": "core",
-            "ports": 2
-        },
-        {
-            "upports": 0,
-            "bw": 100000000,
-            "downports": 0,
-            "iops": 1000000000,
-            "name": "edge1",
-            "datacenter": "A",
-            "type": "edge",
-            "ports": 4
-        },
-        {
-            "upports": 0,
-            "bw": 100000000,
-            "downports": 0,
-            "iops": 1000000000,
-            "name": "edge2",
-            "datacenter": "A",
-            "type": "edge",
-            "ports": 4
+            "network": "B"
         }
     ],
-    "links": [
+    "xmlns": "http://pegasus.isi.edu/schema/DAX",
+    "xsi:schemaLocation": "http://pegasus.isi.edu/schema/DAX http://pegasus.isi.edu/schema/dax-2.1.xsd",
+    "count": 1,
+    "name": "test",
+    "index": 0,
+    "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+    "childCount": 20,
+    "utilization": [
         {
-            "latency": 0.1,
-            "destination": "edge1",
-            "source": "core1"
+            "up": 0.7,
+            "type": "cpu"
         },
         {
-            "latency": 0.1,
-            "destination": "edge2",
-            "source": "core1"
-        },
-        {
-            "latency": 0.1,
-            "destination": "host1",
-            "source": "edge1"
-        },
-        {
-            "latency": 0.1,
-            "destination": "host2",
-            "source": "edge1"
-        },
-        {
-            "latency": 0.1,
-            "destination": "host3",
-            "source": "edge1"
-        },
-        {
-            "latency": 0.1,
-            "destination": "host4",
-            "source": "edge1"
-        },
-        {
-            "latency": 0.1,
-            "destination": "host5",
-            "source": "edge2"
-        },
-        {
-            "latency": 0.1,
-            "destination": "host6",
-            "source": "edge2"
-        },
-        {
-            "latency": 0.1,
-            "destination": "host7",
-            "source": "edge2"
-        },
-        {
-            "latency": 0.1,
-            "destination": "host8",
-            "source": "edge2"
-        },
-        {
-            "latency": 0,
-            "destination": "gwA",
-            "source": "inter"
-        },
-        {
-            "latency": 0,
-            "destination": "gwA",
-            "source": "core1"
+            "up": 0.7,
+            "type": "memory"
         }
-    ]
-}
+    ],
+    "version": 2.1,
+    "jobCount": 25,
+    "fileCount": 0
+}}

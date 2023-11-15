@@ -298,7 +298,7 @@ public class PhysicalTopologyParser {
 				JSONObject link = linksIter.next();
 				String src = (String) link.get("source");
 				String dst = (String) link.get("destination");
-				double lat = ((Long) link.get("latency")).doubleValue();
+				double lat = Double.parseDouble((String)link.get("latency"));
 				Node srcNode = nameNodeTable.get(src);
 				Node dstNode = nameNodeTable.get(dst);
 				// TODO: -1? bw在addLink函数中根据switch赋值

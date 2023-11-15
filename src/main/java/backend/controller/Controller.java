@@ -25,8 +25,8 @@ import java.util.*;
 public class Controller {
     private SimpleExampleInterCloud simulator;
 
-    private String physicalf = "InputOutput/physical2.xml";
-    private String virtualf = "example-intercloud/intercloud.virtual2.json";
+    private String physicalf = "Intermediate/physical.json";
+    private String virtualf = "Intermediate/virtual.json";
     private String workloadf = "example-intercloud/one-workload.csv";
     private boolean halfDuplex = false;
 
@@ -51,23 +51,21 @@ public class Controller {
 
     @RequestMapping("/convertphytopo")
     public ResultDTO convertphytopo() throws IOException {
-        String xml = Files.readString(Path.of("./example-intercloud/615topo.xml"));
-        JSONObject xmlJSONObj = XML.toJSONObject(xml);
-        //设置缩进
-        JSONObject topo = xmlJSONObj.getJSONObject("NetworkTopo");
-        JSONArray switches = topo.getJSONObject("Switches").getJSONArray("Switch");
-        JSONArray links = topo.getJSONObject("Links").getJSONArray("Link");
-        xml = Files.readString(Path.of("./example-intercloud/615host8.xml"));
-        xmlJSONObj = XML.toJSONObject(xml);
-        JSONArray hosts = xmlJSONObj.getJSONObject("adag").getJSONArray("node");
+        String xml = Files.readString(
+                Path.of("D:\\11桌面备份11\\CloudSim-djy\\文档\\输入输出接口1109\\Input_TopoInfo.xml"));
+        JSONObject json = XML.toJSONObject(xml).getJSONObject("NetworkTopo");
+        JSONArray swches = json.getJSONObject("Switches").getJSONArray("Switch");
+        JSONArray links = json.getJSONObject("Links").getJSONArray("Link");
+
         // 计算多少dc
         Set<String> dcnames = new HashSet<>();
-        for(Object obj : switches){
+        for(Object obj : swches){
             JSONObject swch = (JSONObject) obj;
             String dcname = swch.getString("Network");
             dcnames.add(dcname);
         }
-        topo = new JSONObject();
+
+        JSONObject topo = new JSONObject();
         // 新建wirelessnetwork dc、interswitch
         topo.accumulate("datacenters", new JSONObject()
                 .put("name","net").put("type", "wirelessnetwork"));
@@ -103,20 +101,8 @@ public class Controller {
                     .put("bw", 100000000) //100M
             );
         }
-        // 解析所有的主机、交换机、links
-        for(Object obj : hosts){
-            JSONObject host = (JSONObject) obj;
-            topo.accumulate("nodes", new JSONObject()
-                    .put("name",host.getString("name"))
-                    .put("type","host")
-                    .put("datacenter",host.getString("network"))
-                    .put("bw",(long) host.getDouble("bandwidth")*1000000)
-                    .put("pes",host.getInt("cores"))
-                    .put("mips",host.getLong("mips"))
-                    .put("ram", host.getInt("memory"))
-                    .put("storage",host.getLong("storage")));
-        }
-        for(Object obj : switches){
+        // 新建所有的交换机、links
+        for(Object obj : swches){
             JSONObject swch = (JSONObject) obj;
             topo.accumulate("nodes", new JSONObject()
                     .put("upports", 0)
@@ -133,33 +119,50 @@ public class Controller {
             topo.accumulate("links", new JSONObject()
                     .put("source",link.getString("Src"))
                     .put("destination",link.getString("Dst"))
-                    .put("latency",0/*link.getDouble("Latency")*/ ));
+                    .put("latency",link.getString("Latency"))
+            );
         }
         // 补建links：gateway<->interswitch
         for(String dcname : dcnames){
             topo.accumulate("links", new JSONObject()
                     .put("source","inter")
                     .put("destination","gw"+dcname)
-                    .put("latency",0));
+                    .put("latency","0"));
         }
         // 补建links：core<->gateway
-        for(Object obj : switches){
+        for(Object obj : swches){
             JSONObject swch = (JSONObject) obj;
             if( swch.getString("Type").equals("core")){
                 topo.accumulate("links", new JSONObject()
                         .put("source",swch.getString("Name"))
                         .put("destination","gw"+swch.getString("Network"))
-                        .put("latency",0));
+                        .put("latency","0"));
             }
         }
-
+        // 新建所有的主机
+        xml = Files.readString(Path.of("D:\\11桌面备份11\\CloudSim-djy\\文档\\输入输出接口1109\\Input_Host8.xml"));
+        json = XML.toJSONObject(xml);
+        JSONArray hosts = json.getJSONObject("adag").getJSONArray("node");
+        for(Object obj : hosts){
+            JSONObject host = (JSONObject) obj;
+            topo.accumulate("nodes", new JSONObject()
+                    .put("name",host.getString("name"))
+                    .put("type","host")
+                    .put("datacenter",host.getString("network"))
+                    .put("bw",(long) host.getDouble("bandwidth")*1000000)
+                    .put("pes",host.getInt("cores"))
+                    .put("mips",host.getLong("mips"))
+                    .put("ram", host.getInt("memory"))
+                    .put("storage",host.getLong("storage")));
+        }
         String jsonPrettyPrintString = topo.toString(4);
         //保存格式化后的json
-        FileWriter writer = new FileWriter("InputOutput/abc.json");
+        FileWriter writer = new FileWriter("Intermediate/physical.json");
         writer.write(jsonPrettyPrintString);
         writer.close();
-        return ResultDTO.success(jsonPrettyPrintString);
+        return ResultDTO.success("ok");
     }
+
 
     // 必需保持 hostname = “host” + hostid 对应关系。flows字段在解析workload文件时添加
     @RequestMapping("/convertvirtopo")
@@ -169,22 +172,25 @@ public class Controller {
         JSONObject vir = new JSONObject();
         for(Object obj : json){
             JSONObject vm = (JSONObject) obj;
-            vir.accumulate("nodes", new JSONObject()
-                    .put("type", "vm")
-                    .put("name", vm.getString("ip"))
-                    .put("size", 1000)
-                    .put("pes", 1)
-                    .put("mips", 500)
-                    .put("ram", 512)
-                    .put("datacenter", "A") //TODO:根据host解析dc
-                    .put("host", "host"+String.valueOf(vm.getInt("hostId")))
-                    .put("start", Double.valueOf(vm.getString("start")))
-                    .put("end", Double.valueOf(vm.getString("end")))
-            );
+            vir.accumulate("nodes", vm);
         }
+        JSONArray vms = vir.getJSONArray("nodes");
+        for(int i=0; i<vms.length(); ++i){
+            for(int j=0; j<vms.length(); ++j){
+                if(j==i) {
+                    continue;
+                }
+                vir.accumulate("flows", new JSONObject()
+                        .put("name", "default")
+                        .put("source", vms.getJSONObject(j).getString("name"))
+                        .put("destination",vms.getJSONObject(i).getString("name"))
+                );
+            }
+        }
+        vir.put("policies", new JSONArray());
         String jsonPrettyPrintString = vir.toString(4);
         //保存格式化后的json
-        FileWriter writer = new FileWriter("InputOutput/efg.json");
+        FileWriter writer = new FileWriter("Intermediate/virtual.json");
         writer.write(jsonPrettyPrintString);
         writer.close();
         return ResultDTO.success(jsonPrettyPrintString);
